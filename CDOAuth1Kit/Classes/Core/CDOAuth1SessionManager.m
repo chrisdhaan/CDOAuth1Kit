@@ -178,7 +178,7 @@
     AFHTTPResponseSerializer *defaultSerializer = self.responseSerializer;
     self.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSString *URLString = [[NSURL URLWithString:accessToken relativeToURL:self.baseURL] absoluteString];
+    NSString *URLString = [[NSURL URLWithString:accessPath relativeToURL:self.baseURL] absoluteString];
     NSError *error;
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:URLString parameters:parameters error:&error];
     

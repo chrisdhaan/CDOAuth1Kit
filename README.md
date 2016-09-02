@@ -62,7 +62,7 @@ github "chrisdhaan/CDOAuth1Kit
 Afterwards, run the following command:
 
 ```ruby
-pod carthage
+carthage update
 ```
 
 ## Usage

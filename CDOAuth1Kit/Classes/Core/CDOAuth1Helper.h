@@ -45,7 +45,7 @@
  *
  *  @return Whether or not a successful authorization callback URL was recieved.
  */
-- (BOOL)isAuthorizationCallbackURL:(NSURL *)url
++ (BOOL)isAuthorizationCallbackURL:(NSURL *)url
                  callbackURLScheme:(NSString *)callbackURLScheme
                    callbackURLHost:(NSString *)callbackURLHost;
 

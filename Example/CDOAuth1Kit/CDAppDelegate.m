@@ -6,6 +6,8 @@
 //  Copyright (c) 2016 Christopher de Haan. All rights reserved.
 //
 
+#import <CDOAuth1Kit/CDOAuth1Kit.h>
+
 #import "CDAppDelegate.h"
 
 @implementation CDAppDelegate
@@ -41,6 +43,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    return [CDOAuth1Helper isAuthorizationCallbackURL:url
+                                    callbackURLScheme:@"<YOUR CALLBACK URL SCHEME>"
+                                      callbackURLHost:@"<YOUR CALLBACK URL HOST>"];
 }
 
 @end

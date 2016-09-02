@@ -31,6 +31,8 @@
 		5967C538A48904DFE02AA594A936A690 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C739F1127D7E94D9137583AECFCC0E /* Foundation.framework */; };
 		5D51F3490BF48047C5A55A5475DD6263 /* NSDictionary+CDOAuth1Kit.h in Headers */ = {isa = PBXBuildFile; fileRef = B0C9A9EA337774261F5784BB0F81614C /* NSDictionary+CDOAuth1Kit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EEEBBDF5C85C321E1B7E316DE00166F /* Pods-CDOAuth1Kit_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EEAA668FE9E9880250EE516CDFA6E054 /* Pods-CDOAuth1Kit_Tests-dummy.m */; };
+		5F8C4B6E1D7936D60012690F /* CDOAuth1Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F8C4B6C1D7936D60012690F /* CDOAuth1Helper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F8C4B6F1D7936D60012690F /* CDOAuth1Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8C4B6D1D7936D60012690F /* CDOAuth1Helper.m */; };
 		5FF6453E55785669885F626B853FD2AA /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 85053C33AB5B93D2852851105AAA32B1 /* UIProgressView+AFNetworking.m */; };
 		60E3009342BEE96D32C546BE2DB60052 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = B775F2CB1A9FB265DAF8C6F05776A69E /* UIImageView+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		659960F7E28E993E08CCC1E8A383E710 /* UIKit+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 87463A8F055EEE85DD10593D0C8721B2 /* UIKit+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -121,6 +123,8 @@
 		4E4E728F985740E914586175DA87EBFD /* CDOAuth1Kit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CDOAuth1Kit.h; sourceTree = "<group>"; };
 		5461D992F0D803F0F05DF72B2849301D /* AFNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C739F1127D7E94D9137583AECFCC0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		5F8C4B6C1D7936D60012690F /* CDOAuth1Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOAuth1Helper.h; sourceTree = "<group>"; };
+		5F8C4B6D1D7936D60012690F /* CDOAuth1Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOAuth1Helper.m; sourceTree = "<group>"; };
 		5F9EE152E30220F9D7F0345C261A6F43 /* Pods-CDOAuth1Kit_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-CDOAuth1Kit_Tests.modulemap"; sourceTree = "<group>"; };
 		60FDE8718B3C2608D30D734C8A15D3D3 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIWebView+AFNetworking.h"; path = "UIKit+AFNetworking/UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		69DAA8D29D605736A0994260EEE74150 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m"; sourceTree = "<group>"; };
@@ -349,13 +353,15 @@
 		7CA588C3CD7EEC700D4DF46E03AC326E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				0C4DD8669617B19F7FA6CC3111FA6D98 /* Categories */,
 				7EA962929371464654857B15572B12E3 /* CDOAuth1Credential.h */,
 				C1DD096C24DC0388FF241F03EADA7FE7 /* CDOAuth1Credential.m */,
+				5F8C4B6C1D7936D60012690F /* CDOAuth1Helper.h */,
+				5F8C4B6D1D7936D60012690F /* CDOAuth1Helper.m */,
 				46CCE17B198C8B77EED2640038884A60 /* CDOAuth1RequestSerializer.h */,
 				70560421EB16B5A852764C3145512A60 /* CDOAuth1RequestSerializer.m */,
 				82F70C00D003CD57DDBBCC25B2105567 /* CDOAuth1SessionManager.h */,
 				44D79277AFE62F205551267C51311F91 /* CDOAuth1SessionManager.m */,
-				0C4DD8669617B19F7FA6CC3111FA6D98 /* Categories */,
 				A460719F9ACD4911C6FF8B9E94895F59 /* Headers */,
 			);
 			path = Core;
@@ -513,6 +519,7 @@
 				9B3CC9BF7BF69F91628927CADE05E7CB /* CDOAuth1SessionManager.h in Headers */,
 				5D51F3490BF48047C5A55A5475DD6263 /* NSDictionary+CDOAuth1Kit.h in Headers */,
 				FD1E9EB42CDC90AB1659849E254FA576 /* NSString+CDOAuth1Kit.h in Headers */,
+				5F8C4B6E1D7936D60012690F /* CDOAuth1Helper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +702,7 @@
 				BFF64B43F67BA98154BD2F9F957EE261 /* CDOAuth1SessionManager.m in Sources */,
 				34FDE06A2A2321EF08A77D65C0669E13 /* NSDictionary+CDOAuth1Kit.m in Sources */,
 				4F14BDA41F7860CD1717CBF01C9B3173 /* NSString+CDOAuth1Kit.m in Sources */,
+				5F8C4B6F1D7936D60012690F /* CDOAuth1Helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

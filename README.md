@@ -84,7 +84,7 @@ Once you've created a CDOAuth1SessionManager object you can request authorizatio
 
 The snapshot below displays how to define a mobile callback URL in Xcode.
 
-![Alt text](/README/assets/mobileCallbackURL.jpg?raw=true "")
+![Alt text](/README.md.assets/mobileCallbackURL.jpg?raw=true "")
 
 ### OAuth Handshake
 

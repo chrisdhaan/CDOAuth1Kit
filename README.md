@@ -84,6 +84,8 @@ Once you've created a CDOAuth1SessionManager object you can request authorizatio
 
 The snapshot below displays how to define a mobile callback URL in Xcode.
 
+![Alt text](/README/assets/mobileCallbackURL.jpg?raw=true "")
+
 ### OAuth Handshake
 
 The first step of the OAuth 1.0 authorization process requires the application to recieve an OAuth request token from the API. The following method is used to acquire an OAuth request token.
@@ -95,7 +97,7 @@ The first step of the OAuth 1.0 authorization process requires the application t
                                                scope:nil
                                              success:^(CDOAuth1Credential *requestToken) {
                                                NSString *authURL = [NSString stringWithFormat:@"https://api.login.thisisafakeurl.com/oauth/authorize?oauth_token=%@", requestToken.token];
-                                           [[UIApplication sharedApplication] openURL:[NSURL URLWithString:authURL]];
+                                               [[UIApplication sharedApplication] openURL:[NSURL URLWithString:authURL]];
                                            } failure:^(NSError *error) {
                                                NSLog(@"Fetch Request Token Error: %@", error.localizedDescription);
                                            }];

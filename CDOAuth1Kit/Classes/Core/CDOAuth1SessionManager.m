@@ -26,14 +26,15 @@
 //
 
 #import "CDOAuth1SessionManager.h"
+
+#import "CDOAuth1ErrorCode.h"
 #import "NSDictionary+CDOAuth1Kit.h"
 
 // Exported
-NSString * const CDOAuth1ErrorCode                  = @"-6969";
-NSString * const CDOAuth1BadRequestTokenErrorKey    = @"CDOAuth1BadRequestTokenKey";
-NSString * const CDOAuth1BadRequestTokenErrorCode   = @"An invalid request token was passed to the server.";
-NSString * const CDOAuth1BadAccessTokenErrorKey     = @"CDOAuth1BadAccessTokenKey";
-NSString * const CDOAuth1BadAccessTokenErrorCode    = @"An invalid expired access token was passed to the server.";
+NSString * const CDOAuth1BadRequestTokenErrorKey            = @"CDOAuth1BadRequestTokenKey";
+NSString * const CDOAuth1BadRequestTokenErrorDescription    = @"An invalid request token was passed to the server.";
+NSString * const CDOAuth1BadAccessTokenErrorKey             = @"CDOAuth1BadAccessTokenKey";
+NSString * const CDOAuth1BadAccessTokenErrorDescription     = @"An invalid expired access token was passed to the server.";
 
 @implementation CDOAuth1SessionManager
 
@@ -136,8 +137,8 @@ NSString * const CDOAuth1BadAccessTokenErrorCode    = @"An invalid expired acces
     
     if (!requestToken.token || !requestToken.verifier) {
         NSError *error = [[NSError alloc] initWithDomain:CDOAuth1ErrorDomain
-                                                    code:CDOAuth1ErrorCode
-                                                userInfo:@{CDOAuth1BadRequestTokenErrorKey:CDOAuth1BadRequestTokenErrorCode}];
+                                                    code:CDOAuth1BadRequestTokenErrorCode
+                                                userInfo:@{CDOAuth1BadRequestTokenErrorKey:CDOAuth1BadRequestTokenErrorDescription}];
         
         failure(error);
         
@@ -194,8 +195,8 @@ NSString * const CDOAuth1BadAccessTokenErrorCode    = @"An invalid expired acces
     
     if (!accessToken.token) {
         NSError *error = [[NSError alloc] initWithDomain:CDOAuth1ErrorDomain
-                                                    code:CDOAuth1ErrorCode
-                                                userInfo:@{CDOAuth1BadAccessTokenErrorKey:CDOAuth1BadAccessTokenErrorCode}];
+                                                    code:CDOAuth1BadAccessTokenErrorCode
+                                                userInfo:@{CDOAuth1BadAccessTokenErrorKey:CDOAuth1BadAccessTokenErrorDescription}];
         
         failure(error);
         

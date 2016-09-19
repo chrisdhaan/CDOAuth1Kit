@@ -28,6 +28,13 @@
 #import "CDOAuth1SessionManager.h"
 #import "NSDictionary+CDOAuth1Kit.h"
 
+// Exported
+NSString * const CDOAuth1ErrorCode                  = @"-6969";
+NSString * const CDOAuth1BadRequestTokenErrorKey    = @"CDOAuth1BadRequestTokenKey";
+NSString * const CDOAuth1BadRequestTokenErrorCode   = @"An invalid request token was passed to the server.";
+NSString * const CDOAuth1BadAccessTokenErrorKey     = @"CDOAuth1BadAccessTokenKey";
+NSString * const CDOAuth1BadAccessTokenErrorCode    = @"An invalid expired access token was passed to the server.";
+
 @implementation CDOAuth1SessionManager
 
 @dynamic requestSerializer;
@@ -37,6 +44,11 @@
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
                     consumerKey:(NSString *)consumerKey
                  consumerSecret:(NSString *)consumerSecret {
+    
+    NSAssert(baseURL != nil, @"A base URL is traditionally required when interacting with an OAuth 1.0 API. If none is needed in this case, pass in a NSURL object with an empty string.");
+    NSAssert(consumerKey != nil, @"A consumer key is traditionally required when interacting with an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(consumerSecret != nil, @"A consumer secret is traditionally required when interacting with an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    
     self = [super initWithBaseURL:baseURL];
     
     if (self) {
@@ -66,6 +78,11 @@
                             scope:(NSString *)scope
                           success:(void (^)(CDOAuth1Credential *requestToken))success
                           failure:(void (^)(NSError *error))failure {
+    
+    NSAssert(requestPath != nil, @"A unique URL path is traditionally required when fetching a request token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(method != nil, @"A method type [POST, GET, etc...] is traditionally required when fetching a request token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(callbackURL != nil, @"A callback URL is traditionally required when fetching a request token from an OAuth 1.0 API. If none is needed in this case, pass in a NSURL object with an empty string.");
+    
     self.requestSerializer.requestToken = nil;
     
     AFHTTPResponseSerializer *defaultSerializer = self.responseSerializer;
@@ -112,10 +129,15 @@
                     requestToken:(CDOAuth1Credential *)requestToken
                          success:(void (^)(CDOAuth1Credential *accessToken))success
                          failure:(void (^)(NSError *error))failure {
+    
+    NSAssert(accessPath != nil, @"A unique URL path is traditionally required when fetching an access token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(method != nil, @"A method type [POST, GET, etc...] is traditionally required when fetching an access token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(requestToken != nil, @"A request token is required when fetching an access token from an OAuth 1.0 API.");
+    
     if (!requestToken.token || !requestToken.verifier) {
         NSError *error = [[NSError alloc] initWithDomain:CDOAuth1ErrorDomain
-                                                    code:NSURLErrorBadServerResponse
-                                                userInfo:@{NSLocalizedFailureReasonErrorKey:@"Invalid OAuth response received from server."}];
+                                                    code:CDOAuth1ErrorCode
+                                                userInfo:@{CDOAuth1BadRequestTokenErrorKey:CDOAuth1BadRequestTokenErrorCode}];
         
         failure(error);
         
@@ -166,10 +188,14 @@
                            success:(void (^)(CDOAuth1Credential *))success
                            failure:(void (^)(NSError *))failure {
     
+    NSAssert(accessPath != nil, @"A unique URL path is traditionally required when refreshing an access token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(method != nil, @"A method type [POST, GET, etc...] is traditionally required when refreshing an access token from an OAuth 1.0 API. If none is needed in this case, pass in an empty string.");
+    NSAssert(accessToken != nil, @"An expired access token is required when refreshing an access token from an OAuth 1.0 API.");
+    
     if (!accessToken.token) {
         NSError *error = [[NSError alloc] initWithDomain:CDOAuth1ErrorDomain
-                                                    code:NSURLErrorBadServerResponse
-                                                userInfo:@{NSLocalizedFailureReasonErrorKey:@"Invalid OAuth response received from server."}];
+                                                    code:CDOAuth1ErrorCode
+                                                userInfo:@{CDOAuth1BadAccessTokenErrorKey:CDOAuth1BadAccessTokenErrorCode}];
         
         failure(error);
         

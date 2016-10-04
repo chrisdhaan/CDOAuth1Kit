@@ -1,16 +1,19 @@
-# references:
-# * http://www.objc.io/issue-6/travis-ci.html
-# * https://github.com/supermarin/xcpretty#usage
-
-osx_image: 7.3
-#osx_image: xcode8
 language: objective-c
+osx_image: xcode8
+xcode_sdk: iphonesimulator10.0
+
 cache: cocoapods
 podfile: Example/Podfile
+
+env:
+global:
+  - WORKSPACE="Example/CDOAuth1Kit.xcworkspace"
+  - SCHEME="CDOAuth1Kit-Example"
+matrix:
+  - DESTINATION="generic/platform=iOS" SDK="iphoneos"
 before_install:
 - gem install cocoapods --pre # Since Travis is not always on latest version
 - pod install --project-directory=Example
 script:
-- set -o pipefail && xcodebuild test -workspace Example/CDOAuth1Kit.xcworkspace -scheme CDOAuth1Kit-Example -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
-#- set -o pipefail && xcodebuild test -workspace Example/CDOAuth1Kit.xcworkspace -scheme CDOAuth1Kit-Example -sdk iphonesimulator10.0 ONLY_ACTIVE_ARCH=NO | xcpretty
+- set -o pipefail && xcodebuild test -workspace $WORKSPACE -scheme $SCHEME -sdk $SDK -destination $DESTINATION ONLY_ACTIVE_ARCH=NO | xcpretty
 - pod lib lint

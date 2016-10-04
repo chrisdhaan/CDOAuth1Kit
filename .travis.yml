@@ -5,14 +5,9 @@ xcode_sdk: iphonesimulator10.0
 cache: cocoapods
 podfile: Example/Podfile
 
-env:
-global:
-  - WORKSPACE="Example/CDOAuth1Kit.xcworkspace"
-  - SCHEME="CDOAuth1Kit-Example"
-  - SDK="iphoneos"
 before_install:
 - gem install cocoapods --pre # Since Travis is not always on latest version
 - pod install --project-directory=Example
 script:
-- set -o pipefail && xcodebuild test -workspace $WORKSPACE -scheme $SCHEME -sdk $SDK -destination 'platform=iOS Simulator,name=iPhone 7' ONLY_ACTIVE_ARCH=NO | xcpretty
+- set -o pipefail && xcodebuild test -workspace Example/CDOAuth1Kit.xcworkspace -scheme CDOAuth1Kit-Example -sdk iphoneos -destination 'platform=iOS Simulator,name=iPhone 7' ONLY_ACTIVE_ARCH=NO | xcpretty
 - pod lib lint

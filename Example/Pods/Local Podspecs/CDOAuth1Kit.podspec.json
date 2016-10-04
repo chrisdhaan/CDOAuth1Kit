@@ -1,6 +1,6 @@
 {
   "name": "CDOAuth1Kit",
-  "version": "0.9.14",
+  "version": "0.9.15",
   "summary": "An extensive Objective C OAuth 1.0a library for AFNetworking.",
   "description": "This Objective C wrapper provides the functionality to request and refresh access tokens for APIs requiring OAuth 1.0 authentication.",
   "homepage": "https://github.com/chrisdhaan/CDOAuth1Kit",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/chrisdhaan/CDOAuth1Kit.git",
-    "tag": "0.9.14"
+    "tag": "0.9.15"
   },
   "social_media_url": "https://twitter.com/dehaan_solo",
   "platforms": {

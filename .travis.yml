@@ -10,7 +10,7 @@ global:
   - WORKSPACE="Example/CDOAuth1Kit.xcworkspace"
   - SCHEME="CDOAuth1Kit-Example"
 matrix:
-  - DESTINATION="generic/platform=iOS" SDK="iphoneos"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 7" SDK="iphoneos"
 before_install:
 - gem install cocoapods --pre # Since Travis is not always on latest version
 - pod install --project-directory=Example

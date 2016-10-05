@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CDOAuth1Kit'
-  s.version          = '0.9.21'
+  s.version          = '0.9.22'
   s.summary          = 'An extensive Objective C OAuth 1.0a library for AFNetworking.'
   s.description      = <<-DESC
 This Objective C wrapper provides the functionality to request and refresh access tokens for APIs requiring OAuth 1.0 authentication.

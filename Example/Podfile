@@ -2,10 +2,4 @@ use_frameworks!
 
 target 'CDOAuth1Kit_Example' do
   pod 'CDOAuth1Kit', :path => '../'
-
-  target 'CDOAuth1Kit_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end

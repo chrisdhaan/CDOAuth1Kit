@@ -1,6 +1,6 @@
 //
 //  CDOAuth1SessionManager.m
-//  Pods
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
 //

@@ -1,6 +1,6 @@
 //
-//  NSDictionary+CDOAuth1Kit.m
-//  Pods
+//  NSDictionary+CDOAuth1Kit.h
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
 //
@@ -25,35 +25,35 @@
 //  THE SOFTWARE.
 //
 
-#import "NSDictionary+CDOAuth1Kit.h"
+#import <Foundation/Foundation.h>
 
-#import "NSString+CDOAuth1Kit.h"
+/**
+ *  Additions to NSDictionary.
+ */
+@interface NSDictionary (CDOAuth1Kit)
 
-@implementation NSDictionary (CDOAuth1Kit)
+/**
+ *  ---------------------------------------------------------------------------------------
+ * @name Query String
+ *  ---------------------------------------------------------------------------------------
+ */
 
 #pragma mark - Query String
 
-+ (instancetype)cd_dictionaryFromQueryString:(NSString *)queryString {
-    NSArray *components = [queryString componentsSeparatedByString:@"&"];
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
-    for (NSString *component in components) {
-        NSArray *keyValue = [component componentsSeparatedByString:@"="];
-        dictionary[[keyValue[0] cd_URLDecode]] = [keyValue[1] cd_URLDecode];
-    }
-    
-    return [[[self class] alloc] initWithDictionary:dictionary];
-}
+/**
+ *  Create a dictionary representation of a URL query string.
+ *
+ *  @param queryString URL query string.
+ *
+ *  @return Dictionary containing each key-value pair in the query string.
+ */
++ (instancetype)cd_dictionaryFromQueryString:(NSString *)queryString;
 
-- (NSString *)cd_queryStringRepresentation {
-    NSMutableArray *paramArray = [NSMutableArray array];
-    
-    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        NSString *param = [NSString stringWithFormat:@"%@=%@", [key cd_URLEncode], [obj cd_URLEncode]];
-        [paramArray addObject:param];
-    }];
-    
-    return [paramArray componentsJoinedByString:@"&"];
-}
+/**
+ *  Return each key-value pair in the dictionary as a URL query string.
+ *
+ *  @return URL query string reperesntation of this dictionary.
+ */
+- (NSString *)cd_queryStringRepresentation;
 
 @end

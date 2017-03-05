@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/cocoapods/l/CDOAuth1Kit.svg?style=flat)](http://cocoapods.org/pods/CDOAuth1Kit)
 [![Platform](https://img.shields.io/cocoapods/p/CDOAuth1Kit.svg?style=flat)](http://cocoapods.org/pods/CDOAuth1Kit)
 
-This pod is currently in development. As of release 0.9.0 the code is stable and in a usable state to install in applications.
+This Objective-C wrapper provides the functionality to request and refresh access tokens for APIs requiring OAuth 1.0 authentication.
 
 ## Example
 
@@ -16,7 +16,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-- iosSDK: 8.0
+- iOS 8.0 or higher
 
 ---
 
@@ -56,7 +56,7 @@ brew install carthage
 To integrate CDOAuth1Kit into your Xcode project using Carthage, simply add the following line to your Cartfile:
 
 ```ruby
-github "chrisdhaan/CDOAuth1Kit
+github "chrisdhaan/CDOAuth1Kit"
 ```
 
 Afterwards, run the following command:
@@ -84,7 +84,7 @@ Once you've created a CDOAuth1SessionManager object you can request authorizatio
 
 The snapshot below displays how to define a mobile callback URL in Xcode.
 
-![Alt text](/README.md.assets/mobileCallbackURL.jpg?raw=true "")
+![Alt text](/Documentation/mobileCallbackURL.jpg?raw=true "")
 
 ### OAuth Handshake
 
@@ -177,7 +177,7 @@ Christopher de Haan, contact@christopherdehaan.me
 
 ## Credits
 
-CDOAuth1Kit was influenced by [BDBOAuth1SessionManager](https://github.com/bdbergeron/BDBOAuth1Manager), an OAuth 1.0 library developed by [Bradley David Bergeron](https://www.bradbergeron.com).
+CDOAuth1Kit was influenced by [BDBOAuth1SessionManager](https://github.com/bdbergeron/BDBOAuth1Manager), an OAuth 1.0 library developed by [Bradley David Bergeron](https://www.bradbergeron.com). CDOAuth1Kit adds the ability to access the ('oauth_timestamp') key via a NSDate expiration property within the CDOAuth1Credential class. CDOAuth1Kit also offers additional helper methods for responding to the OAuth callback URL. 
 
 ## License
 

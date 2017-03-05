@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F0948E71E6B8505003D0862 /* CDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0948D91E6B8505003D0862 /* CDAppDelegate.m */; };
+		5F0948E81E6B8505003D0862 /* CDTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0948DC1E6B8505003D0862 /* CDTweet.m */; };
+		5F0948E91E6B8505003D0862 /* CDTwitterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0948DF1E6B8505003D0862 /* CDTwitterClient.m */; };
+		5F0948EA1E6B8505003D0862 /* CDTweetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0948E21E6B8505003D0862 /* CDTweetsViewController.m */; };
+		5F0948EC1E6B8505003D0862 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0948E61E6B8505003D0862 /* main.m */; };
+		5F0948F11E6B857F003D0862 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F0948EF1E6B857F003D0862 /* Main.storyboard */; };
+		5F0948F41E6B8651003D0862 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F0948F21E6B8651003D0862 /* Launch Screen.storyboard */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
-		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* CDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* CDAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* CDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* CDViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		CD198E7F254627D47FD36195 /* Pods_CDOAuth1Kit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A54C9D9CB19E917E3EA14C /* Pods_CDOAuth1Kit_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,20 +26,25 @@
 		103558E536C23C4E175C1825 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1FB9A2F4C0EA96EC39A99464 /* Pods-CDOAuth1Kit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDOAuth1Kit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		22A54C9D9CB19E917E3EA14C /* Pods_CDOAuth1Kit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CDOAuth1Kit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F0948D81E6B8505003D0862 /* CDAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAppDelegate.h; sourceTree = "<group>"; };
+		5F0948D91E6B8505003D0862 /* CDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAppDelegate.m; sourceTree = "<group>"; };
+		5F0948DB1E6B8505003D0862 /* CDTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTweet.h; sourceTree = "<group>"; };
+		5F0948DC1E6B8505003D0862 /* CDTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTweet.m; sourceTree = "<group>"; };
+		5F0948DE1E6B8505003D0862 /* CDTwitterClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTwitterClient.h; sourceTree = "<group>"; };
+		5F0948DF1E6B8505003D0862 /* CDTwitterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTwitterClient.m; sourceTree = "<group>"; };
+		5F0948E11E6B8505003D0862 /* CDTweetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTweetsViewController.h; sourceTree = "<group>"; };
+		5F0948E21E6B8505003D0862 /* CDTweetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTweetsViewController.m; sourceTree = "<group>"; };
+		5F0948E41E6B8505003D0862 /* CDOAuth1Kit-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CDOAuth1Kit-Info.plist"; sourceTree = "<group>"; };
+		5F0948E51E6B8505003D0862 /* CDOAuth1Kit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDOAuth1Kit-Prefix.pch"; sourceTree = "<group>"; };
+		5F0948E61E6B8505003D0862 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5F0948F01E6B857F003D0862 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5F0948F31E6B8651003D0862 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = "en.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* CDOAuth1Kit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDOAuth1Kit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F595195388D20070C39A /* CDOAuth1Kit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CDOAuth1Kit-Info.plist"; sourceTree = "<group>"; };
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6003F59B195388D20070C39A /* CDOAuth1Kit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CDOAuth1Kit-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* CDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* CDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* CDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* CDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9828920DBDEAFA94D4B50F5B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		AACDE8DFEF7449F5796889F7 /* CDOAuth1Kit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CDOAuth1Kit.podspec; path = ../CDOAuth1Kit.podspec; sourceTree = "<group>"; };
 		B4C1F40038C40E5C3392936E /* Pods-CDOAuth1Kit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDOAuth1Kit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -57,6 +65,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F0948D71E6B8505003D0862 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948D81E6B8505003D0862 /* CDAppDelegate.h */,
+				5F0948D91E6B8505003D0862 /* CDAppDelegate.m */,
+				5F0948DA1E6B8505003D0862 /* Model */,
+				5F0948DD1E6B8505003D0862 /* Networking */,
+				5F0948E01E6B8505003D0862 /* View Controllers */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		5F0948DA1E6B8505003D0862 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948DB1E6B8505003D0862 /* CDTweet.h */,
+				5F0948DC1E6B8505003D0862 /* CDTweet.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5F0948DD1E6B8505003D0862 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948DE1E6B8505003D0862 /* CDTwitterClient.h */,
+				5F0948DF1E6B8505003D0862 /* CDTwitterClient.m */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		5F0948E01E6B8505003D0862 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948E11E6B8505003D0862 /* CDTweetsViewController.h */,
+				5F0948E21E6B8505003D0862 /* CDTweetsViewController.m */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		5F0948E31E6B8505003D0862 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948E41E6B8505003D0862 /* CDOAuth1Kit-Info.plist */,
+				5F0948E51E6B8505003D0862 /* CDOAuth1Kit-Prefix.pch */,
+				6003F596195388D20070C39A /* InfoPlist.strings */,
+				5F0948E61E6B8505003D0862 /* main.m */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5F0948ED1E6B8569003D0862 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948EE1E6B8573003D0862 /* Storyboards */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		5F0948EE1E6B8573003D0862 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				5F0948F21E6B8651003D0862 /* Launch Screen.storyboard */,
+				5F0948EF1E6B857F003D0862 /* Main.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -90,27 +165,13 @@
 		6003F593195388D20070C39A /* Example for CDOAuth1Kit */ = {
 			isa = PBXGroup;
 			children = (
-				6003F59C195388D20070C39A /* CDAppDelegate.h */,
-				6003F59D195388D20070C39A /* CDAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				6003F5A5195388D20070C39A /* CDViewController.h */,
-				6003F5A6195388D20070C39A /* CDViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
-				6003F594195388D20070C39A /* Supporting Files */,
+				5F0948D71E6B8505003D0862 /* Classes */,
+				5F0948ED1E6B8569003D0862 /* UI */,
+				5F0948E31E6B8505003D0862 /* Supporting Files */,
 			);
 			name = "Example for CDOAuth1Kit";
 			path = CDOAuth1Kit;
-			sourceTree = "<group>";
-		};
-		6003F594195388D20070C39A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6003F595195388D20070C39A /* CDOAuth1Kit-Info.plist */,
-				6003F596195388D20070C39A /* InfoPlist.strings */,
-				6003F599195388D20070C39A /* main.m */,
-				6003F59B195388D20070C39A /* CDOAuth1Kit-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
@@ -188,8 +249,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				5F0948F11E6B857F003D0862 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				5F0948F41E6B8651003D0862 /* Launch Screen.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,21 +311,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F59E195388D20070C39A /* CDAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* CDViewController.m in Sources */,
-				6003F59A195388D20070C39A /* main.m in Sources */,
+				5F0948EC1E6B8505003D0862 /* main.m in Sources */,
+				5F0948E91E6B8505003D0862 /* CDTwitterClient.m in Sources */,
+				5F0948E81E6B8505003D0862 /* CDTweet.m in Sources */,
+				5F0948E71E6B8505003D0862 /* CDAppDelegate.m in Sources */,
+				5F0948EA1E6B8505003D0862 /* CDTweetsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5F0948EF1E6B857F003D0862 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5F0948F01E6B857F003D0862 /* en */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5F0948F21E6B8651003D0862 /* Launch Screen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5F0948F31E6B8651003D0862 /* en */,
+			);
+			name = "Launch Screen.storyboard";
+			sourceTree = "<group>";
+		};
 		6003F596195388D20070C39A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6003F597195388D20070C39A /* en */,
 			);
 			name = InfoPlist.strings;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -307,7 +388,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -345,7 +426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -357,12 +438,11 @@
 			baseConfigurationReference = B4C1F40038C40E5C3392936E /* Pods-CDOAuth1Kit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CDOAuth1Kit/CDOAuth1Kit-Prefix.pch";
-				INFOPLIST_FILE = "CDOAuth1Kit/CDOAuth1Kit-Info.plist";
+				GCC_PREFIX_HEADER = "CDOAuth1Kit/Supporting Files/CDOAuth1Kit-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/CDOAuth1Kit/Supporting Files/CDOAuth1Kit-Info.plist";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.demo.CDOAuth1Kit-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -373,12 +453,11 @@
 			baseConfigurationReference = 1FB9A2F4C0EA96EC39A99464 /* Pods-CDOAuth1Kit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CDOAuth1Kit/CDOAuth1Kit-Prefix.pch";
-				INFOPLIST_FILE = "CDOAuth1Kit/CDOAuth1Kit-Info.plist";
+				GCC_PREFIX_HEADER = "CDOAuth1Kit/Supporting Files/CDOAuth1Kit-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/CDOAuth1Kit/Supporting Files/CDOAuth1Kit-Info.plist";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.demo.CDOAuth1Kit-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

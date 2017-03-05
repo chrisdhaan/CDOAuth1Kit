@@ -1,8 +1,8 @@
 //
-//  CDOAuth1Kit.h
-//  Pods
+//  CDTwitterClient.h
+//  CDOAuth1Kit
 //
-//  Created by Christopher de Haan on 8/28/16.
+//  Created by Christopher de Haan on 2/22/17.
 //
 //  Copyright (c) 2016 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,7 +25,24 @@
 //  THE SOFTWARE.
 //
 
-typedef enum CDOAuth1ErrorCode : NSInteger {
-    CDOAuth1BadRequestTokenErrorCode    = -69691,
-    CDOAuth1BadAccessTokenErrorCode     = -69692
-} CDOAuth1ErrorCode;
+#import <Foundation/Foundation.h>
+
+@interface CDTwitterClient : NSObject
+
+@property (nonatomic, assign, readonly, getter = isAuthorized) BOOL authorized;
+
+#pragma mark - Initialization
++ (instancetype)createWithConsumerKey:(NSString *)apiKey secret:(NSString *)secret;
++ (instancetype)sharedClient;
+
+#pragma mark - Authorization
+- (BOOL)isAuthorized;
++ (BOOL)isAuthorizationCallbackURL:(NSURL *)url;
+- (void)authorize;
+- (BOOL)handleAuthorizationCallbackURL:(NSURL *)url;
+- (void)deauthorize;
+
+#pragma mark - Tweets
+- (void)loadTimelineWithCompletion:(void (^)(NSArray *tweets, NSError *error))completion;
+
+@end

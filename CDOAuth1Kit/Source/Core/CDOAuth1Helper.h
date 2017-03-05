@@ -1,6 +1,6 @@
 //
-//  CDOAuth1Helper.m
-//  Pods
+//  CDOAuth1Helper.h
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 9/1/16.
 //
@@ -25,17 +25,28 @@
 //  THE SOFTWARE.
 //
 
-#import "CDOAuth1Helper.h"
+#import <Foundation/Foundation.h>
 
-@implementation CDOAuth1Helper
+@interface CDOAuth1Helper : NSObject
 
+/**
+ *  ---------------------------------------------------------------------------------------
+ * @name Authorization Callback
+ *  ---------------------------------------------------------------------------------------
+ */
 #pragma mark - Authorization Callback
 
+/**
+ *  Check if an authorization callback opened the application.
+ *
+ *  @param url                  URL that opened the application.
+ *  @param callbackURLScheme    URL scheme for oauth_callback.
+ *  @param callbackURLHost      URL host for oauth_callback.
+ *
+ *  @return Whether or not a successful authorization callback URL was recieved.
+ */
 + (BOOL)isAuthorizationCallbackURL:(NSURL *)url
                  callbackURLScheme:(NSString *)callbackURLScheme
-                   callbackURLHost:(NSString *)callbackURLHost {
-    
-    return [url.scheme isEqualToString:callbackURLScheme] && [url.host isEqualToString:callbackURLHost];
-}
+                   callbackURLHost:(NSString *)callbackURLHost;
 
 @end

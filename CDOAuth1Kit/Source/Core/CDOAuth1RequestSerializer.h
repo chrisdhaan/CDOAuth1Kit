@@ -1,6 +1,6 @@
 //
 //  CDOAuth1RequestSerializer.h
-//  Pods
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
 //

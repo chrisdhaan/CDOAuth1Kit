@@ -14,8 +14,8 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - CDOAuth1Kit (0.9.26):
-    - AFNetworking (~> 3.0)
+  - CDOAuth1Kit (1.0.0):
+    - AFNetworking (~> 3)
 
 DEPENDENCIES:
   - CDOAuth1Kit (from `../`)
@@ -26,8 +26,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CDOAuth1Kit: b123261757130a408620b6cbc5c9e085369e12dc
+  CDOAuth1Kit: 63c93048bb54f2a8bdabb6fc37569508cf455cef
 
 PODFILE CHECKSUM: 59aae615f6d23cefd6dec79739f34891b476b9b9
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

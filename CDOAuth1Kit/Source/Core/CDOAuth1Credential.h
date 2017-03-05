@@ -1,6 +1,6 @@
 //
 //  CDOAuth1Credential.h
-//  Pods
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/29/16.
 //

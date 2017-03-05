@@ -1,6 +1,6 @@
 //
 //  CDOAuth1SessionManager.h
-//  Pods
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
 //
@@ -47,7 +47,7 @@ FOUNDATION_EXPORT NSString * const CDOAuth1BadAccessTokenErrorDescription;
  * @name Initialization
  *  ---------------------------------------------------------------------------------------
  */
-#pragma mark Initialization
+#pragma mark - Initialization
 
 /**
  *  Initialize a new CDOAuth1SessionManager instance with the given baseURL, consumerKey, and consumerSecret.
@@ -68,7 +68,7 @@ FOUNDATION_EXPORT NSString * const CDOAuth1BadAccessTokenErrorDescription;
  * @name Authorization Status
  *  ---------------------------------------------------------------------------------------
  */
-#pragma mark Authorization Status
+#pragma mark - Authorization Status
 
 /**
  *  Check whehter or not this manager instance has a valid access token.
@@ -88,7 +88,7 @@ FOUNDATION_EXPORT NSString * const CDOAuth1BadAccessTokenErrorDescription;
  * @name OAuth Handshake
  *  ---------------------------------------------------------------------------------------
  */
-#pragma mark OAuth Handshake
+#pragma mark - OAuth Handshake
 
 /**
  *  Fetch an OAuth request token.

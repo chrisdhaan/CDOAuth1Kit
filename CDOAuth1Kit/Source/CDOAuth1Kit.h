@@ -1,6 +1,6 @@
 //
-//  NSString+CDOAuth1Kit.h
-//  Pods
+//  CDOAuth1Kit.h
+//  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
 //
@@ -25,48 +25,10 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-
-/**
- *  Additions to NSString.
- */
-@interface NSString (CDOAuth1Kit)
-
-/**
- *  ---------------------------------------------------------------------------------------
- * @name URL Encoding/Decoding
- *  ---------------------------------------------------------------------------------------
- */
-
-#pragma mark - URL Encoding/Decoding
-
-/**
- *  Returns a properly URL-decoded representation of the given string.
- *
- *  See http://cybersam.com/ios-dev/proper-url-percent-encoding-in-ios for more details.
- *
- *  @return URL-decoded string
- */
-- (NSString *)cd_URLDecode;
-
-/**
- *  Returns a properly URL-encoded representation of the given string.
- *
- *  See http://cybersam.com/ios-dev/proper-url-percent-encoding-in-ios for more details.
- *
- *  @return URL-encoded string
- */
-
-- (NSString *)cd_URLEncode;
-
-
-/**
- *  Returns the given string with the '/' and '?' characters URL-encoded.
- *
- *  AFNetworking 2.6 no longer encodes '/' and '?' characters. See https://github.com/AFNetworking/AFNetworking/pull/2908
- *
- *  @return '?' and '/' URL-encoded string
- */
-- (NSString *)cd_URLEncodeSlashesAndQuestionMarks;
-
-@end
+#import "CDOAuth1Credential.h"
+#import "CDOAuth1ErrorCode.h"
+#import "CDOAuth1Helper.h"
+#import "CDOAuth1RequestSerializer.h"
+#import "CDOAuth1SessionManager.h"
+#import "NSDictionary+CDOAuth1Kit.h"
+#import "NSString+CDOAuth1Kit.h"

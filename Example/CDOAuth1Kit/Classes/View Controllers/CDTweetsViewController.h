@@ -1,8 +1,8 @@
 //
-//  NSDictionary+CDOAuth1Kit.h
-//  Pods
+//  CDViewController.h
+//  CDOAuth1Kit
 //
-//  Created by Christopher de Haan on 8/28/16.
+//  Created by Christopher de Haan on 08/28/2016.
 //
 //  Copyright (c) 2016 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,35 +25,8 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+@import UIKit;
 
-/**
- *  Additions to NSDictionary.
- */
-@interface NSDictionary (CDOAuth1Kit)
-
-/**
- *  ---------------------------------------------------------------------------------------
- * @name Query String
- *  ---------------------------------------------------------------------------------------
- */
-
-#pragma mark - Query String
-
-/**
- *  Create a dictionary representation of a URL query string.
- *
- *  @param queryString URL query string.
- *
- *  @return Dictionary containing each key-value pair in the query string.
- */
-+ (instancetype)cd_dictionaryFromQueryString:(NSString *)queryString;
-
-/**
- *  Return each key-value pair in the dictionary as a URL query string.
- *
- *  @return URL query string reperesntation of this dictionary.
- */
-- (NSString *)cd_queryStringRepresentation;
+@interface CDTweetsViewController : UIViewController
 
 @end

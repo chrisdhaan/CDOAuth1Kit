@@ -1,8 +1,8 @@
 //
-//  CDOAuth1Helper.h
-//  Pods
+//  CDTweet.m
+//  CDOAuth1Kit
 //
-//  Created by Christopher de Haan on 9/1/16.
+//  Created by Christopher de Haan on 2/22/17.
 //
 //  Copyright (c) 2016 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,28 +25,31 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+#import "CDTweet.h"
 
-@interface CDOAuth1Helper : NSObject
+@implementation CDTweet
 
-/**
- *  ---------------------------------------------------------------------------------------
- * @name Authorization Callback
- *  ---------------------------------------------------------------------------------------
- */
-#pragma mark - Authorization Callback
+#pragma mark - Initialization
 
-/**
- *  Check if an authorization callback opened the application.
- *
- *  @param url                  URL that opened the application.
- *  @param callbackURLScheme    URL scheme for oauth_callback.
- *  @param callbackURLHost      URL host for oauth_callback.
- *
- *  @return Whether or not a successful authorization callback URL was recieved.
- */
-+ (BOOL)isAuthorizationCallbackURL:(NSURL *)url
-                 callbackURLScheme:(NSString *)callbackURLScheme
-                   callbackURLHost:(NSString *)callbackURLHost;
+- (CDTweet *)initWithDictionary:(NSDictionary *)tweetInfo {
+    self = [super init];
+    
+    if (self) {
+        _tweetText = [tweetInfo[@"text"] copy];
+        
+        NSDictionary *userInfo = tweetInfo[@"user"];
+        
+        if (userInfo[@"profile_image_url"]) {
+            NSString *userImageURLString = [userInfo[@"profile_image_url"] stringByReplacingOccurrencesOfString:@"_normal"
+                                                                                                     withString:@"_bigger"];
+            _userImageURL = [NSURL URLWithString:userImageURLString];
+        }
+        
+        _userName = userInfo[@"name"];
+        _userScreenName = userInfo[@"screen_name"];
+    }
+    
+    return self;
+}
 
 @end

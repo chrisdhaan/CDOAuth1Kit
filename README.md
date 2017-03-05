@@ -177,7 +177,11 @@ Christopher de Haan, contact@christopherdehaan.me
 
 ## Credits
 
-CDOAuth1Kit was influenced by [BDBOAuth1SessionManager](https://github.com/bdbergeron/BDBOAuth1Manager), an OAuth 1.0 library developed by [Bradley David Bergeron](https://www.bradbergeron.com). CDOAuth1Kit adds the ability to access the ('oauth_timestamp') key via a NSDate expiration property within the CDOAuth1Credential class. CDOAuth1Kit also offers additional helper methods for responding to the OAuth callback URL. 
+CDOAuth1Kit was influenced by [BDBOAuth1SessionManager](https://github.com/bdbergeron/BDBOAuth1Manager), an OAuth 1.0 library developed by [Bradley David Bergeron](https://www.bradbergeron.com).
+
+CDOAuth1Kit adds the following functionalities:
+* The ability to access the ('oauth_timestamp') key via a NSDate expiration property within the CDOAuth1Credential class
+* Additional helper methods for responding to the OAuth callback URL
 
 ## License
 

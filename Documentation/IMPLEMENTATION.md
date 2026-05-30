@@ -1376,7 +1376,7 @@ import Testing
 }
 ```
 
-### 7.6 — `Extensions/DictionaryTests.swift`
+### ✅ 7.6 — `Extensions/DictionaryTests.swift`
 
 ```swift
 import Testing

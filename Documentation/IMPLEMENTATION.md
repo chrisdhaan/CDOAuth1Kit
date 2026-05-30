@@ -1516,7 +1516,7 @@ end
 
 ## 9. Documentation
 
-### 9.1 — README.md
+### ✅ 9.1 — README.md
 
 Replace the current README with a modern navigation-hub format matching CDMarkdownKit:
 

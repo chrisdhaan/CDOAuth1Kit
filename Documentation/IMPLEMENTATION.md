@@ -697,7 +697,7 @@ jobs:
 
 This is the largest change. The library is rewritten from Objective-C to Swift, and the dependency on AFNetworking is removed entirely. URLSession and CryptoKit (both part of Apple's SDKs) replace AFNetworking's functionality.
 
-### 6.1 — New Source Directory Structure
+### ✅ 6.1 — New Source Directory Structure
 
 ```
 CDOAuth1Kit/

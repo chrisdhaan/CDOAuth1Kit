@@ -1352,7 +1352,7 @@ import Testing
 }
 ```
 
-### 7.5 — `Extensions/StringTests.swift`
+### ✅ 7.5 — `Extensions/StringTests.swift`
 
 ```swift
 import Testing

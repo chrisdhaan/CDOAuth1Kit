@@ -1268,7 +1268,7 @@ import Testing
 }
 ```
 
-### 7.3 — `CDOAuth1HelperTests.swift`
+### ✅ 7.3 — `CDOAuth1HelperTests.swift`
 
 ```swift
 import Testing

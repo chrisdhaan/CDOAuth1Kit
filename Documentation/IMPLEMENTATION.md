@@ -86,7 +86,7 @@ Rules:
 - Three categories only: **Added**, **Updated**, **Fixed**.
 - Releases separated by `---`.
 
-### 1.2 — Replace the single issue template with a directory structure
+### ✅ 1.2 — Replace the single issue template with a directory structure
 
 Delete `.travis.yml` is handled in Section 5. For GitHub templates:
 

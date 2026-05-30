@@ -1438,7 +1438,7 @@ Delete:
 - `Example/CDOAuth1Kit/Supporting Files/CDOAuth1Kit-Prefix.pch` — precompiled headers are not used in Swift projects.
 - `Example/CDOAuth1Kit/en.lproj/` — rename/replace with `Resources/Base.lproj/`.
 
-### 8.2 — AppDelegate / SceneDelegate
+### ✅ 8.2 — AppDelegate / SceneDelegate
 
 Add a `SceneDelegate.swift` to support iOS 13+ scene-based lifecycle. Remove the UIWebView usage (`UIWebView+AFNetworking` from AFNetworking) — it is deprecated since iOS 12.
 

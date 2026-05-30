@@ -1592,7 +1592,7 @@ Create `CLAUDE.md` at the repo root. This file provides context to Claude Code f
 - CI job descriptions
 - Known issues / tech debt
 
-### 9.4 — `Documentation/ARCHITECTURE.md`
+### ✅ 9.4 — `Documentation/ARCHITECTURE.md`
 
 Create `Documentation/ARCHITECTURE.md`. Document:
 

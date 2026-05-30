@@ -796,7 +796,7 @@ public enum CDOAuth1Error: Error, Sendable {
 
 Remove the old `CDOAuth1ErrorDomain` NSString constant — Swift errors do not need string domains.
 
-### 6.5 — `CDOAuth1Helper.swift`
+### ✅ 6.5 — `CDOAuth1Helper.swift`
 
 Replace the Objective-C class with a Swift enum (no cases = namespace):
 

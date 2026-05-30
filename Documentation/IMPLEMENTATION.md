@@ -435,7 +435,7 @@ let package = Package(
 
 ---
 
-## 4. CocoaPods Podspec Update
+## ✅ 4. CocoaPods Podspec Update
 
 Replace the current `CDOAuth1Kit.podspec` with:
 ```ruby

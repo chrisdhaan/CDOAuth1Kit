@@ -989,7 +989,7 @@ import CryptoKit
 import Foundation
 ```
 
-### 6.8 — `CDOAuth1SessionManager.swift`
+### ✅ 6.8 — `CDOAuth1SessionManager.swift`
 
 Replaces `CDOAuth1SessionManager.h/m`, which subclassed `AFHTTPSessionManager`. The new implementation wraps `URLSession` directly.
 

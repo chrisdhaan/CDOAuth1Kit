@@ -163,7 +163,7 @@ Create `.github/PULL_REQUEST_TEMPLATE.md`:
 > How was this tested? List new tests added, or explain why no tests are needed.
 ```
 
-### 1.4 — Add `FUNDING.yml`
+### ✅ 1.4 — Add `FUNDING.yml`
 
 Create `.github/FUNDING.yml`:
 ```yaml

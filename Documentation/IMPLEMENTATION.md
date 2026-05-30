@@ -1137,7 +1137,7 @@ private extension String {
 | `requestSerializer.saveAccessToken(_:)` returns `BOOL` | `requestSigner.saveAccessToken(_:) throws` |
 | `requestSerializer.removeAccessToken()` returns `BOOL` | via `deauthorize() throws` on the manager |
 
-### 6.9 — `String+CDOAuth1Kit.swift`
+### ✅ 6.9 — `String+CDOAuth1Kit.swift`
 
 Replace `NSString+CDOAuth1Kit.h/m`. Key changes:
 - Replace deprecated `CFURLCreateStringByAddingPercentEscapes` with `addingPercentEncoding(withAllowedCharacters:)`.

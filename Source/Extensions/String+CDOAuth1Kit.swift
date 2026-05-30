@@ -29,6 +29,7 @@ import Foundation
 
 extension String {
 
+    /// RFC 5849 §3.6 percent encoding — encodes everything except unreserved characters.
     func oauthPercentEncoded() -> String {
         var allowed = CharacterSet.alphanumerics
         allowed.insert(charactersIn: "-._~")

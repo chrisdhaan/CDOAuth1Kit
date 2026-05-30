@@ -781,7 +781,7 @@ public struct CDOAuth1Credential: Codable, Sendable, Equatable {
 }
 ```
 
-### 6.4 — `CDOAuth1Error.swift`
+### ✅ 6.4 — `CDOAuth1Error.swift`
 
 Replace the C enum `CDOAuth1ErrorCode` with a proper Swift error type:
 

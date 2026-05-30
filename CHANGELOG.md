@@ -11,16 +11,54 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.0.0)
 
-Released on YYYY-MM-DD.
+Released on 2026-05-30.
 
 ### Added
-- Description.
+
+- Swift Package Manager support (swift-tools-version 6.0, iOS 13.0+, macOS 10.15+)
+- `async throws` API on all three OAuth handshake methods
+- `CDOAuth1Error` Swift error enum replacing the C-style `CDOAuth1ErrorCode` typedef
+- `CryptoKit`-based HMAC-SHA1 signing replacing `CommonCrypto/CCHmac` directly
+- `PrivacyInfo.xcprivacy` privacy manifest for App Store compliance
+- `KeychainStore` internal type using `Codable` / `JSONEncoder` for credential serialization
+- Unit test suite using Swift Testing framework
+- GitHub Actions CI (iOS/macOS matrix builds, CocoaPods lint, SPM test, SwiftLint, SwiftFormat, DocC build, CodeQL)
+- DocC documentation catalog (`Source/CDOAuth1Kit.docc/`) with landing page and Getting Started article
+- `swift-docc-plugin` dependency in `Package.swift` for `swift package generate-documentation`
+- GitHub Pages–hosted API documentation at `https://chrisdhaan.github.io/CDOAuth1Kit/`
+- `.swiftlint.yml` for semantic code quality enforcement
+- `.swiftformat` for mechanical code style enforcement
+- `Gemfile` / `Gemfile.lock` for reproducible Ruby dependency management
+- `CONTRIBUTING.md`, `CLAUDE.md`
+- `Documentation/ARCHITECTURE.md`, `Documentation/Usage.md`
+- `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
+- GitHub issue templates (bug report, feature request) and pull request template
+- `FUNDING.yml` for GitHub Sponsors
 
 ### Updated
-- Description.
+
+- Rewritten entirely in Swift — no Objective-C files remain
+- Removed dependency on AFNetworking — uses `URLSession` from Foundation directly
+- Deployment targets: iOS 13.0+ (was iOS 8.0+), macOS 10.15+ (new platform)
+- `CDOAuth1RequestSerializer` renamed to `CDOAuth1RequestSigner` (value type, no superclass)
+- `CDOAuth1SessionManager` now wraps `URLSession` directly instead of subclassing `AFHTTPSessionManager`
+- `CDOAuth1Credential` converted to Swift `struct` with `Codable` and `Sendable` conformances
+- Keychain storage now uses `JSONEncoder`/`JSONDecoder` instead of `NSKeyedArchiver`/`NSKeyedUnarchiver`
+- README restructured as navigation hub with modern badges
+- CHANGELOG reformatted to Semantic Versioning standard
+- Travis CI replaced with GitHub Actions
+- Documentation hosting migrated from Jazzy to DocC; `.jazzy.yaml` not created
 
 ### Fixed
-- Description.
+
+- Deprecated `CFURLCreateStringByAddingPercentEscapes` replaced with `addingPercentEncoding(withAllowedCharacters:)`
+- Deprecated `CFURLCreateStringByReplacingPercentEscapesUsingEncoding` replaced with `removingPercentEncoding`
+- Deprecated `NSKeyedArchiver.archivedDataWithRootObject:` (deprecated iOS 12) replaced with `JSONEncoder`
+- Deprecated `NSKeyedUnarchiver.initForReadingWithData:` (deprecated iOS 12) replaced with `JSONDecoder`
+- Legacy class name mapping hack (`setClass:forClassName: "CDOAuthToken"`) eliminated
+- iOS 7 / macOS 10.9 base64 preprocessor guards removed — baseline is now iOS 13 / macOS 10.15
+- `CFUUIDCreate` replaced with `UUID()` for nonce generation
+- `CDOAuth1Credential.initWithQueryString:` crash when query string has fewer than 2 components per `=`-split (defensive guard added)
 
 ---
 

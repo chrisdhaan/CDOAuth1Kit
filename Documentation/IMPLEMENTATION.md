@@ -17,7 +17,7 @@
 - [7. Unit Tests](#7-unit-tests)
 - [8. Example App Update](#8-example-app-update)
 - [9. Documentation](#9-documentation)
-- [10. CHANGELOG.md](#10-changelogmd)
+- [✅ 10. CHANGELOG.md](#10-changelogmd)
 
 > **CDMarkdownKit 3.1.0 alignment** — Sections updated to match CDMarkdownKit 3.1.0 patterns (released 2026-05-12):
 > - Section 1.6: Gemfile drops `jazzy` gem (DocC replaces Jazzy)
@@ -1769,9 +1769,9 @@ Update `README.md` and the podspec `documentation_url` to point to this URL.
 
 ---
 
-## 10. CHANGELOG.md
+## ✅ 10. CHANGELOG.md
 
-The complete `CHANGELOG.md` for v2.0.0 entry (to be finalized with the actual release date):
+The complete `CHANGELOG.md` for v2.0.0 entry (finalized with the actual release date 2026-05-30):
 
 ```markdown
 ## [2.0.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.0.0)

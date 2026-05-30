@@ -1499,7 +1499,7 @@ struct Tweet: Codable, Identifiable {
 }
 ```
 
-### 8.5 — Update Podfile
+### ✅ 8.5 — Update Podfile
 
 Update `Example/Podfile`:
 ```ruby

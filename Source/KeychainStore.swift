@@ -43,7 +43,7 @@ enum KeychainStore {
     }
 
     static func write(_ credential: CDOAuth1Credential, service: String) throws {
-        guard let data = try? JSONEncoder().encode(credential) else { return }
+        let data = try JSONEncoder().encode(credential)
         var query = baseQuery(service: service)
 
         if read(service: service) != nil {

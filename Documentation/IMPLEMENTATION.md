@@ -301,7 +301,7 @@ Note: If Apple's guidance evolves to require explicit declaration of keychain ac
 
 Travis CI is no longer actively maintained for open source. Delete `.travis.yml`. GitHub Actions replaces it entirely (Section 5).
 
-### 2.5 — Remove committed `Pods/` directory
+### ✅ 2.5 — Remove committed `Pods/` directory
 
 The `Example/Pods/` directory is currently committed to git. Remove it:
 ```bash

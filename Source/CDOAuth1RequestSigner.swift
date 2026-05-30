@@ -129,7 +129,7 @@ public struct CDOAuth1RequestSigner {
     private func authorizationHeader(from params: [String: String]) -> String {
         let components = params
             .sorted { $0.key.lowercased() < $1.key.lowercased() }
-            .map { "\($0.key)=\"\($0.value)\"" }
+            .map { "\($0.key)=\"\($0.value.oauthPercentEncoded())\"" }
             .joined(separator: ", ")
         return "OAuth \(components)"
     }

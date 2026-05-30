@@ -718,7 +718,7 @@ CDOAuth1Kit/
 
 Delete the old `CDOAuth1Kit/Source/Core/` hierarchy (all `.h` and `.m` files) after the Swift files are in place.
 
-### 6.2 — `CDOAuth1Kit.swift`
+### ✅ 6.2 — `CDOAuth1Kit.swift`
 
 ```swift
 // CDOAuth1Kit.swift

@@ -1573,7 +1573,7 @@ Remove badges for:
 - Travis CI (deleted)
 - Carthage (no longer supported; community has abandoned it)
 
-### 9.2 — CONTRIBUTING.md
+### ✅ 9.2 — CONTRIBUTING.md
 
 Create `CONTRIBUTING.md` at the repo root. Use the CDMarkdownKit `CONTRIBUTING.md` as a template, substituting all `CDMarkdownKit` references with `CDOAuth1Kit` and updating the Stack Overflow tag to `cdoauth1kit`.
 

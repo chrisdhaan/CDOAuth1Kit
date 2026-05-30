@@ -84,6 +84,9 @@ public struct CDOAuth1RequestSigner {
         if let token = (accessToken ?? requestToken)?.token {
             authParams["oauth_token"] = token
         }
+        for (key, value) in parameters where key.hasPrefix("oauth_") {
+            authParams[key] = value
+        }
 
         let allParams = authParams.merging(parameters) { $1 }
         authParams["oauth_signature"] = try signature(

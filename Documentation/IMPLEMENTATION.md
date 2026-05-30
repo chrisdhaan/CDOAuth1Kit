@@ -361,7 +361,7 @@ Update `.swiftlint.yml` `included` paths to match (Source directory). SwiftForma
 
 ## 3. Swift Package Manager
 
-### 3.1 — Create `Package.swift`
+### ✅ 3.1 — Create `Package.swift`
 
 CDOAuth1Kit currently has no SPM support. The rewritten library (Section 6) targets iOS 13.0+ and macOS 10.15+, which is the minimum required for `CryptoKit` (used for HMAC-SHA1 signing).
 

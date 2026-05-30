@@ -812,7 +812,7 @@ public enum CDOAuth1Helper {
 }
 ```
 
-### 6.6 — `KeychainStore.swift` (new internal file)
+### ✅ 6.6 — `KeychainStore.swift` (new internal file)
 
 Extract keychain access from `CDOAuth1RequestSerializer` into its own internal type. Use `JSONEncoder`/`JSONDecoder` (via `Codable`) instead of `NSKeyedArchiver`/`NSKeyedUnarchiver`.
 

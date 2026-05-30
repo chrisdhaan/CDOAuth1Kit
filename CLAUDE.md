@@ -1,0 +1,293 @@
+# CDOAuth1Kit — Claude Code Context
+
+## Project Overview
+
+CDOAuth1Kit is a pure-Swift, zero-dependency OAuth 1.0a authentication library for iOS and macOS. It handles the complete three-legged OAuth handshake, request signing with HMAC-SHA1 (via Apple's CryptoKit), and secure keychain-backed token persistence. The library uses modern async/await APIs and targets iOS 13.0+ and macOS 10.15+.
+
+**Key characteristics:**
+- No external dependencies (URLSession, Foundation, Security, CryptoKit only)
+- Full OAuth 1.0a RFC 5849 compliance (HMAC-SHA1 signatures, percent encoding, nonce/timestamp)
+- Async/await support for all network operations
+- Keychain integration via JSONEncoder/JSONDecoder
+- Comprehensive test suite using Swift Testing framework
+- DocC documentation catalog
+
+## Repository Layout
+
+```
+CDOAuth1Kit/
+├── Source/                           # Core library (Swift)
+│   ├── CDOAuth1Kit.swift             # Module version constants
+│   ├── CDOAuth1Credential.swift      # OAuth token storage model
+│   ├── CDOAuth1Error.swift           # Error enum
+│   ├── CDOAuth1Helper.swift          # URL callback detection
+│   ├── CDOAuth1RequestSigner.swift   # HMAC-SHA1 request signing
+│   ├── CDOAuth1SessionManager.swift  # Main public API
+│   ├── KeychainStore.swift           # Internal keychain helper
+│   ├── CDOAuth1Kit.docc/             # DocC documentation catalog
+│   ├── Extensions/
+│   │   ├── String+CDOAuth1Kit.swift  # RFC 5849 percent encoding
+│   │   └── Dictionary+CDOAuth1Kit.swift  # Query string handling
+│   └── PrivacyInfo.xcprivacy         # App Store privacy manifest
+├── Tests/CDOAuth1KitTests/           # Test suite (Swift Testing)
+│   ├── CDOAuth1CredentialTests.swift
+│   ├── CDOAuth1HelperTests.swift
+│   ├── CDOAuth1RequestSignerTests.swift  # includes RFC 5849 test vector
+│   ├── CDOAuth1SessionManagerTests.swift
+│   └── Extensions/
+│       ├── StringTests.swift
+│       └── DictionaryTests.swift
+├── Example/                          # Example iOS app
+│   ├── Source/
+│   │   ├── AppDelegate.swift
+│   │   ├── SceneDelegate.swift
+│   │   ├── Networking/TwitterClient.swift
+│   │   ├── Model/Tweet.swift
+│   │   └── ViewControllers/TweetsViewController.swift
+│   └── Resources/
+│       ├── Assets.xcassets/
+│       ├── Base.lproj/
+│       └── Info.plist
+├── Documentation/
+│   ├── IMPLEMENTATION.md              # Full modernization plan
+│   ├── ARCHITECTURE.md                # Architecture overview
+│   └── Usage.md                       # Usage examples
+├── Package.swift                      # SPM manifest (swift-tools-version 6.0)
+├── CDOAuth1Kit.podspec                # CocoaPods manifest
+├── .swiftlint.yml                     # SwiftLint config (line length 149/200)
+├── .swiftformat                       # SwiftFormat config
+├── .github/workflows/ci.yml           # GitHub Actions CI
+├── README.md
+├── CONTRIBUTING.md
+├── CLAUDE.md                          # This file
+├── CHANGELOG.md                       # Release notes
+└── LICENSE                            # MIT license
+```
+
+## Platform & Swift Support
+
+| Platform | Minimum OS | Swift | SPM | CocoaPods |
+|----------|-----------|-------|-----|-----------|
+| iOS      | 13.0+     | 5.3+  | ✅  | ✅        |
+| macOS    | 10.15+    | 5.3+  | ✅  | ✅        |
+
+## Architecture Summary
+
+The library follows a layered architecture:
+
+```
+User Code
+  │
+  ▼
+CDOAuth1SessionManager (public API)
+  │
+  ├─ CDOAuth1RequestSigner (request signing)
+  │  └─ CryptoKit.HMAC<Insecure.SHA1>
+  │
+  ├─ CDOAuth1Credential (token model, Codable)
+  │
+  ├─ KeychainStore (internal, JSONEncoder/Decoder)
+  │
+  └─ URLSession (network I/O)
+       │
+       ▼
+    OAuth Provider (Twitter, etc.)
+
+Helper APIs:
+  - CDOAuth1Helper: URL callback detection
+  - String+CDOAuth1Kit: RFC 5849 percent encoding
+  - Dictionary+CDOAuth1Kit: Query string parsing
+```
+
+## Building
+
+### Swift Package Manager
+
+```bash
+swift build
+swift build -c release
+```
+
+### Xcode (SPM)
+
+File → Add Packages → Enter `https://github.com/chrisdhaan/CDOAuth1Kit.git`
+
+### CocoaPods
+
+```bash
+cd Example
+pod install
+open CDOAuth1Kit.xcworkspace
+```
+
+## Running Tests
+
+```bash
+# All tests
+swift test
+
+# Specific suite
+swift test --filter CDOAuth1CredentialTests
+
+# Verbose output
+swift test -v
+```
+
+Test coverage includes:
+- **CDOAuth1Credential**: initialization, query string parsing, expiration, Codable round-trip
+- **CDOAuth1Helper**: OAuth callback URL detection with scheme/host matching
+- **CDOAuth1RequestSigner**: RFC 5849 test vector, OAuth parameters, Authorization headers
+- **String extensions**: Percent encoding/decoding, unreserved character handling
+- **Dictionary extensions**: Query string parsing, alphabetical sorting, round-trip serialization
+
+## Generating Documentation
+
+CDOAuth1Kit uses **DocC** (not Jazzy) for documentation.
+
+### Local build
+
+```bash
+swift package --disable-sandbox generate-documentation \
+  --target CDOAuth1Kit \
+  --output-path docs \
+  --transform-for-static-hosting \
+  --hosting-base-path CDOAuth1Kit
+```
+
+The docs are hosted at: `https://chrisdhaan.github.io/CDOAuth1Kit/documentation/cdoauth1kit/`
+
+### Doc requirements
+
+All public symbols must have `///` comments:
+- `CDOAuth1SessionManager`
+- `CDOAuth1RequestSigner`
+- `CDOAuth1Credential`
+- `CDOAuth1Error`
+- `CDOAuth1Helper`
+
+The CI job fails on any public symbol without documentation.
+
+## Distribution
+
+### Swift Package Manager
+
+Published to: `https://github.com/chrisdhaan/CDOAuth1Kit`
+
+### CocoaPods
+
+Published to: `https://cocoapods.org/pods/CDOAuth1Kit`
+
+Update via:
+```bash
+pod trunk push CDOAuth1Kit.podspec
+```
+
+## CI/CD Pipeline (GitHub Actions)
+
+Located in `.github/workflows/ci.yml`. Runs on:
+- Source file changes
+- Test changes
+- Package.swift changes
+- Workflow changes
+
+### Jobs
+
+1. **iOS Tests** (5 Xcode versions: 26.4.1, 26.3, 26.2, 26.1.1)
+   - Runs on `macos-26` runners
+   - Builds and tests for iOS 13+
+
+2. **macOS Tests** (4 versions: 14, 13, 12, 11)
+   - Runs on `macos-15` runners
+   - Builds and tests for macOS 10.15+
+
+3. **CocoaPods** — Validates `CDOAuth1Kit.podspec`
+
+4. **SPM** — Runs `swift build` and `swift test`
+
+5. **SwiftLint** — Code style validation (line length warnings at 149, errors at 200)
+
+6. **SwiftFormat** — Code formatting check
+
+7. **DocC** — Builds documentation; fails on undocumented public symbols
+
+8. **CodeQL** — Security analysis
+
+## Code Style
+
+- **SwiftLint**: Line length warning 149, error 200
+- **SwiftFormat**: 4-space indentation, Swift 5.x formatting rules
+- Run before committing:
+  ```bash
+  swiftformat .
+  swiftlint
+  ```
+
+## Key Design Decisions
+
+1. **No external dependencies** — Uses only Foundation, Security, CryptoKit (all Apple frameworks)
+2. **Async/await** — Modern concurrency model; no completion handlers
+3. **CryptoKit HMAC-SHA1** — Replaces CommonCrypto (deprecated)
+4. **Keychain with Codable** — Secure storage via JSONEncoder/JSONDecoder
+5. **DocC not Jazzy** — Modern Apple documentation tooling
+6. **Swift Testing** — Modern test framework (@Suite, @Test, #expect)
+7. **RFC 5849 compliance** — Full OAuth 1.0a spec implementation (percent encoding, nonce, timestamp)
+
+## Known Issues / Tech Debt
+
+1. **Example app incomplete** — Sections 8.2–8.5 created the structure and basic delegates; full TweetsViewController implementation deferred
+2. **Xcode project configuration** — The legacy Xcode project files (Example/CDOAuth1Kit.xcodeproj) have not been updated to use the new Source/ structure; this can be done in a follow-up PR
+3. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up (see CDMarkdownKit 3.1.0 pattern)
+4. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
+
+## Common Tasks
+
+### Add a new public type
+
+1. Create file in `Source/` directory
+2. Add `///` doc comments on all public members
+3. Import CDOAuth1Kit in tests
+4. Add tests to `Tests/CDOAuth1KitTests/`
+5. Run `swift test` and `swiftlint`
+6. DocC build will fail if you miss doc comments
+
+### Add a test
+
+1. Create file in `Tests/CDOAuth1KitTests/` or subdirectory
+2. Use `@Suite` and `@Test` macros (Swift Testing)
+3. Use `#expect()` for assertions
+4. Run `swift test --filter YourTestName`
+
+### Update documentation
+
+1. Edit files in `Documentation/` or doc comments in source
+2. Run local DocC build to preview
+3. Commit docs/ folder if building static site
+
+### Release a new version
+
+1. Update version in `Source/CDOAuth1Kit.swift`
+2. Update `CHANGELOG.md` with actual release date
+3. Update `CDOAuth1Kit.podspec` version
+4. Tag commit: `git tag 2.0.0`
+5. Push: `git push origin master --tags`
+6. CocoaPods: `pod trunk push CDOAuth1Kit.podspec`
+7. GitHub Releases: Create release from tag with CHANGELOG entry
+
+## Testing checklist before release
+
+- [ ] `swift test` passes with all 21 tests
+- [ ] `swiftlint` passes with zero violations
+- [ ] `swiftformat .` produces no changes
+- [ ] `swift build -c release` succeeds
+- [ ] DocC build succeeds with zero warnings
+- [ ] Example app builds and runs
+- [ ] README badges and links are correct
+- [ ] CHANGELOG.md has actual release date
+- [ ] podspec validates: `pod spec lint CDOAuth1Kit.podspec`
+
+## Further Reading
+
+- [RFC 5849 — OAuth 1.0 Protocol](https://tools.ietf.org/html/rfc5849)
+- [Documentation/ARCHITECTURE.md](Documentation/ARCHITECTURE.md) — Detailed architecture
+- [Documentation/Usage.md](Documentation/Usage.md) — Code examples
+- [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines

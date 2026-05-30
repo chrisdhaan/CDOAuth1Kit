@@ -1577,7 +1577,7 @@ Remove badges for:
 
 Create `CONTRIBUTING.md` at the repo root. Use the CDMarkdownKit `CONTRIBUTING.md` as a template, substituting all `CDMarkdownKit` references with `CDOAuth1Kit` and updating the Stack Overflow tag to `cdoauth1kit`.
 
-### 9.3 — CLAUDE.md
+### ✅ 9.3 — CLAUDE.md
 
 Create `CLAUDE.md` at the repo root. This file provides context to Claude Code for future work on the project. Include:
 

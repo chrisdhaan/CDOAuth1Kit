@@ -229,7 +229,7 @@ gem "cocoapods"
 
 Run `bundle lock` (or `bundle install`) to generate `Gemfile.lock`. Commit both files.
 
-### 1.7 — Add `.ruby-version`
+### ✅ 1.7 — Add `.ruby-version`
 
 Create `.ruby-version` at the repo root. Match the version used by the system Homebrew Ruby or the same version used in CDMarkdownKit:
 ```

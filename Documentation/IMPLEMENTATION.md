@@ -478,7 +478,7 @@ Key changes from v1.0.0:
 
 ---
 
-## 5. CI/CD: Replace Travis CI with GitHub Actions
+## ✅ 5. CI/CD: Replace Travis CI with GitHub Actions
 
 Delete `.travis.yml`. Create `.github/workflows/ci.yml`:
 

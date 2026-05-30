@@ -728,7 +728,7 @@ public let CDOAuth1KitVersionNumber = 2.0
 public let CDOAuth1KitVersionString = "2.0.0"
 ```
 
-### 6.3 — `CDOAuth1Credential.swift`
+### ✅ 6.3 — `CDOAuth1Credential.swift`
 
 Replace `CDOAuth1Credential.h/m` with a Swift struct. Use `Codable` instead of `NSCoding` for modern serialization. Use `Sendable` for concurrency safety.
 

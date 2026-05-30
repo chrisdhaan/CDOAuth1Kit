@@ -1481,7 +1481,7 @@ final class TwitterClient {
 }
 ```
 
-### 8.4 — Tweet Model
+### ✅ 8.4 — Tweet Model
 
 Replace `CDTweet` with a Swift `Codable` struct:
 

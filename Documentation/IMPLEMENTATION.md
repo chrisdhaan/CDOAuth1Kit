@@ -241,7 +241,7 @@ Create `.ruby-version` at the repo root. Match the version used by the system Ho
 
 ## 2. Infrastructure & Tooling
 
-### 2.1 — Add `.swiftlint.yml`
+### ✅ 2.1 — Add `.swiftlint.yml`
 
 Create `.swiftlint.yml`:
 ```yaml

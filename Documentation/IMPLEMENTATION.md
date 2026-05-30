@@ -297,7 +297,7 @@ Create `Source/PrivacyInfo.xcprivacy`. CDOAuth1Kit accesses the keychain but doe
 
 Note: If Apple's guidance evolves to require explicit declaration of keychain access in the privacy manifest, update `NSPrivacyAccessedAPITypes` accordingly. As of 2026, keychain usage does not require a `NSPrivacyAccessedAPITypes` entry.
 
-### 2.4 — Delete `.travis.yml`
+### ✅ 2.4 — Delete `.travis.yml`
 
 Travis CI is no longer actively maintained for open source. Delete `.travis.yml`. GitHub Actions replaces it entirely (Section 5).
 

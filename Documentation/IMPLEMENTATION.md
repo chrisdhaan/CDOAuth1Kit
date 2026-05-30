@@ -1639,7 +1639,7 @@ Create `Documentation/Usage.md` with full usage examples:
 - Deauthorizing (`manager.deauthorize()`)
 - Error handling
 
-### 9.6 — `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
+### ✅ 9.6 — `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
 
 Create a migration guide for users upgrading from v1.0.0 (Objective-C / AFNetworking) to v2.0.0 (Swift / no dependencies). Cover:
 

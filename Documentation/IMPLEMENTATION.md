@@ -1162,7 +1162,7 @@ extension String {
 
 The `cd_` prefix methods in the original (`cd_URLEncode`, `cd_URLDecode`, `cd_URLEncodeSlashesAndQuestionMarks`) are replaced by `oauthPercentEncoded()` and `oauthPercentDecoded()`. They are internal implementation details — not public API.
 
-### 6.10 — `Dictionary+CDOAuth1Kit.swift`
+### ✅ 6.10 — `Dictionary+CDOAuth1Kit.swift`
 
 Replace `NSDictionary+CDOAuth1Kit.h/m`:
 

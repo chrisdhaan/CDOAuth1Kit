@@ -1651,7 +1651,7 @@ Create a migration guide for users upgrading from v1.0.0 (Objective-C / AFNetwor
 6. **Token storage** — keychain data is not migrated automatically; users must re-authenticate once after upgrading
 7. **Removed APIs** — `CDOAuth1RequestSerializer` (replaced by `CDOAuth1RequestSigner`); `saveAccessToken:` now `throws` instead of returning `BOOL`
 
-### 9.7 — DocC Catalog (`Source/CDOAuth1Kit.docc/`)
+### ✅ 9.7 — DocC Catalog (`Source/CDOAuth1Kit.docc/`)
 
 *(Added to match CDMarkdownKit 3.1.0 — CDMarkdownKit migrated from Jazzy to DocC in 3.1.0. CDOAuth1Kit skips Jazzy and goes straight to DocC for v2.0.0.)*
 

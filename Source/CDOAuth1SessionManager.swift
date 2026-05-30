@@ -65,8 +65,7 @@ public final class CDOAuth1SessionManager {
                                   scope: String? = nil) async throws -> CDOAuth1Credential {
         requestSigner.requestToken = nil
 
-        var params = requestSigner.oauthParameters()
-        params["oauth_callback"] = callbackURL.absoluteString
+        var params: [String: String] = ["oauth_callback": callbackURL.absoluteString]
         if let scope, requestSigner.accessToken == nil {
             params["scope"] = scope
         }
@@ -97,9 +96,10 @@ public final class CDOAuth1SessionManager {
 
         requestSigner.requestToken = requestToken
 
-        var params = requestSigner.oauthParameters()
-        params["oauth_token"]    = token
-        params["oauth_verifier"] = verifier
+        let params: [String: String] = [
+            "oauth_token": token,
+            "oauth_verifier": verifier,
+        ]
 
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
         var request = URLRequest(url: url)
@@ -126,8 +126,7 @@ public final class CDOAuth1SessionManager {
             throw CDOAuth1Error.invalidAccessToken
         }
 
-        var params = requestSigner.oauthParameters()
-        params["oauth_token"] = token
+        var params: [String: String] = ["oauth_token": token]
         if let extra = parameters {
             params.merge(extra) { $1 }
         }

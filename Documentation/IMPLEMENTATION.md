@@ -170,7 +170,7 @@ Create `.github/FUNDING.yml`:
 github: chrisdhaan
 ```
 
-### 1.5 — Update `.gitignore`
+### ✅ 1.5 — Update `.gitignore`
 
 Replace the current (absent) or any existing `.gitignore` with:
 ```

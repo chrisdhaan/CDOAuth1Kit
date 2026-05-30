@@ -216,7 +216,7 @@ docs/undocumented.json
 
 Note: Pods/ should be gitignored once the Example app is converted to SPM or uses a modern CocoaPods setup that doesn't commit Pods. The existing committed Pods directory should be removed from tracking via `git rm -r --cached Example/Pods/`.
 
-### 1.6 — Add `Gemfile` and `Gemfile.lock`
+### ✅ 1.6 — Add `Gemfile` and `Gemfile.lock`
 
 Create `Gemfile` at the repo root:
 ```ruby

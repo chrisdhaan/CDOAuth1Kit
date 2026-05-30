@@ -1293,7 +1293,7 @@ import Testing
 }
 ```
 
-### 7.4 — `CDOAuth1RequestSignerTests.swift`
+### ✅ 7.4 — `CDOAuth1RequestSignerTests.swift`
 
 The OAuth signature algorithm has a well-known test vector from RFC 5849 Appendix A. Use it to verify the HMAC-SHA1 implementation:
 

@@ -1207,7 +1207,7 @@ Tests/
         └── StringTests.swift
 ```
 
-### 7.2 — `CDOAuth1CredentialTests.swift`
+### ✅ 7.2 — `CDOAuth1CredentialTests.swift`
 
 ```swift
 import Testing

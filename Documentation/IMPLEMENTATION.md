@@ -1193,7 +1193,7 @@ extension [String: String] {
 
 Create `Tests/CDOAuth1KitTests/` directory. Tests use the Swift Testing framework (matching CDMarkdownKit).
 
-### 7.1 — Directory Structure
+### ✅ 7.1 — Directory Structure
 
 ```
 Tests/

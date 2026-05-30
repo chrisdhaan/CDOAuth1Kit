@@ -21,7 +21,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Source/*.swift'
   s.resource_bundles = { 'CDOAuth1Kit' => ['Source/PrivacyInfo.xcprivacy'] }
 
-  s.framework = 'Foundation'
-  s.framework = 'Security'
-  s.framework = 'CryptoKit'
+  s.frameworks = 'Foundation', 'Security', 'CryptoKit'
 end

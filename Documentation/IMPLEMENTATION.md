@@ -1411,7 +1411,7 @@ import Testing
 
 The example app demonstrates the full OAuth 1.0 flow using Twitter's API (or a mock service once Twitter's API is no longer public). The current app is Objective-C. Convert it to Swift and reorganize its file structure to match CDMarkdownKit's example layout.
 
-### 8.1 — New File Structure
+### ✅ 8.1 — New File Structure
 
 ```
 Example/

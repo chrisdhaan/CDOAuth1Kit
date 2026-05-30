@@ -121,7 +121,7 @@ public struct CDOAuth1RequestSigner {
         return try hmacSHA1(message: baseString, key: signingKey)
     }
 
-    private func hmacSHA1(message: String, key: String) throws -> String {
+    func hmacSHA1(message: String, key: String) throws -> String {
         let keyData = Data(key.utf8)
         let messageData = Data(message.utf8)
         let symmetricKey = SymmetricKey(data: keyData)

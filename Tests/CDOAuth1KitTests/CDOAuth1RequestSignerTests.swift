@@ -31,28 +31,20 @@ import Testing
 
 @Suite struct CDOAuth1RequestSignerTests {
 
-    // Test vector from RFC 5849 §A.5
-    // https://tools.ietf.org/html/rfc5849#appendix-A.5
+    // RFC 5849 Appendix A.1 — initiate request (request token phase)
+    // Consumer credentials from Appendix A: key=dpf43f3p2l4k3l03, secret=kd94hf93k423kf44
+    // Signing key: kd94hf93k423kf44& (empty token secret for request token phase)
+    // https://tools.ietf.org/html/rfc5849#appendix-A
     @Test func rfc5849SignatureTestVector() throws {
-        // Given fixed parameters (nonce, timestamp, token)
-        // the signature base string should produce a known HMAC-SHA1 value.
-        // This test verifies the signing pipeline end-to-end.
-        let consumerSecret = "djr9rjt0jd78jf88"
-        let _ = "jjd999tj88uiths3"  // tokenSecret (RFC 5849 test vector)
-        let _ = "\(consumerSecret.oauthPercentEncoded())&\("jjd999tj88uiths3".oauthPercentEncoded())"  // signingKey
-
-        let _ = "POST&https%3A%2F%2Fphotos.example.net%2Finitiate&oauth_callback%3Doob%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3DwnnvGrqVeYPSIXXI%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D137131200%26oauth_version%3D1.0"  // baseString
-
-        // Manually call the internal hmacSHA1 via the signer
-        // (package-private test; expose via @testable import)
-        let signer = CDOAuth1RequestSigner(service: "example.net",
-                                           consumerKey: "dpf43f3p2l4k3l03",
-                                           consumerSecret: consumerSecret)
-        // Test that the public `signed(_:parameters:)` does not throw on a valid request
-        let url = URL(string: "https://photos.example.net/initiate")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        #expect(throws: Never.self) { try signer.signed(request) }
+        let signer = CDOAuth1RequestSigner(
+            service: "photos.example.net",
+            consumerKey: "dpf43f3p2l4k3l03",
+            consumerSecret: "kd94hf93k423kf44"
+        )
+        let baseString = "POST&https%3A%2F%2Fphotos.example.net%2Finitiate&oauth_callback%3Doob%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3DwnnvGrqVeYPSIXXI%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D137131200%26oauth_version%3D1.0"
+        let signingKey = "kd94hf93k423kf44&"  // consumerSecret& (empty token secret)
+        let signature = try signer.hmacSHA1(message: baseString, key: signingKey)
+        #expect(signature == "hBCGVQEI0x4L1D8ZjGU0hIhig2k=")
     }
 
     @Test func oauthParametersContainRequiredKeys() {

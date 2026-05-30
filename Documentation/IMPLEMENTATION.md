@@ -1442,7 +1442,7 @@ Delete:
 
 Add a `SceneDelegate.swift` to support iOS 13+ scene-based lifecycle. Remove the UIWebView usage (`UIWebView+AFNetworking` from AFNetworking) — it is deprecated since iOS 12.
 
-### 8.3 — TwitterClient.swift
+### ✅ 8.3 — TwitterClient.swift
 
 Replace the Objective-C `CDTwitterClient` with a Swift class using `CDOAuth1SessionManager` with async/await:
 

@@ -84,7 +84,7 @@ public struct CDOAuth1RequestSigner {
             authParams["oauth_token"] = token
         }
 
-        var allParams = authParams.merging(parameters) { $1 }
+        let allParams = authParams.merging(parameters) { $1 }
         authParams["oauth_signature"] = try signature(
             method: method,
             urlString: urlString,

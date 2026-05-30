@@ -25,6 +25,8 @@
 //  SOFTWARE.
 //
 
+import Foundation
+
 public enum CDOAuth1Helper {
     public static func isAuthorizationCallbackURL(
         _ url: URL,

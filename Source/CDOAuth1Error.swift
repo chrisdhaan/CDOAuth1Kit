@@ -25,6 +25,9 @@
 //  SOFTWARE.
 //
 
+import Foundation
+import Security
+
 public enum CDOAuth1Error: Error, Sendable {
     case invalidRequestToken
     case invalidAccessToken

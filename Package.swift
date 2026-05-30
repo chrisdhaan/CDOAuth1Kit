@@ -52,7 +52,6 @@ let package = Package(
         .target(
             name: "CDOAuth1Kit",
             path: "Source",
-            exclude: ["Info.plist"],
             resources: [.process("PrivacyInfo.xcprivacy")],
             swiftSettings: [
                 .enableUpcomingFeature("ExistentialAny")
@@ -65,7 +64,8 @@ let package = Package(
         ),
         .testTarget(
             name: "CDOAuth1KitTests",
-            dependencies: ["CDOAuth1Kit"]
+            dependencies: ["CDOAuth1Kit"],
+            path: "Tests/CDOAuth1KitTests"
         )
     ],
     swiftLanguageModes: [.v5]

@@ -1626,7 +1626,7 @@ KeychainStore
 
 **Keychain storage:** Credentials are stored under `kSecClassGenericPassword` keyed by `kSecAttrService` = the manager's `baseURL.host`. One credential per service.
 
-### 9.5 — `Documentation/Usage.md`
+### ✅ 9.5 — `Documentation/Usage.md`
 
 Create `Documentation/Usage.md` with full usage examples:
 - Initialization

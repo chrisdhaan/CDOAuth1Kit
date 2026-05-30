@@ -310,7 +310,7 @@ git rm -r --cached Example/Pods/
 
 Add `Pods/` to `.gitignore` (done in 1.5). Update `Example/Podfile` to use the new library version and structure when applicable.
 
-### 2.6 — Add `.swiftformat`
+### ✅ 2.6 — Add `.swiftformat`
 
 *(Added to match CDMarkdownKit 3.1.0 — CDMarkdownKit introduced SwiftFormat alongside SwiftLint for consistent code formatting.)*
 

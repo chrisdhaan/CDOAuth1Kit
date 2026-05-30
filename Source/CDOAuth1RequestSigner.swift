@@ -72,6 +72,7 @@ public struct CDOAuth1RequestSigner {
 
     // MARK: - Request Signing
 
+    /// Produces a signed copy of the given URLRequest, adding an OAuth Authorization header.
     public func signed(_ request: URLRequest,
                       parameters: [String: String] = [:]) throws -> URLRequest {
         guard let method = request.httpMethod,

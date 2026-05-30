@@ -862,7 +862,7 @@ enum KeychainStore {
 
 **Why this matters:** The original code used `NSKeyedArchiver.archivedDataWithRootObject:` (deprecated in iOS 12) and `NSKeyedUnarchiver.initForReadingWithData:` (deprecated in iOS 12), with a class name mapping hack (`setClass:forClassName:`) to handle a legacy rename from `CDOAuthToken` to `CDOAuth1Credential`. The new implementation has no legacy baggage.
 
-### 6.7 — `CDOAuth1RequestSigner.swift`
+### ✅ 6.7 — `CDOAuth1RequestSigner.swift`
 
 This is the most complex file. It replaces `CDOAuth1RequestSerializer.h/m`, which was an `AFHTTPRequestSerializer` subclass. The new type is a pure Swift struct with no superclass dependency.
 

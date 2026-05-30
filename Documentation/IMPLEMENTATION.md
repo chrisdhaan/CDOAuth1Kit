@@ -264,7 +264,7 @@ line_length:
 type_body_length: 200
 ```
 
-### 2.2 — Documentation Toolchain: DocC (not Jazzy)
+### ✅ 2.2 — Documentation Toolchain: DocC (not Jazzy)
 
 **CDMarkdownKit 3.1.0 context:** CDMarkdownKit 3.0.0 originally planned Jazzy and shipped `.jazzy.yaml`, then 3.1.0 migrated entirely to DocC — removing `.jazzy.yaml`, dropping the `jazzy` gem, and adding `swift-docc-plugin`. CDOAuth1Kit v2.0.0 skips Jazzy entirely and goes straight to DocC.
 

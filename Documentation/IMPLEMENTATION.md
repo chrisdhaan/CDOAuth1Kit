@@ -142,7 +142,7 @@ labels: enhancement
 **Have you considered any alternatives?**
 ```
 
-### 1.3 — Add `PULL_REQUEST_TEMPLATE.md`
+### ✅ 1.3 — Add `PULL_REQUEST_TEMPLATE.md`
 
 Create `.github/PULL_REQUEST_TEMPLATE.md`:
 ```markdown

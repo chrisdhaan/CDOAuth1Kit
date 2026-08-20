@@ -82,10 +82,12 @@ final class CDOAuth1KitManager: NSObject {
 
     /// Exchanges the callback URL's query string for an access token.
     func completeAuthorization(callbackURL url: URL) async throws {
-        guard let query = url.query,
-              let requestToken = CDOAuth1Credential(queryString: query) else {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let verifier = components.queryItems?.first(where: { $0.name == "oauth_verifier" })?.value,
+              var requestToken = sessionManager.requestSigner.requestToken else {
             throw CDOAuth1Error.invalidResponse
         }
+        requestToken.verifier = verifier
 
         _ = try await sessionManager.fetchAccessToken(
             path: "access_token",

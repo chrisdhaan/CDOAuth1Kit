@@ -46,9 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard scene is UIWindowScene else { return }
 
         // Window is configured by the storyboard's UISceneStoryboardFile entry point.
-        for urlContext in connectionOptions.urlContexts {
-            self.scene(scene, openURLContexts: [urlContext])
-        }
+        // Cold-launch via the OAuth callback URL is not supported by this demo —
+        // the app must already be running (in the background) when Discogs redirects back.
     }
 
     func scene(

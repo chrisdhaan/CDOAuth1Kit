@@ -116,14 +116,14 @@ if CDOAuth1Helper.isAuthorizationCallbackURL(
     scheme: "yourappname",
     host: "oauthCallback"
 ) {
-    // Extract oauth_token and oauth_verifier from the query string
-    let params = [String: String](queryString: url.query ?? "")
-    let verifier = params["oauth_verifier"]
-    
-    // Create a verified request token by adding the verifier
+    // Extract oauth_verifier from the query string
+    let verifier = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+        .queryItems?.first(where: { $0.name == "oauth_verifier" })?.value
+
+    // Attach the verifier to the request token from step 1
     var verifiedRequestToken = requestToken  // from step 1
-    verifiedRequestToken.userInfo = ["oauth_verifier": verifier]
-    
+    verifiedRequestToken.verifier = verifier
+
     // Proceed to fetch the access token (see next section)
 }
 ```

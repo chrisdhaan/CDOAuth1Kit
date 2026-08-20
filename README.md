@@ -40,6 +40,16 @@ Or in Xcode: File → Add Packages → Enter `https://github.com/chrisdhaan/CDOA
 
 See [Documentation/Usage.md](Documentation/Usage.md) for comprehensive usage examples.
 
+## Example App
+
+The `Example/` app demonstrates the full OAuth 1.0a handshake against the [Discogs API](https://www.discogs.com/developers). It reads its Discogs `consumerKey`/`consumerSecret` from `Example/Secrets.xcconfig` (gitignored). Before building it:
+
+```bash
+cp "Example/Secrets.xcconfig.example" "Example/Secrets.xcconfig"
+```
+
+Then edit `Secrets.xcconfig` with your own credentials from the [Discogs Developer settings](https://www.discogs.com/settings/developers). Open `CDOAuth1Kit.xcworkspace` and run the `iOS Example` scheme.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).

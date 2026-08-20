@@ -1409,6 +1409,8 @@ import Testing
 
 ## 8. Example App Update
 
+> **Superseded (2026-08-20):** The Example app was ultimately rewritten with a flat `Source/` layout (no `Networking/`/`Model/`/`ViewControllers/` subfolders) targeting the Discogs API instead of Twitter, to match the pattern established by CDMarkdownKit/CDYelpFusionKit/CDUntappdKit's Example apps. See `docs/superpowers/specs/2026-08-20-example-app-modernization-design.md` and the actual `Example/` directory for what was actually built. The plan below is kept for historical context only.
+
 The example app demonstrates the full OAuth 1.0 flow using Twitter's API (or a mock service once Twitter's API is no longer public). The current app is Objective-C. Convert it to Swift and reorganize its file structure to match CDMarkdownKit's example layout.
 
 ### ✅ 8.1 — New File Structure

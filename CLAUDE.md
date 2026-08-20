@@ -17,7 +17,7 @@ CDOAuth1Kit is a pure-Swift, zero-dependency OAuth 1.0a authentication library f
 ```
 CDOAuth1Kit/
 ├── CDOAuth1Kit.xcodeproj/             # Root native Xcode project (iOS + macOS targets/schemes)
-├── CDOAuth1Kit.xcworkspace/           # Ties CDOAuth1Kit.xcodeproj + Example/CDOAuth1Kit.xcodeproj together
+├── CDOAuth1Kit.xcworkspace/           # Ties CDOAuth1Kit.xcodeproj + Example/iOS Example.xcodeproj together
 ├── Source/                           # Core library (Swift)
 │   ├── CDOAuth1Kit.swift             # Module version constants
 │   ├── CDOAuth1Credential.swift      # OAuth token storage model
@@ -40,13 +40,16 @@ CDOAuth1Kit/
 │   └── Extensions/
 │       ├── StringTests.swift
 │       └── DictionaryTests.swift
-├── Example/                          # Example iOS app
+├── Example/                          # Example iOS app (Discogs OAuth 1.0a demo)
+│   ├── iOS Example.xcodeproj/        # Cross-references root CDOAuth1Kit.xcodeproj for the framework
+│   ├── Secrets.xcconfig.example      # Copy to Secrets.xcconfig (gitignored) with your Discogs API credentials
 │   ├── Source/
 │   │   ├── AppDelegate.swift
-│   │   ├── SceneDelegate.swift
-│   │   ├── Networking/TwitterClient.swift
-│   │   ├── Model/Tweet.swift
-│   │   └── ViewControllers/TweetsViewController.swift
+│   │   ├── SceneDelegate.swift       # Intercepts the cdoauth1kit:// OAuth callback URL
+│   │   ├── CDOAuth1KitManager.swift  # Wraps CDOAuth1SessionManager for the Discogs handshake
+│   │   ├── ViewController.swift      # Authorize / Fetch Identity / Deauthorize demo screen
+│   │   ├── CDOAuth1KitJSONResponseViewController.swift
+│   │   └── JSONPrettyPrinter.swift
 │   └── Resources/
 │       ├── Assets.xcassets/
 │       ├── Base.lproj/
@@ -219,10 +222,8 @@ Located in `.github/workflows/ci.yml`. Runs on:
 
 ## Known Issues / Tech Debt
 
-1. **Example app incomplete** — Sections 8.2–8.5 created the structure and basic delegates; full TweetsViewController implementation deferred
-2. **Xcode project configuration** — The legacy Xcode project files (Example/CDOAuth1Kit.xcodeproj) have not been updated to use the new Source/ structure; this can be done in a follow-up PR
-3. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up (see CDMarkdownKit 3.1.0 pattern)
-4. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
+1. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up (see CDMarkdownKit 3.1.0 pattern)
+2. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
 
 ## Common Tasks
 

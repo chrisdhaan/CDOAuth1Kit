@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  CDOAuth1Kit
+//  iOS Example
 //
 //  Created by Christopher de Haan on 5/30/26.
 //
@@ -28,6 +28,12 @@
 import UIKit
 import CDOAuth1Kit
 
+/// Posted when `scene(_:openURLContexts:)` receives the OAuth 1.0a callback URL.
+/// `ViewController` observes this to complete the access-token exchange.
+extension Notification.Name {
+    static let cdoauth1kitAuthorizationCallback = Notification.Name("CDOAuth1KitAuthorizationCallbackURL")
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -37,13 +43,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard scene is UIWindowScene else { return }
 
-        let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = UIViewController()
-        window.makeKeyAndVisible()
-        self.window = window
-
+        // Window is configured by the storyboard's UISceneStoryboardFile entry point.
         for urlContext in connectionOptions.urlContexts {
             self.scene(scene, openURLContexts: [urlContext])
         }
@@ -60,10 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 scheme: "cdoauth1kit",
                 host: "oauthCallback"
             ) {
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("CDOAuth1KitAuthorizationCallbackURL"),
-                    object: url
-                )
+                NotificationCenter.default.post(name: .cdoauth1kitAuthorizationCallback, object: url)
             }
         }
     }

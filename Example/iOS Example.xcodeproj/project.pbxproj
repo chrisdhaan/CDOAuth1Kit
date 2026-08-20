@@ -1,0 +1,445 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CD0AE1000000000000000015 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000002 /* AppDelegate.swift */; };
+		CD0AE1000000000000000016 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000003 /* SceneDelegate.swift */; };
+		CD0AE1000000000000000017 /* CDOAuth1KitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000004 /* CDOAuth1KitManager.swift */; };
+		CD0AE1000000000000000018 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000005 /* ViewController.swift */; };
+		CD0AE1000000000000000019 /* JSONPrettyPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000006 /* JSONPrettyPrinter.swift */; };
+		CD0AE1000000000000000020 /* CDOAuth1KitJSONResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000007 /* CDOAuth1KitJSONResponseViewController.swift */; };
+		CD0AE1000000000000000021 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000008 /* Assets.xcassets */; };
+		CD0AE1000000000000000022 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000043 /* LaunchScreen.storyboard */; };
+		CD0AE1000000000000000023 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000044 /* Main.storyboard */; };
+		CD0AE1000000000000000024 /* CDOAuth1Kit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD0AE1000000000000000039 /* CDOAuth1Kit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CD0AE1000000000000000025 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD0A00000000000000000020;
+			remoteInfo = "CDOAuth1Kit macOS";
+		};
+		CD0AE1000000000000000026 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD0A00000000000000000011;
+			remoteInfo = "CDOAuth1Kit iOS";
+		};
+		CD0AE1000000000000000027 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CD0A00000000000000000010;
+			remoteInfo = "CDOAuth1Kit iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CD0AE1000000000000000028 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD0AE1000000000000000024 /* CDOAuth1Kit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CD0AE1000000000000000001 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD0AE1000000000000000002 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000003 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000004 /* CDOAuth1KitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDOAuth1KitManager.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000005 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000006 /* JSONPrettyPrinter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONPrettyPrinter.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000007 /* CDOAuth1KitJSONResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDOAuth1KitJSONResponseViewController.swift; sourceTree = "<group>"; };
+		CD0AE1000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000009 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000010 /* Secrets.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000011 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig.example; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000012 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000013 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
+		CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CDOAuth1Kit.xcodeproj; path = ../CDOAuth1Kit.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CD0AE1000000000000000029 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CD0AE1000000000000000030 = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000032 /* Source */,
+				CD0AE1000000000000000031 /* Products */,
+				CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000031 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000001 /* iOS Example.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000032 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000002 /* AppDelegate.swift */,
+				CD0AE1000000000000000003 /* SceneDelegate.swift */,
+				CD0AE1000000000000000004 /* CDOAuth1KitManager.swift */,
+				CD0AE1000000000000000005 /* ViewController.swift */,
+				CD0AE1000000000000000007 /* CDOAuth1KitJSONResponseViewController.swift */,
+				CD0AE1000000000000000006 /* JSONPrettyPrinter.swift */,
+				CD0AE1000000000000000034 /* Resources */,
+				CD0AE1000000000000000033 /* Supporting Files */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000033 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000009 /* Info.plist */,
+				CD0AE1000000000000000010 /* Secrets.xcconfig */,
+				CD0AE1000000000000000011 /* Secrets.xcconfig.example */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000034 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000008 /* Assets.xcassets */,
+				CD0AE1000000000000000043 /* LaunchScreen.storyboard */,
+				CD0AE1000000000000000044 /* Main.storyboard */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000035 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD0AE1000000000000000039 /* CDOAuth1Kit.framework */,
+				CD0AE1000000000000000038 /* CDOAuth1Kit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CD0AE1000000000000000036 /* iOS Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD0AE1000000000000000050 /* Build configuration list for PBXNativeTarget "iOS Example" */;
+			buildPhases = (
+				CD0AE1000000000000000041 /* Sources */,
+				CD0AE1000000000000000029 /* Frameworks */,
+				CD0AE1000000000000000040 /* Resources */,
+				CD0AE1000000000000000028 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CD0AE1000000000000000042 /* PBXTargetDependency */,
+			);
+			name = "iOS Example";
+			productName = "iOS Example";
+			productReference = CD0AE1000000000000000001 /* iOS Example.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CD0AE1000000000000000037 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				ORGANIZATIONNAME = "Christopher de Haan";
+				TargetAttributes = {
+					CD0AE1000000000000000036 = {
+						CreatedOnToolsVersion = 26.6;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CD0AE1000000000000000049 /* Build configuration list for PBXProject "iOS Example" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CD0AE1000000000000000030;
+			productRefGroup = CD0AE1000000000000000031 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CD0AE1000000000000000035 /* Products */;
+					ProjectRef = CD0AE1000000000000000014 /* CDOAuth1Kit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				CD0AE1000000000000000036 /* iOS Example */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CD0AE1000000000000000038 /* CDOAuth1Kit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDOAuth1Kit.framework;
+			remoteRef = CD0AE1000000000000000025 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD0AE1000000000000000039 /* CDOAuth1Kit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDOAuth1Kit.framework;
+			remoteRef = CD0AE1000000000000000026 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CD0AE1000000000000000040 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD0AE1000000000000000022 /* LaunchScreen.storyboard in Resources */,
+				CD0AE1000000000000000021 /* Assets.xcassets in Resources */,
+				CD0AE1000000000000000023 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CD0AE1000000000000000041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD0AE1000000000000000018 /* ViewController.swift in Sources */,
+				CD0AE1000000000000000015 /* AppDelegate.swift in Sources */,
+				CD0AE1000000000000000016 /* SceneDelegate.swift in Sources */,
+				CD0AE1000000000000000017 /* CDOAuth1KitManager.swift in Sources */,
+				CD0AE1000000000000000020 /* CDOAuth1KitJSONResponseViewController.swift in Sources */,
+				CD0AE1000000000000000019 /* JSONPrettyPrinter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CD0AE1000000000000000042 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CDOAuth1Kit iOS";
+			targetProxy = CD0AE1000000000000000027 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CD0AE1000000000000000043 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD0AE1000000000000000012 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		CD0AE1000000000000000044 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD0AE1000000000000000013 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CD0AE1000000000000000045 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CD0AE1000000000000000046 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CD0AE1000000000000000047 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD0AE1000000000000000010 /* Secrets.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CD0AE1000000000000000048 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD0AE1000000000000000010 /* Secrets.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CD0AE1000000000000000049 /* Build configuration list for PBXProject "iOS Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD0AE1000000000000000045 /* Debug */,
+				CD0AE1000000000000000046 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD0AE1000000000000000050 /* Build configuration list for PBXNativeTarget "iOS Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD0AE1000000000000000047 /* Debug */,
+				CD0AE1000000000000000048 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CD0AE1000000000000000037 /* Project object */;
+}

@@ -1,8 +1,8 @@
 //
-//  TwitterClient.swift
-//  CDOAuth1Kit
+//  JSONPrettyPrinter.swift
+//  iOS Example
 //
-//  Created by Christopher de Haan on 5/30/26.
+//  Created by Christopher de Haan on 8/20/26.
 //
 //  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,37 +25,20 @@
 //  SOFTWARE.
 //
 
-import CDOAuth1Kit
+import Foundation
 
-final class TwitterClient {
+/// Pretty-prints a raw JSON HTTP response body for on-screen display.
+enum JSONPrettyPrinter {
 
-    static let shared = TwitterClient()
-
-    private let manager = CDOAuth1SessionManager(
-        baseURL: URL(string: "https://api.twitter.com/oauth/")!,
-        consumerKey: "YOUR_CONSUMER_KEY",
-        consumerSecret: "YOUR_CONSUMER_SECRET"
-    )
-
-    var isAuthorized: Bool { manager.isAuthorized }
-
-    func fetchRequestToken() async throws -> CDOAuth1Credential {
-        try await manager.fetchRequestToken(
-            path: "request_token",
-            method: "POST",
-            callbackURL: URL(string: "cdoauth1kit://oauthCallback")!
-        )
-    }
-
-    func fetchAccessToken(requestToken: CDOAuth1Credential) async throws {
-        _ = try await manager.fetchAccessToken(
-            path: "access_token",
-            method: "POST",
-            requestToken: requestToken
-        )
-    }
-
-    func deauthorize() throws {
-        try manager.deauthorize()
+    static func string(from data: Data) -> String {
+        guard let object = try? JSONSerialization.jsonObject(with: data),
+              let prettyData = try? JSONSerialization.data(
+                  withJSONObject: object,
+                  options: [.prettyPrinted, .sortedKeys]
+              ),
+              let text = String(data: prettyData, encoding: .utf8) else {
+            return String(data: data, encoding: .utf8) ?? "<undecodable response>"
+        }
+        return text
     }
 }

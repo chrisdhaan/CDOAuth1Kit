@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  CDOAuth1Kit
+//  iOS Example
 //
 //  Created by Christopher de Haan on 5/30/26.
 //
@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        CDOAuth1KitManager.shared.configure()
         return true
     }
 
@@ -42,11 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
-        let configuration = UISceneConfiguration(
+        UISceneConfiguration(
             name: "Default Configuration",
             sessionRole: connectingSceneSession.role
         )
-        configuration.delegateClass = SceneDelegate.self
-        return configuration
     }
 }

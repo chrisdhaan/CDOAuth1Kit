@@ -5,6 +5,6 @@
       location = "group:CDOAuth1Kit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Example/CDOAuth1Kit.xcodeproj">
+      location = "group:Example/iOS Example.xcodeproj">
    </FileRef>
 </Workspace>

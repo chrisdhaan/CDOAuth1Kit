@@ -28,3 +28,6 @@ playground.xcworkspace
 # Jazzy documentation
 docs/undocumented.json
 Documentation/IMPROVEMENTS.md
+
+# Example app secrets
+Example/Secrets.xcconfig

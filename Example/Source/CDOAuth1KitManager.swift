@@ -37,6 +37,7 @@ final class CDOAuth1KitManager: NSObject {
     private static let userAgent = "CDOAuth1KitExample/1.0 +https://github.com/chrisdhaan/CDOAuth1Kit"
 
     var sessionManager: CDOAuth1SessionManager!
+    private var urlSession: URLSession!
 
     var isAuthorized: Bool { sessionManager.isAuthorized }
 
@@ -51,10 +52,15 @@ final class CDOAuth1KitManager: NSObject {
                 "Secrets.xcconfig and fill in your own Discogs API credentials.")
         }
 
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = ["User-Agent": Self.userAgent]
+        self.urlSession = URLSession(configuration: configuration)
+
         self.sessionManager = CDOAuth1SessionManager(
             baseURL: URL(string: "https://api.discogs.com/oauth/")!,
             consumerKey: consumerKey,
-            consumerSecret: consumerSecret
+            consumerSecret: consumerSecret,
+            session: urlSession
         )
     }
 
@@ -96,10 +102,9 @@ final class CDOAuth1KitManager: NSObject {
     func fetchIdentity() async throws -> Data {
         var request = URLRequest(url: URL(string: "https://api.discogs.com/oauth/identity")!)
         request.httpMethod = "GET"
-        request.setValue(Self.userAgent, forHTTPHeaderField: "User-Agent")
 
         let signedRequest = try sessionManager.requestSigner.signed(request)
-        let (data, _) = try await URLSession.shared.data(for: signedRequest)
+        let (data, _) = try await urlSession.data(for: signedRequest)
         return data
     }
 }

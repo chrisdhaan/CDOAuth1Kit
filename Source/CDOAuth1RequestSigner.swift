@@ -74,7 +74,7 @@ public struct CDOAuth1RequestSigner {
 
     /// Produces a signed copy of the given URLRequest, adding an OAuth Authorization header.
     public func signed(_ request: URLRequest,
-                      parameters: [String: String] = [:]) throws -> URLRequest {
+                       parameters: [String: String] = [:]) throws -> URLRequest {
         guard let method = request.httpMethod,
               let urlString = request.url?.absoluteString else {
             throw CDOAuth1Error.invalidRequestToken

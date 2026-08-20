@@ -98,7 +98,7 @@ public final class CDOAuth1SessionManager {
 
         let params: [String: String] = [
             "oauth_token": token,
-            "oauth_verifier": verifier,
+            "oauth_verifier": verifier
         ]
 
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL

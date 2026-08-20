@@ -19,13 +19,10 @@
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		CD198E7F254627D47FD36195 /* Pods_CDOAuth1Kit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A54C9D9CB19E917E3EA14C /* Pods_CDOAuth1Kit_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		103558E536C23C4E175C1825 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		1FB9A2F4C0EA96EC39A99464 /* Pods-CDOAuth1Kit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDOAuth1Kit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example.release.xcconfig"; sourceTree = "<group>"; };
-		22A54C9D9CB19E917E3EA14C /* Pods_CDOAuth1Kit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CDOAuth1Kit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F0948D81E6B8505003D0862 /* CDAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAppDelegate.h; sourceTree = "<group>"; };
 		5F0948D91E6B8505003D0862 /* CDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAppDelegate.m; sourceTree = "<group>"; };
 		5F0948DB1E6B8505003D0862 /* CDTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTweet.h; sourceTree = "<group>"; };
@@ -46,8 +43,6 @@
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9828920DBDEAFA94D4B50F5B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		AACDE8DFEF7449F5796889F7 /* CDOAuth1Kit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CDOAuth1Kit.podspec; path = ../CDOAuth1Kit.podspec; sourceTree = "<group>"; };
-		B4C1F40038C40E5C3392936E /* Pods-CDOAuth1Kit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDOAuth1Kit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +53,6 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				CD198E7F254627D47FD36195 /* Pods_CDOAuth1Kit_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,11 +129,10 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
+				60FF7A9C1954A5C5007DD14C /* Metadata */,
 				6003F593195388D20070C39A /* Example for CDOAuth1Kit */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				E5FDB37A264BEA4F2E1CC9C7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -157,7 +150,6 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				22A54C9D9CB19E917E3EA14C /* Pods_CDOAuth1Kit_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -174,23 +166,13 @@
 			path = CDOAuth1Kit;
 			sourceTree = "<group>";
 		};
-		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
+		60FF7A9C1954A5C5007DD14C /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				AACDE8DFEF7449F5796889F7 /* CDOAuth1Kit.podspec */,
 				103558E536C23C4E175C1825 /* README.md */,
 				9828920DBDEAFA94D4B50F5B /* LICENSE */,
 			);
-			name = "Podspec Metadata";
-			sourceTree = "<group>";
-		};
-		E5FDB37A264BEA4F2E1CC9C7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B4C1F40038C40E5C3392936E /* Pods-CDOAuth1Kit_Example.debug.xcconfig */,
-				1FB9A2F4C0EA96EC39A99464 /* Pods-CDOAuth1Kit_Example.release.xcconfig */,
-			);
-			name = Pods;
+			name = Metadata;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,12 +182,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "CDOAuth1Kit_Example" */;
 			buildPhases = (
-				AC5AC34890C436ACDC93D283 /* [CP] Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				CF4C27A0182D8AFB937531E7 /* [CP] Embed Pods Frameworks */,
-				D0CBC77FAA90CB9EF538CEED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,54 +236,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		AC5AC34890C436ACDC93D283 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		CF4C27A0182D8AFB937531E7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D0CBC77FAA90CB9EF538CEED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CDOAuth1Kit_Example/Pods-CDOAuth1Kit_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6003F586195388D20070C39A /* Sources */ = {
@@ -435,7 +366,6 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4C1F40038C40E5C3392936E /* Pods-CDOAuth1Kit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -450,7 +380,6 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FB9A2F4C0EA96EC39A99464 /* Pods-CDOAuth1Kit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

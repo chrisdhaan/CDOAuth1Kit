@@ -4,7 +4,7 @@ This guide demonstrates how to use CDOAuth1Kit to implement OAuth 1.0a authentic
 
 ## Installation
 
-See the [README.md](../README.md) for installation instructions via Swift Package Manager or CocoaPods.
+See the [README.md](../README.md) for installation instructions via Swift Package Manager.
 
 ## Initialization
 

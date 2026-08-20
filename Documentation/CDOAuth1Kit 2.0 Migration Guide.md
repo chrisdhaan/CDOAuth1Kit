@@ -15,25 +15,22 @@ CDOAuth1Kit 2.0 is a complete rewrite in Swift with the following major changes:
 
 ## Step 1: Installation Changes
 
-### Remove AFNetworking
+### Switch from CocoaPods to Swift Package Manager
 
-In your `Podfile`, remove the AFNetworking dependency:
+CDOAuth1Kit 2.0 drops CocoaPods support entirely — 1.0.0 is the last version available via CocoaPods. Remove `CDOAuth1Kit` (and `AFNetworking`, which 2.0 no longer depends on) from your `Podfile`, then add the package via Swift Package Manager instead:
 
-**Before:**
+**Before (`Podfile`):**
 ```ruby
 pod 'CDOAuth1Kit'
 pod 'AFNetworking'
 ```
 
-**After:**
-```ruby
-pod 'CDOAuth1Kit', '~> 2.0'
+**After (`Package.swift`):**
+```swift
+.package(url: "https://github.com/chrisdhaan/CDOAuth1Kit.git", from: "2.0.0")
 ```
 
-Then run:
-```bash
-pod install
-```
+Or in Xcode: File → Add Packages → Enter `https://github.com/chrisdhaan/CDOAuth1Kit.git`. Then run `pod deintegrate` to remove the CocoaPods workspace integration, if you have no other pods remaining.
 
 ## Step 2: Import Changes
 
@@ -302,8 +299,7 @@ try manager.deauthorize()
 
 ## Migration Checklist
 
-- [ ] Update Podfile to remove `AFNetworking` and upgrade `CDOAuth1Kit` to `~> 2.0`
-- [ ] Run `pod install`
+- [ ] Remove `CDOAuth1Kit` and `AFNetworking` from your `Podfile`; add CDOAuth1Kit via Swift Package Manager instead
 - [ ] Update imports (remove AFNetworking)
 - [ ] Convert Objective-C code to Swift
 - [ ] Migrate from blocks to `async/await` for OAuth methods

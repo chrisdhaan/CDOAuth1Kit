@@ -22,18 +22,22 @@ Released on 2026-05-30.
 - `PrivacyInfo.xcprivacy` privacy manifest for App Store compliance
 - `KeychainStore` internal type using `Codable` / `JSONEncoder` for credential serialization
 - Unit test suite using Swift Testing framework
-- GitHub Actions CI (iOS/macOS matrix builds, CocoaPods lint, SPM test, SwiftLint, SwiftFormat, DocC build, CodeQL)
+- GitHub Actions CI (iOS/macOS matrix builds, SPM test, SwiftLint, SwiftFormat, DocC build, CodeQL)
 - DocC documentation catalog (`Source/CDOAuth1Kit.docc/`) with landing page and Getting Started article
 - `swift-docc-plugin` dependency in `Package.swift` for `swift package generate-documentation`
 - GitHub Pages–hosted API documentation at `https://chrisdhaan.github.io/CDOAuth1Kit/`
 - `.swiftlint.yml` for semantic code quality enforcement
 - `.swiftformat` for mechanical code style enforcement
-- `Gemfile` / `Gemfile.lock` for reproducible Ruby dependency management
 - `CONTRIBUTING.md`, `CLAUDE.md`
 - `Documentation/ARCHITECTURE.md`, `Documentation/Usage.md`
 - `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
 - GitHub issue templates (bug report, feature request) and pull request template
 - `FUNDING.yml` for GitHub Sponsors
+- Root `CDOAuth1Kit.xcodeproj` / `CDOAuth1Kit.xcworkspace` — native multi-platform Xcode project (iOS, macOS targets/schemes) alongside the SPM package, matching the structure used by sibling libraries
+
+### Removed
+
+- CocoaPods support — `CDOAuth1Kit.podspec`, `Gemfile`/`Gemfile.lock`, and the CI CocoaPods lint job are gone. 1.0.0 remains the last version distributed via CocoaPods; see the 2.0 Migration Guide for switching to Swift Package Manager. Carthage and Git Submodules were never supported by this library.
 
 ### Updated
 

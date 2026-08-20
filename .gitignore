@@ -25,15 +25,6 @@ playground.xcworkspace
 # Swift Package Manager
 .build/
 
-# CocoaPods
-Pods/
-
-# Carthage
-Carthage/Build
-
-# Bundler
-.bundle/
-
 # Jazzy documentation
 docs/undocumented.json
 Documentation/IMPROVEMENTS.md

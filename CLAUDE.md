@@ -56,7 +56,6 @@ CDOAuth1Kit/
 │   ├── ARCHITECTURE.md                # Architecture overview
 │   └── Usage.md                       # Usage examples
 ├── Package.swift                      # SPM manifest (swift-tools-version 6.0)
-├── CDOAuth1Kit.podspec                # CocoaPods manifest
 ├── .swiftlint.yml                     # SwiftLint config (line length 149/200)
 ├── .swiftformat                       # SwiftFormat config
 ├── .github/workflows/ci.yml           # GitHub Actions CI
@@ -71,10 +70,10 @@ CDOAuth1Kit/
 
 ## Platform & Swift Support
 
-| Platform | Minimum OS | Swift | SPM | CocoaPods |
-|----------|-----------|-------|-----|-----------|
-| iOS      | 13.0+     | 5.3+  | ✅  | ✅        |
-| macOS    | 10.15+    | 5.3+  | ✅  | ✅        |
+| Platform | Minimum OS | Swift | SPM |
+|----------|-----------|-------|-----|
+| iOS      | 13.0+     | 5.3+  | ✅  |
+| macOS    | 10.15+    | 5.3+  | ✅  |
 
 ## Architecture Summary
 
@@ -116,14 +115,6 @@ swift build -c release
 ### Xcode (SPM)
 
 File → Add Packages → Enter `https://github.com/chrisdhaan/CDOAuth1Kit.git`
-
-### CocoaPods
-
-```bash
-cd Example
-pod install
-open CDOAuth1Kit.xcworkspace
-```
 
 ## Running Tests
 
@@ -178,15 +169,6 @@ The CI job fails on any public symbol without documentation.
 
 Published to: `https://github.com/chrisdhaan/CDOAuth1Kit`
 
-### CocoaPods
-
-Published to: `https://cocoapods.org/pods/CDOAuth1Kit`
-
-Update via:
-```bash
-pod trunk push CDOAuth1Kit.podspec
-```
-
 ## CI/CD Pipeline (GitHub Actions)
 
 Located in `.github/workflows/ci.yml`. Runs on:
@@ -205,17 +187,15 @@ Located in `.github/workflows/ci.yml`. Runs on:
    - Runs on `macos-15` runners
    - Builds and tests for macOS 10.15+
 
-3. **CocoaPods** — Validates `CDOAuth1Kit.podspec`
+3. **SPM** — Runs `swift build` and `swift test`
 
-4. **SPM** — Runs `swift build` and `swift test`
+4. **SwiftLint** — Code style validation (line length warnings at 149, errors at 200)
 
-5. **SwiftLint** — Code style validation (line length warnings at 149, errors at 200)
+5. **SwiftFormat** — Code formatting check
 
-6. **SwiftFormat** — Code formatting check
+6. **DocC** — Builds documentation; fails on undocumented public symbols
 
-7. **DocC** — Builds documentation; fails on undocumented public symbols
-
-8. **CodeQL** — Security analysis
+7. **CodeQL** — Security analysis
 
 ## Code Style
 
@@ -272,11 +252,9 @@ Located in `.github/workflows/ci.yml`. Runs on:
 
 1. Update version in `Source/CDOAuth1Kit.swift`
 2. Update `CHANGELOG.md` with actual release date
-3. Update `CDOAuth1Kit.podspec` version
-4. Tag commit: `git tag 2.0.0`
-5. Push: `git push origin master --tags`
-6. CocoaPods: `pod trunk push CDOAuth1Kit.podspec`
-7. GitHub Releases: Create release from tag with CHANGELOG entry
+3. Tag commit: `git tag 2.0.0`
+4. Push: `git push origin master --tags`
+5. GitHub Releases: Create release from tag with CHANGELOG entry
 
 ## Testing checklist before release
 
@@ -288,7 +266,6 @@ Located in `.github/workflows/ci.yml`. Runs on:
 - [ ] Example app builds and runs
 - [ ] README badges and links are correct
 - [ ] CHANGELOG.md has actual release date
-- [ ] podspec validates: `pod spec lint CDOAuth1Kit.podspec`
 
 ## Further Reading
 

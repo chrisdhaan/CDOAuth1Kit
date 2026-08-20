@@ -25,9 +25,11 @@ playground.xcworkspace
 # Swift Package Manager
 .build/
 
+# Git worktrees (SDD plan execution scratch space)
+.worktrees/
+
 # Jazzy documentation
 docs/undocumented.json
-Documentation/IMPROVEMENTS.md
 
 # Example app secrets
 Example/Secrets.xcconfig

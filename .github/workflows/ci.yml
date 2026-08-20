@@ -182,7 +182,7 @@ jobs:
           languages: swift
       - name: Build
         run: |
-          xcodebuild -project CDOAuth1Kit.xcodeproj \
+          xcodebuild -project "CDOAuth1Kit.xcodeproj" \
             -scheme "CDOAuth1Kit iOS" \
             -destination "generic/platform=iOS" \
             -configuration Debug \

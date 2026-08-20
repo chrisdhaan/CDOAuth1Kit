@@ -52,6 +52,7 @@ let package = Package(
         .target(
             name: "CDOAuth1Kit",
             path: "Source",
+            exclude: ["Info.plist"],
             resources: [.process("PrivacyInfo.xcprivacy")],
             swiftSettings: [
                 .enableUpcomingFeature("ExistentialAny")

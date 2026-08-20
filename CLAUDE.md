@@ -16,6 +16,8 @@ CDOAuth1Kit is a pure-Swift, zero-dependency OAuth 1.0a authentication library f
 
 ```
 CDOAuth1Kit/
+├── CDOAuth1Kit.xcodeproj/             # Root native Xcode project (iOS + macOS targets/schemes)
+├── CDOAuth1Kit.xcworkspace/           # Ties CDOAuth1Kit.xcodeproj + Example/CDOAuth1Kit.xcodeproj together
 ├── Source/                           # Core library (Swift)
 │   ├── CDOAuth1Kit.swift             # Module version constants
 │   ├── CDOAuth1Credential.swift      # OAuth token storage model
@@ -28,6 +30,7 @@ CDOAuth1Kit/
 │   ├── Extensions/
 │   │   ├── String+CDOAuth1Kit.swift  # RFC 5849 percent encoding
 │   │   └── Dictionary+CDOAuth1Kit.swift  # Query string handling
+│   ├── Info.plist                    # Native Xcode target Info.plist (SPM excludes this file)
 │   └── PrivacyInfo.xcprivacy         # App Store privacy manifest
 ├── Tests/CDOAuth1KitTests/           # Test suite (Swift Testing)
 │   ├── CDOAuth1CredentialTests.swift
@@ -63,6 +66,8 @@ CDOAuth1Kit/
 ├── CHANGELOG.md                       # Release notes
 └── LICENSE                            # MIT license
 ```
+
+**Two parallel project representations, by design:** `Package.swift` (SPM, used for `swift build`/`swift test` and consumption via SPM) and `CDOAuth1Kit.xcodeproj` (a native multi-platform Xcode project with one scheme per platform — `CDOAuth1Kit iOS`, `CDOAuth1Kit macOS`, more added as platforms are added — used by CI's `codeql` job and for local multi-platform build verification in Xcode). This mirrors `CDMarkdownKit`/`CDUntappdKit`/`CDYelpFusionKit`'s structure exactly. The two must be kept in sync manually: adding a source file to `Source/` requires adding it to both `Package.swift`'s implicit file scan (automatic) *and* `CDOAuth1Kit.xcodeproj/project.pbxproj`'s `PBXFileReference`/`PBXBuildFile`/`PBXSourcesBuildPhase` entries for both targets (manual — Xcode does this automatically when adding a file through the Xcode UI, but not when a file is added via a text editor or agent). The native project's schemes have no Testables wired (matching sibling repos) — actual test execution goes through `swift test` (the `SPM` CI job), not through this project.
 
 ## Platform & Swift Support
 

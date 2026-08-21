@@ -62,11 +62,11 @@ public struct CDOAuth1RequestSigner {
 
     public func oauthParameters() -> [String: String] {
         var params: [String: String] = [:]
-        params["oauth_version"]          = "1.0"
-        params["oauth_consumer_key"]     = consumerKey
-        params["oauth_timestamp"]        = String(Int(Date().timeIntervalSince1970))
+        params["oauth_version"] = "1.0"
+        params["oauth_consumer_key"] = consumerKey
+        params["oauth_timestamp"] = String(Int(Date().timeIntervalSince1970))
         params["oauth_signature_method"] = "HMAC-SHA1"
-        params["oauth_nonce"]            = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        params["oauth_nonce"] = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         return params
     }
 

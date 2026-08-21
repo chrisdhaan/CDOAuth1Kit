@@ -29,7 +29,7 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct DictionaryQueryStringTests {
+struct DictionaryQueryStringTests {
 
     @Test func initFromQueryString() {
         let dict = [String: String](queryString: "key=value&foo=bar")

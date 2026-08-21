@@ -29,7 +29,7 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct StringOAuthTests {
+struct StringOAuthTests {
 
     @Test func percentEncodesSpecialCharacters() {
         #expect("hello world".oauthPercentEncoded() == "hello%20world")

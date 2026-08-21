@@ -49,17 +49,21 @@ enum KeychainStore {
         if read(service: service) != nil {
             let update = [kSecValueData as String: data] as CFDictionary
             let status = SecItemUpdate(query as CFDictionary, update)
-            if status != errSecSuccess { throw CDOAuth1Error.keychainError(status) }
+            if status != errSecSuccess {
+                throw CDOAuth1Error.keychainError(status)
+            }
         } else {
             query[kSecValueData as String] = data
             let status = SecItemAdd(query as CFDictionary, nil)
-            if status != errSecSuccess { throw CDOAuth1Error.keychainError(status) }
+            if status != errSecSuccess {
+                throw CDOAuth1Error.keychainError(status)
+            }
         }
     }
 
     static func delete(service: String) throws {
         let status = SecItemDelete(baseQuery(service: service) as CFDictionary)
-        if status != errSecSuccess && status != errSecItemNotFound {
+        if status != errSecSuccess, status != errSecItemNotFound {
             throw CDOAuth1Error.keychainError(status)
         }
     }

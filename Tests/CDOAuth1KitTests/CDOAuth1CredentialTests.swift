@@ -29,7 +29,7 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct CDOAuth1CredentialTests {
+struct CDOAuth1CredentialTests {
 
     @Test func initWithTokenAndSecret() {
         let cred = CDOAuth1Credential(token: "tok", secret: "sec")

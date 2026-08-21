@@ -29,10 +29,10 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct CDOAuth1SessionManagerTests {
+struct CDOAuth1SessionManagerTests {
 
-    @Test func initWithBaseURL() {
-        let baseURL = URL(string: "https://api.example.com/")!
+    @Test func initWithBaseURL() throws {
+        let baseURL = try #require(URL(string: "https://api.example.com/"))
         let manager = CDOAuth1SessionManager(
             baseURL: baseURL,
             consumerKey: "key",

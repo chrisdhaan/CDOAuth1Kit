@@ -29,20 +29,20 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct CDOAuth1HelperTests {
+struct CDOAuth1HelperTests {
 
-    @Test func matchingSchemeAndHost() {
-        let url = URL(string: "myapp://oauthCallback?oauth_token=T")!
+    @Test func matchingSchemeAndHost() throws {
+        let url = try #require(URL(string: "myapp://oauthCallback?oauth_token=T"))
         #expect(CDOAuth1Helper.isAuthorizationCallbackURL(url, scheme: "myapp", host: "oauthCallback"))
     }
 
-    @Test func mismatchedScheme() {
-        let url = URL(string: "myapp://oauthCallback")!
+    @Test func mismatchedScheme() throws {
+        let url = try #require(URL(string: "myapp://oauthCallback"))
         #expect(!CDOAuth1Helper.isAuthorizationCallbackURL(url, scheme: "otherapp", host: "oauthCallback"))
     }
 
-    @Test func mismatchedHost() {
-        let url = URL(string: "myapp://oauthCallback")!
+    @Test func mismatchedHost() throws {
+        let url = try #require(URL(string: "myapp://oauthCallback"))
         #expect(!CDOAuth1Helper.isAuthorizationCallbackURL(url, scheme: "myapp", host: "other"))
     }
 }

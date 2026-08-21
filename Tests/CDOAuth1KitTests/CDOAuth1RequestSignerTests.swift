@@ -29,12 +29,12 @@ import Foundation
 import Testing
 @testable import CDOAuth1Kit
 
-@Suite struct CDOAuth1RequestSignerTests {
+struct CDOAuth1RequestSignerTests {
 
-    // RFC 5849 Appendix A.1 — initiate request (request token phase)
-    // Consumer credentials from Appendix A: key=dpf43f3p2l4k3l03, secret=kd94hf93k423kf44
-    // Signing key: kd94hf93k423kf44& (empty token secret for request token phase)
-    // https://tools.ietf.org/html/rfc5849#appendix-A
+    /// RFC 5849 Appendix A.1 — initiate request (request token phase)
+    /// Consumer credentials from Appendix A: key=dpf43f3p2l4k3l03, secret=kd94hf93k423kf44
+    /// Signing key: kd94hf93k423kf44& (empty token secret for request token phase)
+    /// https://tools.ietf.org/html/rfc5849#appendix-A
     @Test func rfc5849SignatureTestVector() throws {
         let signer = CDOAuth1RequestSigner(
             service: "photos.example.net",
@@ -42,7 +42,7 @@ import Testing
             consumerSecret: "kd94hf93k423kf44"
         )
         let baseString = "POST&https%3A%2F%2Fphotos.example.net%2Finitiate&oauth_callback%3Doob%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3DwnnvGrqVeYPSIXXI%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D137131200%26oauth_version%3D1.0"
-        let signingKey = "kd94hf93k423kf44&"  // consumerSecret& (empty token secret)
+        let signingKey = "kd94hf93k423kf44&" // consumerSecret& (empty token secret)
         let signature = try signer.hmacSHA1(message: baseString, key: signingKey)
         #expect(signature == "hBCGVQEI0x4L1D8ZjGU0hIhig2k=")
     }
@@ -63,7 +63,7 @@ import Testing
         let signer = CDOAuth1RequestSigner(service: "test",
                                            consumerKey: "ck",
                                            consumerSecret: "cs")
-        var request = URLRequest(url: URL(string: "https://api.example.com/endpoint")!)
+        var request = try URLRequest(url: #require(URL(string: "https://api.example.com/endpoint")))
         request.httpMethod = "GET"
         let signed = try signer.signed(request)
         let authHeader = signed.value(forHTTPHeaderField: "Authorization")

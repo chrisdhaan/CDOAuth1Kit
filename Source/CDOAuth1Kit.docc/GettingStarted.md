@@ -110,6 +110,6 @@ if manager.isAuthorized {
 
 ## Next steps
 
-- See <doc:../../../Documentation/Usage> for comprehensive usage examples
-- See <doc:../../../Documentation/ARCHITECTURE> for implementation details
-- See <doc:../../../Documentation/CDOAuth1Kit-2-0-Migration-Guide> if upgrading from v1.0.0
+- See [Documentation/Usage.md](https://github.com/chrisdhaan/CDOAuth1Kit/blob/master/Documentation/Usage.md) for comprehensive usage examples
+- See [Documentation/ARCHITECTURE.md](https://github.com/chrisdhaan/CDOAuth1Kit/blob/master/Documentation/ARCHITECTURE.md) for implementation details
+- See [Documentation/CDOAuth1Kit 2.0 Migration Guide.md](https://github.com/chrisdhaan/CDOAuth1Kit/blob/master/Documentation/CDOAuth1Kit%202.0%20Migration%20Guide.md) if upgrading from v1.0.0

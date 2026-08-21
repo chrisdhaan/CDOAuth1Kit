@@ -75,7 +75,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let data = try await performSigned(signedRequest)
+        let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -106,7 +106,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let data = try await performSigned(signedRequest)
+        let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -136,7 +136,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let data = try await performSigned(signedRequest)
+        let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -148,9 +148,63 @@ public final class CDOAuth1SessionManager {
         return credential
     }
 
+    // MARK: - Authenticated Requests
+
+    /// Makes a signed request to the given path using the current access token.
+    ///
+    /// - Parameters:
+    ///   - path: A path relative to `baseURL`.
+    ///   - method: The HTTP method (e.g. `"GET"`, `"POST"`).
+    ///   - parameters: Additional parameters to sign and send. For `GET`/`HEAD`/`DELETE`
+    ///     these are appended to the URL as query items; for other methods they're sent as
+    ///     an `application/x-www-form-urlencoded` body. Either way they're included in the
+    ///     OAuth signature.
+    /// - Returns: The response body and the `HTTPURLResponse`.
+    /// - Throws: `CDOAuth1Error.invalidAccessToken` if not authorized, `.httpError` for a
+    ///   non-2xx response, or `.networkError` if the underlying request fails.
+    public func request(path: String,
+                        method: String,
+                        parameters: [String: String] = [:]) async throws -> (Data, HTTPURLResponse) {
+        guard isAuthorized else {
+            throw CDOAuth1Error.invalidAccessToken
+        }
+
+        let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
+        var request: URLRequest
+        switch method.uppercased() {
+        case "GET", "HEAD", "DELETE":
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            if !parameters.isEmpty {
+                components.queryItems = (components.queryItems ?? []) + sortedQueryItems(from: parameters)
+            }
+            request = URLRequest(url: components.url!)
+            request.httpMethod = method
+        default:
+            request = URLRequest(url: url)
+            request.httpMethod = method
+            if !parameters.isEmpty {
+                request.httpBody = Data(formEncodedBody(from: parameters).utf8)
+                request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            }
+        }
+
+        let signedRequest = try requestSigner.signed(request, parameters: parameters)
+        return try await performSigned(signedRequest)
+    }
+
+    private func sortedQueryItems(from parameters: [String: String]) -> [URLQueryItem] {
+        parameters.sorted { $0.key < $1.key }.map { URLQueryItem(name: $0.key, value: $0.value) }
+    }
+
+    private func formEncodedBody(from parameters: [String: String]) -> String {
+        parameters.sorted { $0.key < $1.key }
+            .map { "\($0.key.oauthPercentEncoded())=\($0.value.oauthPercentEncoded())" }
+            .joined(separator: "&")
+    }
+
     // MARK: - Response Validation
 
-    private func performSigned(_ request: URLRequest) async throws -> Data {
+    private func performSigned(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let data: Data
         let response: URLResponse
         do {
@@ -158,7 +212,11 @@ public final class CDOAuth1SessionManager {
         } catch let urlError as URLError {
             throw CDOAuth1Error.networkError(urlError)
         }
-        return try validated(data, response)
+        let validatedData = try validated(data, response)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw CDOAuth1Error.networkError(URLError(.badServerResponse))
+        }
+        return (validatedData, httpResponse)
     }
 
     private func validated(_ data: Data, _ response: URLResponse) throws -> Data {

@@ -220,6 +220,183 @@ struct CDOAuth1SessionManagerTests {
         }
     }
 
+    @Test func requestThrowsInvalidAccessTokenWhenNotAuthorized() async throws {
+        let manager = try makeManager()
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch CDOAuth1Error.invalidAccessToken {
+            // expected
+        } catch {
+            Issue.record("Expected .invalidAccessToken, got \(error)")
+        }
+    }
+
+    @Test func requestSucceedsWhenAuthorizedOn200() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+
+        let (data, response) = try await manager.request(path: "resource", method: "GET")
+
+        #expect(response.statusCode == 200)
+        #expect(String(data: data, encoding: .utf8) == "ok")
+    }
+
+    @Test(arguments: [401, 500])
+    func requestThrowsHTTPErrorOnNon2xx(statusCode: Int) async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        StubURLProtocol.statusCode = statusCode
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == statusCode)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+    }
+
+    @Test func requestThrowsNetworkErrorWhenUnreachable() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = URLError(.notConnectedToInternet)
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.networkError(underlying) {
+            #expect(underlying.code == .notConnectedToInternet)
+        } catch {
+            Issue.record("Expected .networkError, got \(error)")
+        }
+    }
+
+    @Test func requestSignsGivenParametersIntoAuthorizationHeader() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.lastRequest = nil
+
+        _ = try await manager.request(path: "resource", method: "GET", parameters: ["foo": "bar"])
+
+        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let authHeader = try #require(sentRequest.value(forHTTPHeaderField: "Authorization"))
+        var authParams = parseOAuthAuthorizationHeader(authHeader)
+        let removedSignature = authParams.removeValue(forKey: "oauth_signature")
+        let actualSignature = try #require(removedSignature)
+
+        #expect(authParams["oauth_token"] == "access-tok")
+
+        authParams["foo"] = "bar"
+        let paramString = authParams
+            .sorted { $0.key < $1.key }
+            .map { "\($0.key.oauthPercentEncoded())=\($0.value.oauthPercentEncoded())" }
+            .joined(separator: "&")
+            .oauthPercentEncoded()
+        let encodedURL = "https://api.example.com/resource".oauthPercentEncoded()
+        let baseString = "GET&\(encodedURL)&\(paramString)"
+        let signingKey = "secret".oauthPercentEncoded() + "&" + "access-sec".oauthPercentEncoded()
+
+        let signer = CDOAuth1RequestSigner(service: "unused", consumerKey: "key", consumerSecret: "secret")
+        let expectedSignature = try signer.hmacSHA1(message: baseString, key: signingKey)
+
+        #expect(actualSignature == expectedSignature)
+    }
+
+    @Test func requestEncodesParametersAsFormBodyForPOST() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.lastRequest = nil
+
+        _ = try await manager.request(path: "resource", method: "POST", parameters: ["foo": "bar", "baz": "qux"])
+
+        let sentRequest = try #require(StubURLProtocol.lastRequest)
+
+        #expect(sentRequest.url?.absoluteString == "https://api.example.com/resource")
+        #expect(sentRequest.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded")
+
+        let body = try #require(readBody(from: sentRequest))
+        #expect(String(data: body, encoding: .utf8) == "baz=qux&foo=bar")
+    }
+
+    /// `URLSession` moves `httpBody` into `httpBodyStream` for requests dispatched to a
+    /// custom `URLProtocol`, so the body must be read back from the stream in tests.
+    private func readBody(from request: URLRequest) -> Data? {
+        if let body = request.httpBody {
+            return body
+        }
+        guard let stream = request.httpBodyStream else { return nil }
+        stream.open()
+        defer { stream.close() }
+        var data = Data()
+        let bufferSize = 1024
+        var buffer = [UInt8](repeating: 0, count: bufferSize)
+        while stream.hasBytesAvailable {
+            let read = stream.read(&buffer, maxLength: bufferSize)
+            if read <= 0 {
+                break
+            }
+            data.append(buffer, count: read)
+        }
+        return data
+    }
+
+    private func parseOAuthAuthorizationHeader(_ header: String) -> [String: String] {
+        var result: [String: String] = [:]
+        let content = header.hasPrefix("OAuth ") ? String(header.dropFirst("OAuth ".count)) : header
+        for pair in content.components(separatedBy: ", ") {
+            guard let separatorIndex = pair.firstIndex(of: "=") else { continue }
+            let key = String(pair[pair.startIndex ..< separatorIndex])
+            var value = String(pair[pair.index(after: separatorIndex)...])
+            if value.hasPrefix("\""), value.hasSuffix("\"") {
+                value = String(value.dropFirst().dropLast())
+            }
+            result[key] = value.oauthPercentDecoded()
+        }
+        return result
+    }
+
+    private func authorize(_ manager: CDOAuth1SessionManager) async throws {
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec"
+        StubURLProtocol.error = nil
+
+        var requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")
+        requestToken.verifier = "verifier"
+        _ = try await manager.fetchAccessToken(path: "access_token", method: "POST", requestToken: requestToken)
+    }
+
     private func makeManager() throws -> CDOAuth1SessionManager {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [StubURLProtocol.self]
@@ -237,6 +414,7 @@ private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     static var headers: [String: String]?
     static var responseBody = ""
     static var error: URLError?
+    static var lastRequest: URLRequest?
 
     override class func canInit(with request: URLRequest) -> Bool {
         true
@@ -246,6 +424,7 @@ private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     }
 
     override func startLoading() {
+        Self.lastRequest = request
         if let error = Self.error {
             client?.urlProtocol(self, didFailWithError: error)
             return

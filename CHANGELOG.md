@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1Error.httpError(statusCode:headers:)`, `.networkError(URLError)`, `.decodingFailed`, and `.authorizationCancelled` cases
 - `LocalizedError` conformance on `CDOAuth1Error`
 - `CDOAuth1SessionManager`'s three OAuth handshake methods now validate the HTTP status code of every response, throwing `.httpError(statusCode:headers:)` for non-2xx responses (header names normalized to `Title-Case` for predictable lookup) and `.networkError` when the underlying `URLSession` request fails (e.g. offline)
+- `CDOAuth1SessionManager.request(path:method:parameters:)` — makes a signed, authenticated API request with the current access token in a single call, returning `(Data, HTTPURLResponse)`. Parameters are appended as URL query items for `GET`/`HEAD`/`DELETE` and as an `application/x-www-form-urlencoded` body otherwise, and are included in the OAuth signature either way.
 
 ### Deprecated
 

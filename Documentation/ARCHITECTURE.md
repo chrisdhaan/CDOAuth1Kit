@@ -104,13 +104,17 @@ A value type (struct) representing an OAuth token, secret, and optional metadata
 
 ### CDOAuth1Error
 
-A Swift error enum replacing C-style error codes.
+A Swift error enum replacing C-style error codes. Conforms to `LocalizedError`.
 
 **Cases:**
 - `invalidRequestToken` — request token endpoint returned invalid response
 - `invalidAccessToken` — access token endpoint returned invalid response
-- `invalidResponse` — unexpected response format from OAuth provider
+- `invalidResponse` — *(deprecated, use `decodingFailed`)* unexpected response format from OAuth provider
 - `keychainError(OSStatus)` — SecItem API failure with system error code
+- `httpError(statusCode: Int, headers: [String: String])` — OAuth provider returned a non-2xx HTTP status code
+- `networkError(URLError)` — the underlying `URLSession` request failed (e.g. offline, timed out)
+- `decodingFailed` — the OAuth provider's response body could not be parsed into a credential
+- `authorizationCancelled` — the user cancelled the browser-based authorization flow
 
 ### CDOAuth1Helper
 

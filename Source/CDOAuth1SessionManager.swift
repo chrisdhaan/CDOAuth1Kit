@@ -79,7 +79,7 @@ public final class CDOAuth1SessionManager {
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.invalidResponse
+            throw CDOAuth1Error.decodingFailed
         }
 
         requestSigner.requestToken = credential
@@ -110,7 +110,7 @@ public final class CDOAuth1SessionManager {
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.invalidResponse
+            throw CDOAuth1Error.decodingFailed
         }
 
         try requestSigner.saveAccessToken(credential)
@@ -140,7 +140,7 @@ public final class CDOAuth1SessionManager {
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.invalidResponse
+            throw CDOAuth1Error.decodingFailed
         }
 
         try requestSigner.saveAccessToken(credential)

@@ -31,6 +31,42 @@ import Security
 public enum CDOAuth1Error: Error, Sendable {
     case invalidRequestToken
     case invalidAccessToken
+    @available(*, deprecated, message: "Use .decodingFailed instead.")
     case invalidResponse
     case keychainError(OSStatus)
+
+    /// The OAuth provider returned a non-2xx HTTP status code.
+    case httpError(statusCode: Int, headers: [String: String])
+
+    /// The underlying `URLSession` request failed (e.g. offline, timed out).
+    case networkError(URLError)
+
+    /// The OAuth provider's response body could not be parsed into a credential.
+    case decodingFailed
+
+    /// The user cancelled the browser-based authorization flow.
+    case authorizationCancelled
+}
+
+extension CDOAuth1Error: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidRequestToken:
+            "The OAuth request token is invalid or missing required fields."
+        case .invalidAccessToken:
+            "The OAuth access token is invalid or missing."
+        case .invalidResponse:
+            "The OAuth provider returned an unexpected response format."
+        case let .keychainError(status):
+            "Keychain operation failed with OSStatus \(status)."
+        case let .httpError(statusCode, _):
+            "The OAuth provider returned HTTP status code \(statusCode)."
+        case let .networkError(underlying):
+            underlying.localizedDescription
+        case .decodingFailed:
+            "Failed to decode the OAuth provider's response."
+        case .authorizationCancelled:
+            "The user cancelled the authorization flow."
+        }
+    }
 }

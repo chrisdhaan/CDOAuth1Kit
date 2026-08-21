@@ -41,4 +41,57 @@ struct CDOAuth1SessionManagerTests {
         #expect(manager.baseURL == baseURL)
         #expect(manager.isAuthorized == false)
     }
+
+    @Test func fetchRequestTokenThrowsDecodingFailedOnMalformedResponse() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com/"))
+        let callbackURL = try #require(URL(string: "myapp://callback"))
+        MalformedResponseURLProtocol.responseBody = "not=a&valid=credential"
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MalformedResponseURLProtocol.self]
+        let manager = CDOAuth1SessionManager(
+            baseURL: baseURL,
+            consumerKey: "key",
+            consumerSecret: "secret",
+            session: URLSession(configuration: configuration)
+        )
+
+        do {
+            _ = try await manager.fetchRequestToken(
+                path: "request_token",
+                method: "POST",
+                callbackURL: callbackURL
+            )
+            Issue.record("Expected fetchRequestToken to throw")
+        } catch CDOAuth1Error.decodingFailed {
+            // expected
+        } catch {
+            Issue.record("Expected .decodingFailed, got \(error)")
+        }
+    }
+}
+
+private final class MalformedResponseURLProtocol: URLProtocol, @unchecked Sendable {
+    static var responseBody = ""
+
+    override class func canInit(with request: URLRequest) -> Bool {
+        true
+    }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
+        request
+    }
+
+    override func startLoading() {
+        let response = HTTPURLResponse(
+            url: request.url!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: Data(Self.responseBody.utf8))
+        client?.urlProtocolDidFinishLoading(self)
+    }
+
+    override func stopLoading() {}
 }

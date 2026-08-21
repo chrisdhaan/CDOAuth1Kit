@@ -251,10 +251,18 @@ do {
         print("Request token endpoint returned an invalid response")
     case .invalidAccessToken:
         print("Access token endpoint returned an invalid response")
-    case .invalidResponse:
-        print("Unexpected response format")
     case .keychainError(let statusCode):
         print("Keychain error: \(statusCode)")
+    case .httpError(let statusCode, let headers):
+        print("OAuth provider returned HTTP \(statusCode): \(headers)")
+    case .networkError(let underlying):
+        print("Network error: \(underlying.localizedDescription)")
+    case .decodingFailed:
+        print("Could not parse the OAuth provider's response")
+    case .authorizationCancelled:
+        print("User cancelled the authorization flow")
+    @unknown default:
+        print("Unexpected error: \(error)")
     }
 } catch {
     print("Unexpected error: \(error)")

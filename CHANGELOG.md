@@ -4,8 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Unreleased](#unreleased)
 - [2.0.0](#200)
 - [1.0.0](#100)
+
+---
+
+## [Unreleased]
+
+### Added
+
+- `CDOAuth1Error.httpError(statusCode:headers:)`, `.networkError(URLError)`, `.decodingFailed`, and `.authorizationCancelled` cases ([#2](https://github.com/chrisdhaan/CDOAuth1Kit/issues/2))
+- `LocalizedError` conformance on `CDOAuth1Error`
+
+### Deprecated
+
+- `CDOAuth1Error.invalidResponse` — use `.decodingFailed` instead. `CDOAuth1SessionManager`'s handshake methods now throw `.decodingFailed` when a response body can't be parsed into a credential.
 
 ---
 

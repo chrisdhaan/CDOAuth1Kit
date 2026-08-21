@@ -33,6 +33,16 @@ public final class CDOAuth1SessionManager {
     public let session: URLSession
     public private(set) var requestSigner: CDOAuth1RequestSigner
 
+    /// The path used to auto-refresh an expired access token before an authenticated
+    /// `request(path:method:parameters:)` call goes out. Set this together with
+    /// ``refreshAccessTokenMethod`` to opt in; leave both `nil` to require callers to
+    /// refresh manually (the pre-2.1.0 behavior).
+    public var refreshAccessTokenPath: String?
+
+    /// The HTTP method used alongside ``refreshAccessTokenPath`` to auto-refresh an
+    /// expired access token before an authenticated `request(path:method:parameters:)` call.
+    public var refreshAccessTokenMethod: String?
+
     public var isAuthorized: Bool {
         guard let token = requestSigner.accessToken else { return false }
         return !token.isExpired
@@ -160,13 +170,22 @@ public final class CDOAuth1SessionManager {
     ///     an `application/x-www-form-urlencoded` body. Either way they're included in the
     ///     OAuth signature.
     /// - Returns: The response body and the `HTTPURLResponse`.
-    /// - Throws: `CDOAuth1Error.invalidAccessToken` if not authorized, `.httpError` for a
-    ///   non-2xx response, or `.networkError` if the underlying request fails.
+    /// - Throws: `CDOAuth1Error.invalidAccessToken` if not authorized (or the access token
+    ///   is expired and ``refreshAccessTokenPath``/``refreshAccessTokenMethod`` aren't set),
+    ///   whatever error the auto-refresh attempt throws, `.httpError` for a non-2xx response,
+    ///   or `.networkError` if the underlying request fails.
     public func request(path: String,
                         method: String,
                         parameters: [String: String] = [:]) async throws -> (Data, HTTPURLResponse) {
-        guard isAuthorized else {
+        guard let token = requestSigner.accessToken else {
             throw CDOAuth1Error.invalidAccessToken
+        }
+        if token.isExpired {
+            guard let refreshPath = refreshAccessTokenPath,
+                  let refreshMethod = refreshAccessTokenMethod else {
+                throw CDOAuth1Error.invalidAccessToken
+            }
+            _ = try await refreshAccessToken(path: refreshPath, method: refreshMethod, accessToken: token)
         }
 
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL

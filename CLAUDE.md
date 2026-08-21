@@ -70,7 +70,7 @@ CDOAuth1Kit/
 └── LICENSE                            # MIT license
 ```
 
-**Two parallel project representations, by design:** `Package.swift` (SPM, used for `swift build`/`swift test` and consumption via SPM) and `CDOAuth1Kit.xcodeproj` (a native multi-platform Xcode project with one scheme per platform — `CDOAuth1Kit iOS`, `CDOAuth1Kit macOS`, more added as platforms are added — used by CI's `codeql` job and for local multi-platform build verification in Xcode). This mirrors `CDMarkdownKit`/`CDUntappdKit`/`CDYelpFusionKit`'s structure exactly. The two must be kept in sync manually: adding a source file to `Source/` requires adding it to both `Package.swift`'s implicit file scan (automatic) *and* `CDOAuth1Kit.xcodeproj/project.pbxproj`'s `PBXFileReference`/`PBXBuildFile`/`PBXSourcesBuildPhase` entries for both targets (manual — Xcode does this automatically when adding a file through the Xcode UI, but not when a file is added via a text editor or agent). The native project's schemes have no Testables wired (matching sibling repos) — actual test execution goes through `swift test` (the `SPM` CI job), not through this project. `Example/iOS Example.xcodeproj` hard-references the root project's target/product GUIDs (`CD0A00000000000000000010` = `CDOAuth1Kit iOS` target, `CD0A00000000000000000011` = its product/framework file reference, `CD0A00000000000000000019` = `CDOAuth1Kit macOS` target, `CD0A00000000000000000020` = its product/framework file reference) via `PBXContainerItemProxy` cross-project references, so regenerating the root project must preserve these exact GUIDs — a `proxyType = 2` product proxy or `proxyType = 1` target proxy pointed at the wrong kind of GUID will make Xcode fail to read the project, or crash with `-[PBXNativeTarget sourceTree]: unrecognized selector`.
+**Two parallel project representations, by design:** `Package.swift` (SPM, used for `swift build`/`swift test` and consumption via SPM) and `CDOAuth1Kit.xcodeproj` (a native multi-platform Xcode project with one scheme per platform — `CDOAuth1Kit iOS`, `CDOAuth1Kit macOS`, more added as platforms are added — used by CI's `codeql` job and for local multi-platform build verification in Xcode). The two must be kept in sync manually: adding a source file to `Source/` requires adding it to both `Package.swift`'s implicit file scan (automatic) *and* `CDOAuth1Kit.xcodeproj/project.pbxproj`'s `PBXFileReference`/`PBXBuildFile`/`PBXSourcesBuildPhase` entries for both targets (manual — Xcode does this automatically when adding a file through the Xcode UI, but not when a file is added via a text editor or agent). The native project's schemes have no Testables wired — actual test execution goes through `swift test` (the `SPM` CI job), not through this project. `Example/iOS Example.xcodeproj` hard-references the root project's target/product GUIDs (`CD0A00000000000000000010` = `CDOAuth1Kit iOS` target, `CD0A00000000000000000011` = its product/framework file reference, `CD0A00000000000000000019` = `CDOAuth1Kit macOS` target, `CD0A00000000000000000020` = its product/framework file reference) via `PBXContainerItemProxy` cross-project references, so regenerating the root project must preserve these exact GUIDs — a `proxyType = 2` product proxy or `proxyType = 1` target proxy pointed at the wrong kind of GUID will make Xcode fail to read the project, or crash with `-[PBXNativeTarget sourceTree]: unrecognized selector`.
 
 ## Platform & Swift Support
 
@@ -150,7 +150,7 @@ CDOAuth1Kit uses **DocC** (not Jazzy) for documentation.
 bash scripts/generate-docs.sh
 ```
 
-This runs the same `swift package generate-documentation` invocation CI uses, then restores the root `index.html` redirect DocC overwrites, and adds `.nojekyll` and `404.html` for GitHub Pages hosting. Matches the `scripts/generate-docs.sh` pattern used by `CDMarkdownKit`/`CDUntappdKit`/`CDYelpFusionKit`.
+This runs the same `swift package generate-documentation` invocation CI uses, then restores the root `index.html` redirect DocC overwrites, and adds `.nojekyll` and `404.html` for GitHub Pages hosting.
 
 The docs are hosted at: `https://chrisdhaan.github.io/CDOAuth1Kit/documentation/cdoauth1kit/`
 
@@ -221,7 +221,7 @@ Located in `.github/workflows/ci.yml`. Runs on:
 
 ## Known Issues / Tech Debt
 
-1. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up (see CDMarkdownKit 3.1.0 pattern)
+1. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up
 2. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
 
 ## Common Tasks

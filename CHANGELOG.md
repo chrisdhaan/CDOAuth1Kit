@@ -33,8 +33,8 @@ Released on 2026-08-21.
 - `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
 - GitHub issue templates (bug report, feature request) and pull request template
 - `FUNDING.yml` for GitHub Sponsors
-- Root `CDOAuth1Kit.xcodeproj` / `CDOAuth1Kit.xcworkspace` — native multi-platform Xcode project (iOS, macOS targets/schemes) alongside the SPM package, matching the structure used by sibling libraries
-- `scripts/generate-docs.sh` for local DocC generation, matching the pattern used by sibling libraries
+- Root `CDOAuth1Kit.xcodeproj` / `CDOAuth1Kit.xcworkspace` — native multi-platform Xcode project (iOS, macOS targets/schemes) alongside the SPM package
+- `scripts/generate-docs.sh` for local DocC generation
 
 ### Removed
 

@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.0.0)
 
-Released on 2026-05-30.
+Released on 2026-08-21.
 
 ### Added
 
@@ -34,6 +34,7 @@ Released on 2026-05-30.
 - GitHub issue templates (bug report, feature request) and pull request template
 - `FUNDING.yml` for GitHub Sponsors
 - Root `CDOAuth1Kit.xcodeproj` / `CDOAuth1Kit.xcworkspace` — native multi-platform Xcode project (iOS, macOS targets/schemes) alongside the SPM package, matching the structure used by sibling libraries
+- `scripts/generate-docs.sh` for local DocC generation, matching the pattern used by sibling libraries
 
 ### Removed
 
@@ -42,6 +43,7 @@ Released on 2026-05-30.
 ### Updated
 
 - Rewritten entirely in Swift — no Objective-C files remain
+- Example app rewritten from scratch in Swift, targeting **Discogs** OAuth 1.0a instead of Twitter — scene-based lifecycle, `Secrets.xcconfig`-based credential configuration, cross-references the root `CDOAuth1Kit.xcodeproj` via `Example/iOS Example.xcodeproj`
 - Removed dependency on AFNetworking — uses `URLSession` from Foundation directly
 - Deployment targets: iOS 13.0+ (was iOS 8.0+), macOS 10.15+ (new platform)
 - `CDOAuth1RequestSerializer` renamed to `CDOAuth1RequestSigner` (value type, no superclass)
@@ -63,6 +65,11 @@ Released on 2026-05-30.
 - iOS 7 / macOS 10.9 base64 preprocessor guards removed — baseline is now iOS 13 / macOS 10.15
 - `CFUUIDCreate` replaced with `UUID()` for nonce generation
 - `CDOAuth1Credential.initWithQueryString:` crash when query string has fewer than 2 components per `=`-split (defensive guard added)
+- Authorization header omitted `oauth_callback` and `oauth_verifier`, breaking the three-legged handshake
+- Authorization header values not percent-encoded per RFC 5849 §3.5.1
+- Redundant `oauthParameters()` calls in `CDOAuth1SessionManager`
+- RFC 5849 test vector in `CDOAuth1RequestSignerTests` did not actually assert on the computed HMAC output
+- `KeychainStore.write` silently swallowed `JSONEncoder` errors instead of propagating them
 
 ---
 

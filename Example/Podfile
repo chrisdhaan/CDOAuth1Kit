@@ -1,5 +1,0 @@
-use_frameworks!
-
-target 'CDOAuth1Kit_Example' do
-  pod 'CDOAuth1Kit', :path => '../'
-end

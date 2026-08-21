@@ -1,0 +1,89 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+`CDOAuth1Kit` adheres to [Semantic Versioning](https://semver.org/).
+
+## Table of Contents
+
+- [2.0.0](#200)
+- [1.0.0](#100)
+
+---
+
+## [2.0.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.0.0)
+
+Released on 2026-08-21.
+
+### Added
+
+- Swift Package Manager support (swift-tools-version 6.0, iOS 13.0+, macOS 10.15+)
+- `async throws` API on all three OAuth handshake methods
+- `CDOAuth1Error` Swift error enum replacing the C-style `CDOAuth1ErrorCode` typedef
+- `CryptoKit`-based HMAC-SHA1 signing replacing `CommonCrypto/CCHmac` directly
+- `PrivacyInfo.xcprivacy` privacy manifest for App Store compliance
+- `KeychainStore` internal type using `Codable` / `JSONEncoder` for credential serialization
+- Unit test suite using Swift Testing framework
+- GitHub Actions CI (iOS/macOS matrix builds, SPM test, SwiftLint, SwiftFormat, DocC build, CodeQL)
+- DocC documentation catalog (`Source/CDOAuth1Kit.docc/`) with landing page and Getting Started article
+- `swift-docc-plugin` dependency in `Package.swift` for `swift package generate-documentation`
+- GitHub Pages–hosted API documentation at `https://chrisdhaan.github.io/CDOAuth1Kit/`
+- `.swiftlint.yml` for semantic code quality enforcement
+- `.swiftformat` for mechanical code style enforcement
+- `CONTRIBUTING.md`, `CLAUDE.md`
+- `Documentation/ARCHITECTURE.md`, `Documentation/Usage.md`
+- `Documentation/CDOAuth1Kit 2.0 Migration Guide.md`
+- GitHub issue templates (bug report, feature request) and pull request template
+- `FUNDING.yml` for GitHub Sponsors
+- Root `CDOAuth1Kit.xcodeproj` / `CDOAuth1Kit.xcworkspace` — native multi-platform Xcode project (iOS, macOS targets/schemes) alongside the SPM package
+- `scripts/generate-docs.sh` for local DocC generation
+
+### Removed
+
+- CocoaPods support — `CDOAuth1Kit.podspec`, `Gemfile`/`Gemfile.lock`, and the CI CocoaPods lint job are gone. 1.0.0 remains the last version distributed via CocoaPods; see the 2.0 Migration Guide for switching to Swift Package Manager. Carthage and Git Submodules were never supported by this library.
+
+### Updated
+
+- Rewritten entirely in Swift — no Objective-C files remain
+- Example app rewritten from scratch in Swift, targeting **Discogs** OAuth 1.0a instead of Twitter — scene-based lifecycle, `Secrets.xcconfig`-based credential configuration, cross-references the root `CDOAuth1Kit.xcodeproj` via `Example/iOS Example.xcodeproj`
+- Removed dependency on AFNetworking — uses `URLSession` from Foundation directly
+- Deployment targets: iOS 13.0+ (was iOS 8.0+), macOS 10.15+ (new platform)
+- `CDOAuth1RequestSerializer` renamed to `CDOAuth1RequestSigner` (value type, no superclass)
+- `CDOAuth1SessionManager` now wraps `URLSession` directly instead of subclassing `AFHTTPSessionManager`
+- `CDOAuth1Credential` converted to Swift `struct` with `Codable` and `Sendable` conformances
+- Keychain storage now uses `JSONEncoder`/`JSONDecoder` instead of `NSKeyedArchiver`/`NSKeyedUnarchiver`
+- README restructured as navigation hub with modern badges
+- CHANGELOG reformatted to Semantic Versioning standard
+- Travis CI replaced with GitHub Actions
+- Documentation hosting migrated from Jazzy to DocC; `.jazzy.yaml` not created
+
+### Fixed
+
+- Deprecated `CFURLCreateStringByAddingPercentEscapes` replaced with `addingPercentEncoding(withAllowedCharacters:)`
+- Deprecated `CFURLCreateStringByReplacingPercentEscapesUsingEncoding` replaced with `removingPercentEncoding`
+- Deprecated `NSKeyedArchiver.archivedDataWithRootObject:` (deprecated iOS 12) replaced with `JSONEncoder`
+- Deprecated `NSKeyedUnarchiver.initForReadingWithData:` (deprecated iOS 12) replaced with `JSONDecoder`
+- Legacy class name mapping hack (`setClass:forClassName: "CDOAuthToken"`) eliminated
+- iOS 7 / macOS 10.9 base64 preprocessor guards removed — baseline is now iOS 13 / macOS 10.15
+- `CFUUIDCreate` replaced with `UUID()` for nonce generation
+- `CDOAuth1Credential.initWithQueryString:` crash when query string has fewer than 2 components per `=`-split (defensive guard added)
+- Authorization header omitted `oauth_callback` and `oauth_verifier`, breaking the three-legged handshake
+- Authorization header values not percent-encoded per RFC 5849 §3.5.1
+- Redundant `oauthParameters()` calls in `CDOAuth1SessionManager`
+- RFC 5849 test vector in `CDOAuth1RequestSignerTests` did not actually assert on the computed HMAC output
+- `KeychainStore.write` silently swallowed `JSONEncoder` errors instead of propagating them
+
+---
+
+## [1.0.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/1.0.0)
+
+Released on 2016-08-28.
+
+### Added
+- OAuth 1.0a credential management (`CDOAuth1Credential`)
+- OAuth request signing via HMAC-SHA1 (`CDOAuth1RequestSerializer`)
+- Full OAuth 1.0 three-legged handshake (`CDOAuth1SessionManager`)
+- Keychain-backed access token persistence
+- Request token / access token / token refresh flows
+- `CDOAuth1Helper` for callback URL detection
+- iOS 8.0+ support via CocoaPods
+
+---

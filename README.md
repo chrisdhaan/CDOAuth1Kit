@@ -38,7 +38,7 @@ Or in Xcode: File → Add Packages → Enter `https://github.com/chrisdhaan/CDOA
 
 ## Usage
 
-See [Documentation/Usage.md](Documentation/Usage.md) for comprehensive usage examples.
+See [Documentation/Usage.md](Documentation/Usage.md) for comprehensive usage examples, or browse the full [API documentation](https://chrisdhaan.github.io/CDOAuth1Kit/documentation/cdoauth1kit/).
 
 ## Example App
 

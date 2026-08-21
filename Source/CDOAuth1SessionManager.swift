@@ -75,7 +75,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let (data, _) = try await session.data(for: signedRequest)
+        let data = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -106,7 +106,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let (data, _) = try await session.data(for: signedRequest)
+        let data = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -136,7 +136,7 @@ public final class CDOAuth1SessionManager {
         request.httpMethod = method
 
         let signedRequest = try requestSigner.signed(request, parameters: params)
-        let (data, _) = try await session.data(for: signedRequest)
+        let data = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
         guard let credential = CDOAuth1Credential(queryString: queryString) else {
@@ -146,6 +146,43 @@ public final class CDOAuth1SessionManager {
         try requestSigner.saveAccessToken(credential)
         requestSigner.requestToken = nil
         return credential
+    }
+
+    // MARK: - Response Validation
+
+    private func performSigned(_ request: URLRequest) async throws -> Data {
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch let urlError as URLError {
+            throw CDOAuth1Error.networkError(urlError)
+        }
+        return try validated(data, response)
+    }
+
+    private func validated(_ data: Data, _ response: URLResponse) throws -> Data {
+        guard let httpResponse = response as? HTTPURLResponse else { return data }
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            var headers: [String: String] = [:]
+            for (key, value) in httpResponse.allHeaderFields {
+                if let key = key as? String, let value = value as? String {
+                    headers[canonicalizedHeaderName(key)] = value
+                }
+            }
+            throw CDOAuth1Error.httpError(statusCode: httpResponse.statusCode, headers: headers)
+        }
+        return data
+    }
+
+    /// HTTP header names are case-insensitive over the wire (and HTTP/2 lowercases
+    /// them by spec), but `HTTPURLResponse.allHeaderFields` preserves whatever case
+    /// the server sent. Normalizing to `Title-Case` here gives callers a predictable
+    /// key to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
+    private func canonicalizedHeaderName(_ name: String) -> String {
+        name.split(separator: "-", omittingEmptySubsequences: false)
+            .map { $0.isEmpty ? "" : $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
+            .joined(separator: "-")
     }
 }
 

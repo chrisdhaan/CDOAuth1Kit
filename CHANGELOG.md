@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 - `CDOAuth1Error.httpError(statusCode:headers:)`, `.networkError(URLError)`, `.decodingFailed`, and `.authorizationCancelled` cases ([#2](https://github.com/chrisdhaan/CDOAuth1Kit/issues/2))
 - `LocalizedError` conformance on `CDOAuth1Error`
+- `CDOAuth1SessionManager`'s three OAuth handshake methods now validate the HTTP status code of every response, throwing `.httpError(statusCode:headers:)` for non-2xx responses (header names normalized to `Title-Case` for predictable lookup) and `.networkError` when the underlying `URLSession` request fails (e.g. offline) ([#3](https://github.com/chrisdhaan/CDOAuth1Kit/issues/3))
 
 ### Deprecated
 

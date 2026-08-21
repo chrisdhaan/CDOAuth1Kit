@@ -55,9 +55,10 @@ CDOAuth1Kit/
 │       ├── Base.lproj/
 │       └── Info.plist
 ├── Documentation/
-│   ├── IMPLEMENTATION.md              # Full modernization plan
 │   ├── ARCHITECTURE.md                # Architecture overview
 │   └── Usage.md                       # Usage examples
+├── scripts/
+│   └── generate-docs.sh               # DocC build + GitHub Pages redirect/.nojekyll/404 fixups
 ├── Package.swift                      # SPM manifest (swift-tools-version 6.0)
 ├── .swiftlint.yml                     # SwiftLint config (line length 149/200)
 ├── .swiftformat                       # SwiftFormat config
@@ -146,12 +147,10 @@ CDOAuth1Kit uses **DocC** (not Jazzy) for documentation.
 ### Local build
 
 ```bash
-swift package --disable-sandbox generate-documentation \
-  --target CDOAuth1Kit \
-  --output-path docs \
-  --transform-for-static-hosting \
-  --hosting-base-path CDOAuth1Kit
+bash scripts/generate-docs.sh
 ```
+
+This runs the same `swift package generate-documentation` invocation CI uses, then restores the root `index.html` redirect DocC overwrites, and adds `.nojekyll` and `404.html` for GitHub Pages hosting. Matches the `scripts/generate-docs.sh` pattern used by `CDMarkdownKit`/`CDUntappdKit`/`CDYelpFusionKit`.
 
 The docs are hosted at: `https://chrisdhaan.github.io/CDOAuth1Kit/documentation/cdoauth1kit/`
 

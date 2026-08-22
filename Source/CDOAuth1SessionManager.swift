@@ -36,7 +36,7 @@ public final class CDOAuth1SessionManager {
     /// The path used to auto-refresh an expired access token before an authenticated
     /// `request(path:method:parameters:)` call goes out. Set this together with
     /// ``refreshAccessTokenMethod`` to opt in; leave both `nil` to require callers to
-    /// refresh manually (the pre-2.1.0 behavior).
+    /// refresh manually.
     public var refreshAccessTokenPath: String?
 
     /// The HTTP method used alongside ``refreshAccessTokenPath`` to auto-refresh an

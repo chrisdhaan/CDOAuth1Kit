@@ -29,6 +29,10 @@ CDOAuth1Kit provides:
 
 - ``CDOAuth1RequestSigner``
 
+### Browser-Based Authorization
+
+- ``CDOAuth1AuthSession``
+
 ### Credentials
 
 - ``CDOAuth1Credential``

@@ -80,7 +80,47 @@ func scene(
 }
 ```
 
+## Completing the Handshake with CDOAuth1AuthSession
+
+Instead of registering a URL scheme in Info.plist and intercepting the callback in `SceneDelegate` (see below), you can use `CDOAuth1AuthSession` to drive the entire browser-redirect step with `async`/`await`. The system manages the callback URL for the duration of the session, so no Info.plist registration or `SceneDelegate` handling is required:
+
+```swift
+import AuthenticationServices
+import CDOAuth1Kit
+
+func login(presentingWindow: ASPresentationAnchor) async throws {
+    // Step 1: Fetch a request token
+    let requestToken = try await manager.fetchRequestToken(
+        path: "request_token",
+        method: "POST",
+        callbackURL: URL(string: "yourappname://oauthCallback")!
+    )
+
+    // Step 2: Build the authorize URL and present it in a browser sheet
+    let authorizeURL = URL(string: "https://twitter.com/oauth/authorize?oauth_token=\(requestToken.token)")!
+    let callback = try await CDOAuth1AuthSession(presentationAnchor: presentingWindow)
+        .authorize(authorizationURL: authorizeURL, callbackScheme: "yourappname")
+
+    // Step 3: Extract the verifier and fetch the access token
+    let verifier = URLComponents(url: callback, resolvingAgainstBaseURL: false)?
+        .queryItems?.first(where: { $0.name == "oauth_verifier" })?.value
+    var verifiedRequestToken = requestToken
+    verifiedRequestToken.verifier = verifier
+
+    let accessToken = try await manager.fetchAccessToken(
+        path: "access_token",
+        method: "POST",
+        requestToken: verifiedRequestToken
+    )
+    print("Successfully authenticated! Access token: \(accessToken.token)")
+}
+```
+
+`presentingWindow` is your app's key `UIWindow`/`NSWindow` — `CDOAuth1AuthSession` never calls `UIApplication.shared`/`NSApplication.shared` to discover one itself, since doing so is unavailable when the framework is linked into an app extension. If the user cancels the browser sheet, `authorize(authorizationURL:callbackScheme:)` throws `CDOAuth1Error.authorizationCancelled`.
+
 ## Fetching a Request Token
+
+The manual alternative below registers a custom URL scheme and intercepts the callback in `SceneDelegate` yourself — use it if you need more control over the browser presentation than `CDOAuth1AuthSession` offers.
 
 The first step of OAuth 1.0a is obtaining a request token:
 

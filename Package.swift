@@ -60,7 +60,8 @@ let package = Package(
             linkerSettings: [
                 .linkedFramework("Foundation"),
                 .linkedFramework("Security"),
-                .linkedFramework("CryptoKit")
+                .linkedFramework("CryptoKit"),
+                .linkedFramework("AuthenticationServices")
             ]
         ),
         .testTarget(

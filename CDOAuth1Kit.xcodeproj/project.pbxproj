@@ -27,11 +27,14 @@
 		CD0A00000000000000000056 /* Dictionary+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000035 /* Dictionary+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000057 /* String+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000036 /* String+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000058 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000038 /* PrivacyInfo.xcprivacy */; };
+		CD0A00000000000000000060 /* CDOAuth1AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000059 /* CDOAuth1AuthSession.swift */; };
+		CD0A00000000000000000061 /* CDOAuth1AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000059 /* CDOAuth1AuthSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CD0A00000000000000000011 /* CDOAuth1Kit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDOAuth1Kit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0A00000000000000000020 /* CDOAuth1Kit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDOAuth1Kit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD0A00000000000000000059 /* CDOAuth1AuthSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1AuthSession.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000028 /* CDOAuth1Credential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1Credential.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000029 /* CDOAuth1Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1Error.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000030 /* CDOAuth1Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1Helper.swift; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 		CD0A00000000000000000003 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CD0A00000000000000000059 /* CDOAuth1AuthSession.swift */,
 				CD0A00000000000000000028 /* CDOAuth1Credential.swift */,
 				CD0A00000000000000000029 /* CDOAuth1Error.swift */,
 				CD0A00000000000000000030 /* CDOAuth1Helper.swift */,
@@ -234,6 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD0A00000000000000000060 /* CDOAuth1AuthSession.swift in Sources */,
 				CD0A00000000000000000039 /* CDOAuth1Credential.swift in Sources */,
 				CD0A00000000000000000040 /* CDOAuth1Error.swift in Sources */,
 				CD0A00000000000000000041 /* CDOAuth1Helper.swift in Sources */,
@@ -250,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD0A00000000000000000061 /* CDOAuth1AuthSession.swift in Sources */,
 				CD0A00000000000000000049 /* CDOAuth1Credential.swift in Sources */,
 				CD0A00000000000000000050 /* CDOAuth1Error.swift in Sources */,
 				CD0A00000000000000000051 /* CDOAuth1Helper.swift in Sources */,

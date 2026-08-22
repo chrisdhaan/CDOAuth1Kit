@@ -290,6 +290,68 @@ struct CDOAuth1SessionManagerTests {
         }
     }
 
+    @Test func requestAutoRefreshesExpiredTokenWhenRefreshConfigured() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorizeExpired(manager)
+
+        manager.refreshAccessTokenPath = "refresh_token"
+        manager.refreshAccessTokenMethod = "POST"
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "oauth_token=refreshed-tok&oauth_token_secret=refreshed-sec"
+        StubURLProtocol.error = nil
+        StubURLProtocol.lastRequest = nil
+
+        let (data, response) = try await manager.request(path: "resource", method: "GET")
+
+        #expect(response.statusCode == 200)
+        #expect(String(data: data, encoding: .utf8) == "oauth_token=refreshed-tok&oauth_token_secret=refreshed-sec")
+
+        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let authHeader = try #require(sentRequest.value(forHTTPHeaderField: "Authorization"))
+        #expect(authHeader.contains("oauth_token=\"refreshed-tok\""))
+    }
+
+    @Test func requestThrowsInvalidAccessTokenWhenExpiredAndRefreshNotConfigured() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorizeExpired(manager)
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch CDOAuth1Error.invalidAccessToken {
+            // expected
+        } catch {
+            Issue.record("Expected .invalidAccessToken, got \(error)")
+        }
+    }
+
+    @Test func requestPropagatesErrorWhenRefreshFails() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorizeExpired(manager)
+
+        manager.refreshAccessTokenPath = "refresh_token"
+        manager.refreshAccessTokenMethod = "POST"
+
+        StubURLProtocol.statusCode = 401
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == 401)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+    }
+
     @Test func requestSignsGivenParametersIntoAuthorizationHeader() async throws {
         let manager = try makeManager()
         defer { try? manager.deauthorize() }
@@ -390,6 +452,17 @@ struct CDOAuth1SessionManagerTests {
         StubURLProtocol.statusCode = 200
         StubURLProtocol.headers = nil
         StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec"
+        StubURLProtocol.error = nil
+
+        var requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")
+        requestToken.verifier = "verifier"
+        _ = try await manager.fetchAccessToken(path: "access_token", method: "POST", requestToken: requestToken)
+    }
+
+    private func authorizeExpired(_ manager: CDOAuth1SessionManager) async throws {
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec&oauth_token_duration=-100"
         StubURLProtocol.error = nil
 
         var requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")

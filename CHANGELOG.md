@@ -5,12 +5,19 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [2.1.0](#210)
 - [2.0.0](#200)
 - [1.0.0](#100)
 
 ---
 
 ## [Unreleased]
+
+---
+
+## [2.1.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.1.0)
+
+Released on 2026-08-23.
 
 ### Added
 
@@ -22,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1AuthSession` — an `async`/`await` wrapper around `ASWebAuthenticationSession` for completing the browser-redirect step of an OAuth 1.0a handshake, without writing custom `ASWebAuthenticationPresentationContextProviding` or callback-URL-interception boilerplate
 - `CDOAuth1SigningMethod` — selects the RFC 5849 §3.4 signature method (`.hmacSHA1`, `.rsaSHA1(privateKey:)`, or `.plaintext`) used by `CDOAuth1RequestSigner`/`CDOAuth1SessionManager`, defaulting to `.hmacSHA1`
 - `Combine` publisher equivalents of `CDOAuth1SessionManager`'s `async` APIs — `fetchRequestTokenPublisher(path:method:callbackURL:scope:)`, `fetchAccessTokenPublisher(path:method:requestToken:)`, `refreshAccessTokenPublisher(path:parameters:method:accessToken:)`, and `requestPublisher(path:method:parameters:)` — for codebases that haven't fully migrated to async/await
+- visionOS 1.0+ platform support — `Package.swift`, the native `CDOAuth1Kit.xcodeproj` (new `CDOAuth1Kit visionOS` target/scheme), and CI
 
 ### Changed
 

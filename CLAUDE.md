@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-CDOAuth1Kit is a pure-Swift, zero-dependency OAuth 1.0a authentication library for iOS and macOS. It handles the complete three-legged OAuth handshake, request signing with HMAC-SHA1 (via Apple's CryptoKit), and secure keychain-backed token persistence. The library uses modern async/await APIs and targets iOS 13.0+ and macOS 10.15+.
+CDOAuth1Kit is a pure-Swift, zero-dependency OAuth 1.0a authentication library for iOS, macOS, and visionOS. It handles the complete three-legged OAuth handshake, request signing with HMAC-SHA1 (via Apple's CryptoKit), and secure keychain-backed token persistence. The library uses modern async/await APIs and targets iOS 13.0+, macOS 10.15+, and visionOS 1.0+.
 
 **Key characteristics:**
 - No external dependencies (URLSession, Foundation, Security, CryptoKit only)
@@ -78,6 +78,7 @@ CDOAuth1Kit/
 |----------|-----------|-------|-----|
 | iOS      | 13.0+     | 5.3+  | ✅  |
 | macOS    | 10.15+    | 5.3+  | ✅  |
+| visionOS | 1.0+      | 5.3+  | ✅  |
 
 ## Architecture Summary
 
@@ -189,15 +190,19 @@ Located in `.github/workflows/ci.yml`. Runs on:
    - Runs on `macos-15` runners
    - Builds and tests for macOS 10.15+
 
-3. **SPM** — Runs `swift build` and `swift test`
+3. **visionOS** (5 Xcode versions)
+   - Runs on `macos-26`/`macos-15` runners
+   - Builds for visionOS 1.0+ (generic simulator destination; no dedicated test target)
 
-4. **SwiftLint** — Code style validation (line length warnings at 149, errors at 200)
+4. **SPM** — Runs `swift build` and `swift test`
 
-5. **SwiftFormat** — Code formatting check
+5. **SwiftLint** — Code style validation (line length warnings at 149, errors at 200)
 
-6. **DocC** — Builds documentation; fails on undocumented public symbols
+6. **SwiftFormat** — Code formatting check
 
-7. **CodeQL** — Security analysis
+7. **DocC** — Builds documentation; fails on undocumented public symbols
+
+8. **CodeQL** — Security analysis
 
 ## Code Style
 
@@ -221,8 +226,7 @@ Located in `.github/workflows/ci.yml`. Runs on:
 
 ## Known Issues / Tech Debt
 
-1. **visionOS excluded** — OAuth browser flows are technically possible on visionOS but deprioritized for v2.0.0; can be added as a follow-up
-2. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
+1. **Migration path** — Upgrading from v1.0.0 to v2.0.0 requires re-authentication (keychain format changed from NSKeyedArchiver to JSONEncoder)
 
 ## Common Tasks
 

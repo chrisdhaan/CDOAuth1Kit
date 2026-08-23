@@ -23,6 +23,10 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1SigningMethod` — selects the RFC 5849 §3.4 signature method (`.hmacSHA1`, `.rsaSHA1(privateKey:)`, or `.plaintext`) used by `CDOAuth1RequestSigner`/`CDOAuth1SessionManager`, defaulting to `.hmacSHA1`
 - `Combine` publisher equivalents of `CDOAuth1SessionManager`'s `async` APIs — `fetchRequestTokenPublisher(path:method:callbackURL:scope:)`, `fetchAccessTokenPublisher(path:method:requestToken:)`, `refreshAccessTokenPublisher(path:parameters:method:accessToken:)`, and `requestPublisher(path:method:parameters:)` — for codebases that haven't fully migrated to async/await
 
+### Changed
+
+- Example app's Discogs authorization flow migrated from manual `UIApplication.shared.open` + `SceneDelegate` callback-URL interception to `CDOAuth1AuthSession`, removing the `Notification.Name.cdoauth1kitAuthorizationCallback` round trip
+
 ### Deprecated
 
 - `CDOAuth1Error.invalidResponse` — use `.decodingFailed` instead. `CDOAuth1SessionManager`'s handshake methods now throw `.decodingFailed` when a response body can't be parsed into a credential.

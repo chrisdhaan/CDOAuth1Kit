@@ -25,6 +25,7 @@
 //  SOFTWARE.
 //
 
+import CDOAuth1Kit
 import UIKit
 
 class ViewController: UIViewController {
@@ -48,16 +49,6 @@ class ViewController: UIViewController {
         var requiresAuthorization: Bool {
             self != .authorize
         }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleAuthorizationCallback(_:)),
-            name: .cdoauth1kitAuthorizationCallback,
-            object: nil
-        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -128,10 +119,14 @@ extension ViewController: UITableViewDelegate {
 private extension ViewController {
 
     func authorize() {
+        guard let window = view.window else { return }
         Task {
             do {
-                let authorizeURL = try await CDOAuth1KitManager.shared.beginAuthorization()
-                await UIApplication.shared.open(authorizeURL)
+                try await CDOAuth1KitManager.shared.authorize(presentationAnchor: window)
+                tableView.reloadData()
+                presentAlert(title: "Authorized", message: "You're now authorized with Discogs.")
+            } catch CDOAuth1Error.authorizationCancelled {
+                // User dismissed the browser sheet; no alert needed.
             } catch {
                 presentAlert(title: "Request Failed", message: "\(error)")
             }
@@ -160,19 +155,6 @@ private extension ViewController {
             tableView.reloadData()
         } catch {
             presentAlert(title: "Deauthorize Failed", message: "\(error)")
-        }
-    }
-
-    @objc func handleAuthorizationCallback(_ notification: Notification) {
-        guard let url = notification.object as? URL else { return }
-        Task {
-            do {
-                try await CDOAuth1KitManager.shared.completeAuthorization(callbackURL: url)
-                tableView.reloadData()
-                presentAlert(title: "Authorized", message: "You're now authorized with Discogs.")
-            } catch {
-                presentAlert(title: "Authorization Failed", message: "\(error)")
-            }
         }
     }
 

@@ -25,6 +25,7 @@
 //  SOFTWARE.
 //
 
+import AuthenticationServices
 import CDOAuth1Kit
 import Foundation
 
@@ -33,6 +34,7 @@ final class CDOAuth1KitManager: NSObject {
 
     static let shared = CDOAuth1KitManager()
 
+    private static let callbackScheme = "cdoauth1kit"
     private static let callbackURL = URL(string: "cdoauth1kit://oauthCallback")!
     private static let userAgent = "CDOAuth1KitExample/1.0 +https://github.com/chrisdhaan/CDOAuth1Kit"
 
@@ -64,9 +66,13 @@ final class CDOAuth1KitManager: NSObject {
         )
     }
 
-    /// Fetches a request token and returns the Discogs authorize-page URL to open in the browser.
-    func beginAuthorization() async throws -> URL {
-        let requestToken = try await sessionManager.fetchRequestToken(
+    /// Drives the full three-legged handshake: fetches a request token, presents the Discogs
+    /// authorize page via `CDOAuth1AuthSession`, then exchanges the returned verifier for an
+    /// access token.
+    ///
+    /// - Parameter presentationAnchor: The window to present the browser sheet from.
+    func authorize(presentationAnchor: @autoclosure @escaping () -> ASPresentationAnchor) async throws {
+        var requestToken = try await sessionManager.fetchRequestToken(
             path: "request_token",
             method: "GET",
             callbackURL: Self.callbackURL
@@ -77,14 +83,12 @@ final class CDOAuth1KitManager: NSObject {
         guard let authorizeURL = components.url else {
             throw CDOAuth1Error.invalidResponse
         }
-        return authorizeURL
-    }
 
-    /// Exchanges the callback URL's query string for an access token.
-    func completeAuthorization(callbackURL url: URL) async throws {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let verifier = components.queryItems?.first(where: { $0.name == "oauth_verifier" })?.value,
-              var requestToken = sessionManager.requestSigner.requestToken else {
+        let callbackURL = try await CDOAuth1AuthSession(presentationAnchor: presentationAnchor())
+            .authorize(authorizationURL: authorizeURL, callbackScheme: Self.callbackScheme)
+
+        guard let callbackComponents = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false),
+              let verifier = callbackComponents.queryItems?.first(where: { $0.name == "oauth_verifier" })?.value else {
             throw CDOAuth1Error.invalidResponse
         }
         requestToken.verifier = verifier

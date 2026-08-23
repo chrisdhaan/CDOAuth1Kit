@@ -25,14 +25,7 @@
 //  SOFTWARE.
 //
 
-import CDOAuth1Kit
 import UIKit
-
-/// Posted when `scene(_:openURLContexts:)` receives the OAuth 1.0a callback URL.
-/// `ViewController` observes this to complete the access-token exchange.
-extension Notification.Name {
-    static let cdoauth1kitAuthorizationCallback = Notification.Name("CDOAuth1KitAuthorizationCallbackURL")
-}
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -46,23 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard scene is UIWindowScene else { return }
 
         // Window is configured by the storyboard's UISceneStoryboardFile entry point.
-        // Cold-launch via the OAuth callback URL is not supported by this demo —
-        // the app must already be running (in the background) when Discogs redirects back.
-    }
-
-    func scene(
-        _ scene: UIScene,
-        openURLContexts URLContexts: Set<UIOpenURLContext>
-    ) {
-        for urlContext in URLContexts {
-            let url = urlContext.url
-            if CDOAuth1Helper.isAuthorizationCallbackURL(
-                url,
-                scheme: "cdoauth1kit",
-                host: "oauthCallback"
-            ) {
-                NotificationCenter.default.post(name: .cdoauth1kitAuthorizationCallback, object: url)
-            }
-        }
+        // The OAuth callback URL is intercepted directly by ASWebAuthenticationSession
+        // (via CDOAuth1AuthSession) and never reaches this scene delegate.
     }
 }

@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1SessionManager.refreshAccessTokenPath`/`.refreshAccessTokenMethod` — when both are set, `request(path:method:parameters:)` automatically refreshes an expired access token before signing the outgoing request, instead of requiring callers to check `isExpired`/call `refreshAccessToken()` themselves
 - `CDOAuth1AuthSession` — an `async`/`await` wrapper around `ASWebAuthenticationSession` for completing the browser-redirect step of an OAuth 1.0a handshake, without writing custom `ASWebAuthenticationPresentationContextProviding` or callback-URL-interception boilerplate
 - `CDOAuth1SigningMethod` — selects the RFC 5849 §3.4 signature method (`.hmacSHA1`, `.rsaSHA1(privateKey:)`, or `.plaintext`) used by `CDOAuth1RequestSigner`/`CDOAuth1SessionManager`, defaulting to `.hmacSHA1`
+- `Combine` publisher equivalents of `CDOAuth1SessionManager`'s `async` APIs — `fetchRequestTokenPublisher(path:method:callbackURL:scope:)`, `fetchAccessTokenPublisher(path:method:requestToken:)`, `refreshAccessTokenPublisher(path:parameters:method:accessToken:)`, and `requestPublisher(path:method:parameters:)` — for codebases that haven't fully migrated to async/await
 
 ### Deprecated
 

@@ -38,9 +38,9 @@ class ViewController: UIViewController {
 
         var title: String {
             switch self {
-            case .authorize: return "Authorize with Discogs"
-            case .fetchIdentity: return "Fetch My Identity"
-            case .deauthorize: return "Deauthorize"
+            case .authorize: "Authorize with Discogs"
+            case .fetchIdentity: "Fetch My Identity"
+            case .deauthorize: "Deauthorize"
             }
         }
 
@@ -103,7 +103,7 @@ extension ViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let row = Row(rawValue: indexPath.row) else { return }
 
-        if row.requiresAuthorization && !CDOAuth1KitManager.shared.isAuthorized {
+        if row.requiresAuthorization, !CDOAuth1KitManager.shared.isAuthorized {
             presentAlert(title: "Not Authorized", message: "Tap \"Authorize with Discogs\" first.")
             return
         }

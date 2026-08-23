@@ -25,8 +25,8 @@
 //  SOFTWARE.
 //
 
-import UIKit
 import CDOAuth1Kit
+import UIKit
 
 /// Posted when `scene(_:openURLContexts:)` receives the OAuth 1.0a callback URL.
 /// `ViewController` observes this to complete the access-token exchange.

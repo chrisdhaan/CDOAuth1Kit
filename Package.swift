@@ -61,7 +61,8 @@ let package = Package(
                 .linkedFramework("Foundation"),
                 .linkedFramework("Security"),
                 .linkedFramework("CryptoKit"),
-                .linkedFramework("AuthenticationServices")
+                .linkedFramework("AuthenticationServices"),
+                .linkedFramework("Combine")
             ]
         ),
         .testTarget(

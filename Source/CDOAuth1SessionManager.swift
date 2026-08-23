@@ -43,6 +43,15 @@ public final class CDOAuth1SessionManager {
     /// expired access token before an authenticated `request(path:method:parameters:)` call.
     public var refreshAccessTokenMethod: String?
 
+    /// Opt-in automatic retry with exponential backoff for
+    /// `request(path:method:parameters:)`. Only applies to idempotent HTTP methods
+    /// (`GET`, `HEAD`, `OPTIONS`); leave `nil` (the default) to never retry. Only
+    /// `.httpError` responses matching ``CDOAuth1RetryConfiguration/retryableStatusCodes``
+    /// are retried — network-transport failures (e.g. timeouts, `.networkError`) are not.
+    public var retryConfiguration: CDOAuth1RetryConfiguration?
+
+    private static let idempotentMethods: Set<String> = ["GET", "HEAD", "OPTIONS"]
+
     public var isAuthorized: Bool {
         guard let token = requestSigner.accessToken else { return false }
         return !token.isExpired
@@ -174,8 +183,9 @@ public final class CDOAuth1SessionManager {
     /// - Returns: The response body and the `HTTPURLResponse`.
     /// - Throws: `CDOAuth1Error.invalidAccessToken` if not authorized (or the access token
     ///   is expired and ``refreshAccessTokenPath``/``refreshAccessTokenMethod`` aren't set),
-    ///   whatever error the auto-refresh attempt throws, `.httpError` for a non-2xx response,
-    ///   or `.networkError` if the underlying request fails.
+    ///   whatever error the auto-refresh attempt throws, `.httpError` for a non-2xx response
+    ///   (after exhausting any retries configured via ``retryConfiguration``), or
+    ///   `.networkError` if the underlying request fails.
     public func request(path: String,
                         method: String,
                         parameters: [String: String] = [:]) async throws -> (Data, HTTPURLResponse) {
@@ -190,6 +200,28 @@ public final class CDOAuth1SessionManager {
             _ = try await refreshAccessToken(path: refreshPath, method: refreshMethod, accessToken: token)
         }
 
+        let retryConfig = Self.idempotentMethods.contains(method.uppercased()) ? retryConfiguration : nil
+        var attempt = 0
+
+        while true {
+            let signedRequest = try signedRequest(path: path, method: method, parameters: parameters)
+            do {
+                return try await performSigned(signedRequest)
+            } catch let error as CDOAuth1Error {
+                guard let retryConfig,
+                      case let .httpError(statusCode, headers) = error,
+                      retryConfig.retryableStatusCodes.contains(statusCode),
+                      attempt < retryConfig.maxRetries else {
+                    throw error
+                }
+                let delay = retryConfig.retryDelay(forAttempt: attempt, responseHeaders: headers)
+                try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                attempt += 1
+            }
+        }
+    }
+
+    private func signedRequest(path: String, method: String, parameters: [String: String]) throws -> URLRequest {
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
         var request: URLRequest
         switch method.uppercased() {
@@ -208,9 +240,7 @@ public final class CDOAuth1SessionManager {
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             }
         }
-
-        let signedRequest = try requestSigner.signed(request, parameters: parameters)
-        return try await performSigned(signedRequest)
+        return try requestSigner.signed(request, parameters: parameters)
     }
 
     private func sortedQueryItems(from parameters: [String: String]) -> [URLQueryItem] {

@@ -46,6 +46,9 @@
 		CD0A00000000000000000080 /* Dictionary+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000035 /* Dictionary+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000081 /* String+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000036 /* String+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000082 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000038 /* PrivacyInfo.xcprivacy */; };
+		CD0A00000000000000000092 /* CDOAuth1RetryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */; };
+		CD0A00000000000000000093 /* CDOAuth1RetryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */; };
+		CD0A00000000000000000094 /* CDOAuth1RetryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +69,7 @@
 		CD0A00000000000000000038 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SigningMethod.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000065 /* CDOAuth1SessionManagerPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SessionManagerPublisher.swift; sourceTree = "<group>"; };
+		CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1RetryConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,7 @@
 				CD0A00000000000000000031 /* CDOAuth1Kit.swift */,
 				CD0A00000000000000000032 /* CDOAuth1RequestSigner.swift */,
 				CD0A00000000000000000033 /* CDOAuth1SessionManager.swift */,
+				CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */,
 				CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */,
 				CD0A00000000000000000034 /* KeychainStore.swift */,
 				CD0A00000000000000000004 /* Extensions */,
@@ -321,6 +326,7 @@
 				CD0A00000000000000000042 /* CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000043 /* CDOAuth1RequestSigner.swift in Sources */,
 				CD0A00000000000000000044 /* CDOAuth1SessionManager.swift in Sources */,
+				CD0A00000000000000000092 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000063 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000066 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000045 /* KeychainStore.swift in Sources */,
@@ -340,6 +346,7 @@
 				CD0A00000000000000000052 /* CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000053 /* CDOAuth1RequestSigner.swift in Sources */,
 				CD0A00000000000000000054 /* CDOAuth1SessionManager.swift in Sources */,
+				CD0A00000000000000000093 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000064 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000067 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000055 /* KeychainStore.swift in Sources */,
@@ -359,6 +366,7 @@
 				CD0A00000000000000000074 /* CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000075 /* CDOAuth1RequestSigner.swift in Sources */,
 				CD0A00000000000000000076 /* CDOAuth1SessionManager.swift in Sources */,
+				CD0A00000000000000000094 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000077 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000078 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000079 /* KeychainStore.swift in Sources */,

@@ -411,6 +411,121 @@ struct CDOAuth1SessionManagerTests {
         #expect(String(data: body, encoding: .utf8) == "baz=qux&foo=bar")
     }
 
+    // MARK: - Retry
+
+    @Test func requestRetriesOnRetryableStatusCodeThenSucceeds() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
+
+        StubURLProtocol.statusCode = 503
+        StubURLProtocol.statusCodeQueue = [503, 503, 200]
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        let (data, response) = try await manager.request(path: "resource", method: "GET")
+
+        #expect(response.statusCode == 200)
+        #expect(String(data: data, encoding: .utf8) == "ok")
+        #expect(StubURLProtocol.requestCount == 3)
+    }
+
+    @Test func requestThrowsAfterExhaustingRetries() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 2, baseDelay: 0.01, maxDelay: 0.05)
+
+        StubURLProtocol.statusCode = 503
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == 503)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+        #expect(StubURLProtocol.requestCount == 3)
+    }
+
+    @Test func requestDoesNotRetryNonIdempotentMethod() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
+
+        StubURLProtocol.statusCode = 503
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        do {
+            _ = try await manager.request(path: "resource", method: "POST")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == 503)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+        #expect(StubURLProtocol.requestCount == 1)
+    }
+
+    @Test func requestDoesNotRetryNonRetryableStatusCode() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
+
+        StubURLProtocol.statusCode = 404
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == 404)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+        #expect(StubURLProtocol.requestCount == 1)
+    }
+
+    @Test func requestRetryDelayHonorsRetryAfterHeader() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 1, baseDelay: 5, maxDelay: 10)
+
+        StubURLProtocol.statusCode = 429
+        StubURLProtocol.statusCodeQueue = [429, 200]
+        StubURLProtocol.headers = ["Retry-After": "0"]
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        let start = Date()
+        let (_, response) = try await manager.request(path: "resource", method: "GET")
+        let elapsed = Date().timeIntervalSince(start)
+
+        #expect(response.statusCode == 200)
+        #expect(elapsed < 2.0)
+    }
+
     /// `URLSession` moves `httpBody` into `httpBodyStream` for requests dispatched to a
     /// custom `URLProtocol`, so the body must be read back from the stream in tests.
     private func readBody(from request: URLRequest) -> Data? {
@@ -450,6 +565,7 @@ struct CDOAuth1SessionManagerTests {
 
     private func authorize(_ manager: CDOAuth1SessionManager) async throws {
         StubURLProtocol.statusCode = 200
+        StubURLProtocol.statusCodeQueue = []
         StubURLProtocol.headers = nil
         StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec"
         StubURLProtocol.error = nil
@@ -461,6 +577,7 @@ struct CDOAuth1SessionManagerTests {
 
     private func authorizeExpired(_ manager: CDOAuth1SessionManager) async throws {
         StubURLProtocol.statusCode = 200
+        StubURLProtocol.statusCodeQueue = []
         StubURLProtocol.headers = nil
         StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec&oauth_token_duration=-100"
         StubURLProtocol.error = nil
@@ -484,10 +601,18 @@ struct CDOAuth1SessionManagerTests {
 
 private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     static var statusCode = 200
+    /// When non-empty, each request pops the next status code from the front of this
+    /// queue instead of using `statusCode` — lets a single test simulate a transient
+    /// failure followed by a success across multiple retry attempts. Reset (along with
+    /// `requestCount`) inside `authorize()`/`authorizeExpired()`, which nearly every
+    /// `request()`-exercising test already calls first — any new test on that path
+    /// should route through one of those helpers too, to avoid leftover state.
+    static var statusCodeQueue: [Int] = []
     static var headers: [String: String]?
     static var responseBody = ""
     static var error: URLError?
     static var lastRequest: URLRequest?
+    static var requestCount = 0
 
     override class func canInit(with request: URLRequest) -> Bool {
         true
@@ -498,13 +623,15 @@ private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
 
     override func startLoading() {
         Self.lastRequest = request
+        Self.requestCount += 1
         if let error = Self.error {
             client?.urlProtocol(self, didFailWithError: error)
             return
         }
+        let statusCode = Self.statusCodeQueue.isEmpty ? Self.statusCode : Self.statusCodeQueue.removeFirst()
         let response = HTTPURLResponse(
             url: request.url!,
-            statusCode: Self.statusCode,
+            statusCode: statusCode,
             httpVersion: nil,
             headerFields: Self.headers
         )!

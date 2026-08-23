@@ -46,6 +46,9 @@ public enum CDOAuth1Error: Error, Sendable {
 
     /// The user cancelled the browser-based authorization flow.
     case authorizationCancelled
+
+    /// RSA-SHA1 request signing failed (e.g. an invalid or mismatched private key).
+    case signingFailed(String)
 }
 
 extension CDOAuth1Error: LocalizedError {
@@ -67,6 +70,8 @@ extension CDOAuth1Error: LocalizedError {
             "Failed to decode the OAuth provider's response."
         case .authorizationCancelled:
             "The user cancelled the authorization flow."
+        case let .signingFailed(message):
+            "Failed to sign the OAuth request: \(message)"
         }
     }
 }

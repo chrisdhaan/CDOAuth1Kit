@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- `CDOAuth1RetryConfiguration` and `CDOAuth1SessionManager.retryConfiguration` — opt-in automatic retry with exponential backoff for `request(path:method:parameters:)`, restricted to idempotent HTTP methods (`GET`/`HEAD`/`OPTIONS`). Retries on a configurable set of HTTP status codes (default `429`, `500`, `502`, `503`, `504`), honoring a `Retry-After` response header when present.
+
 ---
 
 ## [2.1.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.1.0)

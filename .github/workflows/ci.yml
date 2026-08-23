@@ -66,6 +66,44 @@ jobs:
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDOAuth1Kit.xcodeproj" -scheme "CDOAuth1Kit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
 
+  visionOS:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.5.app/Contents/Developer
+            name: "visionOS (Xcode 26.5)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
+            name: "visionOS (Xcode 26.4.1)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.3.app/Contents/Developer
+            name: "visionOS (Xcode 26.3)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.2.app/Contents/Developer
+            name: "visionOS (Xcode 26.2)"
+          - runner: macos-15
+            xcode: /Applications/Xcode_16.4.app/Contents/Developer
+            name: "visionOS (Xcode 16.4)"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDOAuth1Kit.xcodeproj" -scheme "CDOAuth1Kit visionOS" -destination "generic/platform=visionOS Simulator" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDOAuth1Kit.xcodeproj" -scheme "CDOAuth1Kit visionOS" -destination "generic/platform=visionOS Simulator" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
   macOS:
     name: Test ${{ matrix.name }}
     runs-on: ${{ matrix.runner }}

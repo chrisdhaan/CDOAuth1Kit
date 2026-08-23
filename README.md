@@ -7,7 +7,7 @@
 
 ---
 
-A Swift OAuth 1.0a library for iOS and macOS, with no external dependencies.
+A Swift OAuth 1.0a library for iOS, macOS, and visionOS, with no external dependencies.
 
 ## Features
 
@@ -23,6 +23,7 @@ A Swift OAuth 1.0a library for iOS and macOS, with no external dependencies.
 |----------|-----------|-------|--------------|
 | iOS      | 13.0+     | 5.3+  | SPM          |
 | macOS    | 10.15+    | 5.3+  | SPM          |
+| visionOS | 1.0+      | 5.3+  | SPM          |
 
 ## Installation
 

@@ -27,22 +27,26 @@
 
 import CryptoKit
 import Foundation
+import Security
 
 public struct CDOAuth1RequestSigner {
 
     public let service: String
     public let consumerKey: String
     public let consumerSecret: String
+    public let signingMethod: CDOAuth1SigningMethod
 
     public var requestToken: CDOAuth1Credential?
     public private(set) var accessToken: CDOAuth1Credential?
 
     public init(service: String,
                 consumerKey: String,
-                consumerSecret: String) {
+                consumerSecret: String,
+                signingMethod: CDOAuth1SigningMethod = .hmacSHA1) {
         self.service = service
         self.consumerKey = consumerKey
         self.consumerSecret = consumerSecret
+        self.signingMethod = signingMethod
         self.accessToken = KeychainStore.read(service: service)
     }
 
@@ -65,7 +69,7 @@ public struct CDOAuth1RequestSigner {
         params["oauth_version"] = "1.0"
         params["oauth_consumer_key"] = consumerKey
         params["oauth_timestamp"] = String(Int(Date().timeIntervalSince1970))
-        params["oauth_signature_method"] = "HMAC-SHA1"
+        params["oauth_signature_method"] = signingMethod.rfc5849Name
         params["oauth_nonce"] = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         return params
     }
@@ -107,8 +111,23 @@ public struct CDOAuth1RequestSigner {
                            urlString: String,
                            parameters: [String: String]) throws -> String {
         let tokenSecret = (accessToken ?? requestToken)?.secret ?? ""
-        let signingKey = "\(consumerSecret.oauthPercentEncoded())&\(tokenSecret.oauthPercentEncoded())"
 
+        switch signingMethod {
+        case .hmacSHA1:
+            let baseString = signatureBaseString(method: method, urlString: urlString, parameters: parameters)
+            let signingKey = "\(consumerSecret.oauthPercentEncoded())&\(tokenSecret.oauthPercentEncoded())"
+            return try hmacSHA1(message: baseString, key: signingKey)
+        case let .rsaSHA1(privateKey):
+            let baseString = signatureBaseString(method: method, urlString: urlString, parameters: parameters)
+            return try rsaSHA1(message: baseString, privateKey: privateKey)
+        case .plaintext:
+            return "\(consumerSecret.oauthPercentEncoded())&\(tokenSecret.oauthPercentEncoded())"
+        }
+    }
+
+    private func signatureBaseString(method: String,
+                                     urlString: String,
+                                     parameters: [String: String]) -> String {
         let baseURL = urlString.components(separatedBy: "?")[0].oauthPercentEncoded()
         let sortedParams = parameters.sorted { $0.key < $1.key }
         let paramString = sortedParams
@@ -116,9 +135,7 @@ public struct CDOAuth1RequestSigner {
             .joined(separator: "&")
             .oauthPercentEncoded()
 
-        let baseString = "\(method.uppercased())&\(baseURL)&\(paramString)"
-
-        return try hmacSHA1(message: baseString, key: signingKey)
+        return "\(method.uppercased())&\(baseURL)&\(paramString)"
     }
 
     func hmacSHA1(message: String, key: String) throws -> String {
@@ -127,6 +144,21 @@ public struct CDOAuth1RequestSigner {
         let symmetricKey = SymmetricKey(data: keyData)
         let mac = HMAC<Insecure.SHA1>.authenticationCode(for: messageData, using: symmetricKey)
         return Data(mac).base64EncodedString()
+    }
+
+    private func rsaSHA1(message: String, privateKey: SecKey) throws -> String {
+        let messageData = Data(message.utf8)
+        var error: Unmanaged<CFError>?
+        guard let signature = SecKeyCreateSignature(
+            privateKey,
+            .rsaSignatureMessagePKCS1v15SHA1,
+            messageData as CFData,
+            &error
+        ) as Data? else {
+            let description = error?.takeRetainedValue().localizedDescription ?? "unknown error"
+            throw CDOAuth1Error.signingFailed(description)
+        }
+        return signature.base64EncodedString()
     }
 
     private func authorizationHeader(from params: [String: String]) -> String {

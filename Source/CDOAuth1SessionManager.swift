@@ -51,13 +51,15 @@ public final class CDOAuth1SessionManager {
     public init(baseURL: URL,
                 consumerKey: String,
                 consumerSecret: String,
+                signingMethod: CDOAuth1SigningMethod = .hmacSHA1,
                 session: URLSession = .shared) {
         self.baseURL = baseURL
         self.session = session
         self.requestSigner = CDOAuth1RequestSigner(
             service: baseURL.host ?? baseURL.absoluteString,
             consumerKey: consumerKey,
-            consumerSecret: consumerSecret
+            consumerSecret: consumerSecret,
+            signingMethod: signingMethod
         )
     }
 

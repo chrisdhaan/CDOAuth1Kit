@@ -84,4 +84,15 @@ struct CDOAuth1ErrorTests {
             #expect(error.errorDescription?.isEmpty == false)
         }
     }
+
+    @Test func signingFailedCarriesUnderlyingDescription() {
+        let error = CDOAuth1Error.signingFailed("key size mismatch")
+
+        guard case let .signingFailed(message) = error else {
+            Issue.record("Expected .signingFailed")
+            return
+        }
+        #expect(message == "key size mismatch")
+        #expect(error.errorDescription?.contains("key size mismatch") == true)
+    }
 }

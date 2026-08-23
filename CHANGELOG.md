@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1SessionManager.request(path:method:parameters:)` — makes a signed, authenticated API request with the current access token in a single call, returning `(Data, HTTPURLResponse)`. Parameters are appended as URL query items for `GET`/`HEAD`/`DELETE` and as an `application/x-www-form-urlencoded` body otherwise, and are included in the OAuth signature either way.
 - `CDOAuth1SessionManager.refreshAccessTokenPath`/`.refreshAccessTokenMethod` — when both are set, `request(path:method:parameters:)` automatically refreshes an expired access token before signing the outgoing request, instead of requiring callers to check `isExpired`/call `refreshAccessToken()` themselves
 - `CDOAuth1AuthSession` — an `async`/`await` wrapper around `ASWebAuthenticationSession` for completing the browser-redirect step of an OAuth 1.0a handshake, without writing custom `ASWebAuthenticationPresentationContextProviding` or callback-URL-interception boilerplate
+- `CDOAuth1SigningMethod` — selects the RFC 5849 §3.4 signature method (`.hmacSHA1`, `.rsaSHA1(privateKey:)`, or `.plaintext`) used by `CDOAuth1RequestSigner`/`CDOAuth1SessionManager`, defaulting to `.hmacSHA1`
 
 ### Deprecated
 

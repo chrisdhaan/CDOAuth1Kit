@@ -526,6 +526,93 @@ struct CDOAuth1SessionManagerTests {
         #expect(elapsed < 2.0)
     }
 
+    // MARK: - Event Monitor & Request Adapter
+
+    @Test func requestAdapterMutatesOutgoingRequest() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.requestAdapters = [HeaderInjectingAdapter(name: "X-Test", value: "adapted")]
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.lastRequest = nil
+
+        _ = try await manager.request(path: "resource", method: "GET")
+
+        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        #expect(sentRequest.value(forHTTPHeaderField: "X-Test") == "adapted")
+    }
+
+    @Test func eventMonitorReceivesWillStartAndDidSucceedOnSuccess() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        let monitor = RecordingEventMonitor()
+        manager.eventMonitors = [monitor]
+
+        StubURLProtocol.statusCode = 200
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+
+        _ = try await manager.request(path: "resource", method: "GET")
+
+        #expect(monitor.willStartCount == 1)
+        #expect(monitor.didSucceedResponses.map(\.statusCode) == [200])
+    }
+
+    @Test func eventMonitorReceivesDidFailOnNonRetriedFailure() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        let monitor = RecordingEventMonitor()
+        manager.eventMonitors = [monitor]
+
+        StubURLProtocol.statusCode = 404
+        StubURLProtocol.statusCodeQueue = []
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = ""
+        StubURLProtocol.error = nil
+
+        do {
+            _ = try await manager.request(path: "resource", method: "GET")
+            Issue.record("Expected request to throw")
+        } catch let CDOAuth1Error.httpError(code, _) {
+            #expect(code == 404)
+        } catch {
+            Issue.record("Expected .httpError, got \(error)")
+        }
+
+        #expect(monitor.didFailErrors.count == 1)
+        #expect(monitor.willRetryAttempts.isEmpty)
+    }
+
+    @Test func eventMonitorReceivesWillRetryWithAttemptAndDelay() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 2, baseDelay: 0.01, maxDelay: 0.05)
+        let monitor = RecordingEventMonitor()
+        manager.eventMonitors = [monitor]
+
+        StubURLProtocol.statusCode = 503
+        StubURLProtocol.statusCodeQueue = [503, 200]
+        StubURLProtocol.headers = nil
+        StubURLProtocol.responseBody = "ok"
+        StubURLProtocol.error = nil
+        StubURLProtocol.requestCount = 0
+
+        _ = try await manager.request(path: "resource", method: "GET")
+
+        #expect(monitor.willRetryAttempts.map(\.attempt) == [0])
+        #expect(monitor.didSucceedResponses.map(\.statusCode) == [200])
+    }
+
     /// `URLSession` moves `httpBody` into `httpBodyStream` for requests dispatched to a
     /// custom `URLProtocol`, so the body must be read back from the stream in tests.
     private func readBody(from request: URLRequest) -> Data? {
@@ -596,6 +683,36 @@ struct CDOAuth1SessionManagerTests {
             consumerSecret: "secret",
             session: URLSession(configuration: configuration)
         )
+    }
+}
+
+private struct HeaderInjectingAdapter: CDOAuth1RequestAdapter {
+    let name: String
+    let value: String
+    func adapt(_ request: URLRequest) -> URLRequest {
+        var request = request
+        request.setValue(value, forHTTPHeaderField: name)
+        return request
+    }
+}
+
+private final class RecordingEventMonitor: CDOAuth1EventMonitor, @unchecked Sendable {
+    private(set) var willStartCount = 0
+    private(set) var didSucceedResponses: [HTTPURLResponse] = []
+    private(set) var didFailErrors: [any Error] = []
+    private(set) var willRetryAttempts: [(attempt: Int, delay: TimeInterval)] = []
+
+    func requestWillStart(_ request: URLRequest) {
+        willStartCount += 1
+    }
+    func requestDidSucceed(_ request: URLRequest, response: HTTPURLResponse) {
+        didSucceedResponses.append(response)
+    }
+    func requestDidFail(_ request: URLRequest, error: any Error) {
+        didFailErrors.append(error)
+    }
+    func requestWillRetry(_ request: URLRequest, attempt: Int, delay: TimeInterval) {
+        willRetryAttempts.append((attempt, delay))
     }
 }
 

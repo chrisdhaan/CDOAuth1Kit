@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- `CDOAuth1SessionManager` now conforms to `Sendable`. Its OAuth token state and its opt-in configuration (`refreshAccessTokenPath`/`refreshAccessTokenMethod`, `retryConfiguration`, `requestAdapters`, `eventMonitors`) are each serialized behind an internal lock, so concurrent calls or concurrent configuration changes (e.g. two overlapping `fetchRequestToken` calls, or setting `eventMonitors` while a request is in flight) can no longer race; the public API is unchanged, including `isAuthorized` and `deauthorize()`, which remain synchronous.
+
 ---
 
 ## [2.2.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.2.0)

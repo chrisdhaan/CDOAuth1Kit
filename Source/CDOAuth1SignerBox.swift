@@ -1,5 +1,5 @@
 //
-//  String+CDOAuth1Kit.swift
+//  CDOAuth1SignerBox.swift
 //  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
@@ -27,27 +27,27 @@
 
 import Foundation
 
-extension String {
+/// Serializes access to a `CDOAuth1RequestSigner` so concurrent `CDOAuth1SessionManager`
+/// calls can't race on its mutable `requestToken`/`accessToken` state. A lock (rather than
+/// an `actor`) keeps `mutate`/`read` synchronous, which lets `CDOAuth1SessionManager`'s
+/// existing synchronous API (`isAuthorized`, `deauthorize()`) stay synchronous.
+final class CDOAuth1SignerBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var signer: CDOAuth1RequestSigner
 
-    /// RFC 5849 §3.6 percent encoding — encodes everything except unreserved characters.
-    func oauthPercentEncoded() -> String {
-        var allowed = CharacterSet.alphanumerics
-        allowed.insert(charactersIn: "-._~")
-        return addingPercentEncoding(withAllowedCharacters: allowed) ?? self
+    init(signer: CDOAuth1RequestSigner) {
+        self.signer = signer
     }
 
-    func oauthPercentDecoded() -> String {
-        removingPercentEncoding ?? self
+    func mutate<T>(_ body: (inout CDOAuth1RequestSigner) throws -> T) rethrows -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return try body(&signer)
     }
 
-    /// `HTTPURLResponse.allHeaderFields` preserves whatever case the server sent (HTTP/2
-    /// lowercases by spec); normalizing to `Title-Case` gives callers a predictable key
-    /// to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
-    func canonicalizedHTTPHeaderName() -> String {
-        split(separator: "-", omittingEmptySubsequences: false)
-            .map { $0.isEmpty ? "" : $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
-            .joined(separator: "-")
+    func read<T>(_ body: (CDOAuth1RequestSigner) throws -> T) rethrows -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return try body(signer)
     }
-
-    var nilIfEmpty: String? { isEmpty ? nil : self }
 }

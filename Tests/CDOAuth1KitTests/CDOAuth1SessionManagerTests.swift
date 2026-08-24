@@ -25,6 +25,7 @@
 //  SOFTWARE.
 //
 
+import CDOAuth1KitTesting
 import Foundation
 import Testing
 @testable import CDOAuth1Kit
@@ -44,10 +45,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchRequestTokenThrowsDecodingFailedOnMalformedResponse() async throws {
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "not=a&valid=credential"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "not=a&valid=credential"
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
 
@@ -66,10 +67,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchRequestTokenSucceedsOn200() async throws {
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "oauth_token=abc&oauth_token_secret=def"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "oauth_token=abc&oauth_token_secret=def"
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
 
@@ -84,10 +85,10 @@ struct CDOAuth1SessionManagerTests {
 
     @Test(arguments: [401, 403, 500, 503])
     func fetchRequestTokenThrowsHTTPErrorOnNon2xx(statusCode: Int) async throws {
-        StubURLProtocol.statusCode = statusCode
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = statusCode
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
 
@@ -106,10 +107,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchRequestTokenHTTPErrorCarriesRetryAfterHeader() async throws {
-        StubURLProtocol.statusCode = 429
-        StubURLProtocol.headers = ["Retry-After": "120"]
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 429
+        CDOAuth1MockURLProtocol.headers = ["Retry-After": "120"]
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
 
@@ -129,10 +130,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchRequestTokenHTTPErrorCanonicalizesLowercaseHeaderName() async throws {
-        StubURLProtocol.statusCode = 429
-        StubURLProtocol.headers = ["retry-after": "120"]
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 429
+        CDOAuth1MockURLProtocol.headers = ["retry-after": "120"]
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
 
@@ -151,10 +152,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchAccessTokenThrowsHTTPErrorOnNon2xx() async throws {
-        StubURLProtocol.statusCode = 500
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 500
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
         let requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")
@@ -176,10 +177,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func refreshAccessTokenThrowsHTTPErrorOnNon2xx() async throws {
-        StubURLProtocol.statusCode = 401
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 401
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         let manager = try makeManager()
         let accessToken = CDOAuth1Credential(token: "access-token", secret: "access-secret")
@@ -199,10 +200,10 @@ struct CDOAuth1SessionManagerTests {
     }
 
     @Test func fetchRequestTokenThrowsNetworkErrorWhenUnreachable() async throws {
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = URLError(.notConnectedToInternet)
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = URLError(.notConnectedToInternet)
 
         let manager = try makeManager()
 
@@ -238,10 +239,10 @@ struct CDOAuth1SessionManagerTests {
         defer { try? manager.deauthorize() }
         try await authorize(manager)
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
 
         let (data, response) = try await manager.request(path: "resource", method: "GET")
 
@@ -255,10 +256,10 @@ struct CDOAuth1SessionManagerTests {
         defer { try? manager.deauthorize() }
         try await authorize(manager)
 
-        StubURLProtocol.statusCode = statusCode
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = statusCode
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -275,10 +276,10 @@ struct CDOAuth1SessionManagerTests {
         defer { try? manager.deauthorize() }
         try await authorize(manager)
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = URLError(.notConnectedToInternet)
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = URLError(.notConnectedToInternet)
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -298,18 +299,18 @@ struct CDOAuth1SessionManagerTests {
         manager.refreshAccessTokenPath = "refresh_token"
         manager.refreshAccessTokenMethod = "POST"
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "oauth_token=refreshed-tok&oauth_token_secret=refreshed-sec"
-        StubURLProtocol.error = nil
-        StubURLProtocol.lastRequest = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "oauth_token=refreshed-tok&oauth_token_secret=refreshed-sec"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.lastRequest = nil
 
         let (data, response) = try await manager.request(path: "resource", method: "GET")
 
         #expect(response.statusCode == 200)
         #expect(String(data: data, encoding: .utf8) == "oauth_token=refreshed-tok&oauth_token_secret=refreshed-sec")
 
-        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let sentRequest = try #require(CDOAuth1MockURLProtocol.lastRequest)
         let authHeader = try #require(sentRequest.value(forHTTPHeaderField: "Authorization"))
         #expect(authHeader.contains("oauth_token=\"refreshed-tok\""))
     }
@@ -337,10 +338,10 @@ struct CDOAuth1SessionManagerTests {
         manager.refreshAccessTokenPath = "refresh_token"
         manager.refreshAccessTokenMethod = "POST"
 
-        StubURLProtocol.statusCode = 401
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 401
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -357,15 +358,15 @@ struct CDOAuth1SessionManagerTests {
         defer { try? manager.deauthorize() }
         try await authorize(manager)
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.lastRequest = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.lastRequest = nil
 
         _ = try await manager.request(path: "resource", method: "GET", parameters: ["foo": "bar"])
 
-        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let sentRequest = try #require(CDOAuth1MockURLProtocol.lastRequest)
         let authHeader = try #require(sentRequest.value(forHTTPHeaderField: "Authorization"))
         var authParams = parseOAuthAuthorizationHeader(authHeader)
         let removedSignature = authParams.removeValue(forKey: "oauth_signature")
@@ -394,15 +395,15 @@ struct CDOAuth1SessionManagerTests {
         defer { try? manager.deauthorize() }
         try await authorize(manager)
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.lastRequest = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.lastRequest = nil
 
         _ = try await manager.request(path: "resource", method: "POST", parameters: ["foo": "bar", "baz": "qux"])
 
-        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let sentRequest = try #require(CDOAuth1MockURLProtocol.lastRequest)
 
         #expect(sentRequest.url?.absoluteString == "https://api.example.com/resource")
         #expect(sentRequest.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded")
@@ -419,18 +420,18 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
 
-        StubURLProtocol.statusCode = 503
-        StubURLProtocol.statusCodeQueue = [503, 503, 200]
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 503
+        CDOAuth1MockURLProtocol.statusCodeQueue = [503, 503, 200]
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         let (data, response) = try await manager.request(path: "resource", method: "GET")
 
         #expect(response.statusCode == 200)
         #expect(String(data: data, encoding: .utf8) == "ok")
-        #expect(StubURLProtocol.requestCount == 3)
+        #expect(CDOAuth1MockURLProtocol.requestCount == 3)
     }
 
     @Test func requestThrowsAfterExhaustingRetries() async throws {
@@ -439,12 +440,12 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 2, baseDelay: 0.01, maxDelay: 0.05)
 
-        StubURLProtocol.statusCode = 503
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 503
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -454,7 +455,7 @@ struct CDOAuth1SessionManagerTests {
         } catch {
             Issue.record("Expected .httpError, got \(error)")
         }
-        #expect(StubURLProtocol.requestCount == 3)
+        #expect(CDOAuth1MockURLProtocol.requestCount == 3)
     }
 
     @Test func requestDoesNotRetryNonIdempotentMethod() async throws {
@@ -463,12 +464,12 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
 
-        StubURLProtocol.statusCode = 503
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 503
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         do {
             _ = try await manager.request(path: "resource", method: "POST")
@@ -478,7 +479,7 @@ struct CDOAuth1SessionManagerTests {
         } catch {
             Issue.record("Expected .httpError, got \(error)")
         }
-        #expect(StubURLProtocol.requestCount == 1)
+        #expect(CDOAuth1MockURLProtocol.requestCount == 1)
     }
 
     @Test func requestDoesNotRetryNonRetryableStatusCode() async throws {
@@ -487,12 +488,12 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 3, baseDelay: 0.01, maxDelay: 0.05)
 
-        StubURLProtocol.statusCode = 404
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 404
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -502,7 +503,7 @@ struct CDOAuth1SessionManagerTests {
         } catch {
             Issue.record("Expected .httpError, got \(error)")
         }
-        #expect(StubURLProtocol.requestCount == 1)
+        #expect(CDOAuth1MockURLProtocol.requestCount == 1)
     }
 
     @Test func requestRetryDelayHonorsRetryAfterHeader() async throws {
@@ -511,12 +512,12 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.retryConfiguration = CDOAuth1RetryConfiguration(maxRetries: 1, baseDelay: 5, maxDelay: 10)
 
-        StubURLProtocol.statusCode = 429
-        StubURLProtocol.statusCodeQueue = [429, 200]
-        StubURLProtocol.headers = ["Retry-After": "0"]
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 429
+        CDOAuth1MockURLProtocol.statusCodeQueue = [429, 200]
+        CDOAuth1MockURLProtocol.headers = ["Retry-After": "0"]
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         let start = Date()
         let (_, response) = try await manager.request(path: "resource", method: "GET")
@@ -534,16 +535,16 @@ struct CDOAuth1SessionManagerTests {
         try await authorize(manager)
         manager.requestAdapters = [HeaderInjectingAdapter(name: "X-Test", value: "adapted")]
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.lastRequest = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.lastRequest = nil
 
         _ = try await manager.request(path: "resource", method: "GET")
 
-        let sentRequest = try #require(StubURLProtocol.lastRequest)
+        let sentRequest = try #require(CDOAuth1MockURLProtocol.lastRequest)
         #expect(sentRequest.value(forHTTPHeaderField: "X-Test") == "adapted")
     }
 
@@ -554,11 +555,11 @@ struct CDOAuth1SessionManagerTests {
         let monitor = RecordingEventMonitor()
         manager.eventMonitors = [monitor]
 
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
 
         _ = try await manager.request(path: "resource", method: "GET")
 
@@ -573,11 +574,11 @@ struct CDOAuth1SessionManagerTests {
         let monitor = RecordingEventMonitor()
         manager.eventMonitors = [monitor]
 
-        StubURLProtocol.statusCode = 404
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = ""
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 404
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = ""
+        CDOAuth1MockURLProtocol.error = nil
 
         do {
             _ = try await manager.request(path: "resource", method: "GET")
@@ -600,12 +601,12 @@ struct CDOAuth1SessionManagerTests {
         let monitor = RecordingEventMonitor()
         manager.eventMonitors = [monitor]
 
-        StubURLProtocol.statusCode = 503
-        StubURLProtocol.statusCodeQueue = [503, 200]
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "ok"
-        StubURLProtocol.error = nil
-        StubURLProtocol.requestCount = 0
+        CDOAuth1MockURLProtocol.statusCode = 503
+        CDOAuth1MockURLProtocol.statusCodeQueue = [503, 200]
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
 
         _ = try await manager.request(path: "resource", method: "GET")
 
@@ -651,11 +652,11 @@ struct CDOAuth1SessionManagerTests {
     }
 
     private func authorize(_ manager: CDOAuth1SessionManager) async throws {
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec"
+        CDOAuth1MockURLProtocol.error = nil
 
         var requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")
         requestToken.verifier = "verifier"
@@ -663,11 +664,11 @@ struct CDOAuth1SessionManagerTests {
     }
 
     private func authorizeExpired(_ manager: CDOAuth1SessionManager) async throws {
-        StubURLProtocol.statusCode = 200
-        StubURLProtocol.statusCodeQueue = []
-        StubURLProtocol.headers = nil
-        StubURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec&oauth_token_duration=-100"
-        StubURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "oauth_token=access-tok&oauth_token_secret=access-sec&oauth_token_duration=-100"
+        CDOAuth1MockURLProtocol.error = nil
 
         var requestToken = CDOAuth1Credential(token: "req-token", secret: "req-secret")
         requestToken.verifier = "verifier"
@@ -676,7 +677,7 @@ struct CDOAuth1SessionManagerTests {
 
     private func makeManager() throws -> CDOAuth1SessionManager {
         let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [StubURLProtocol.self]
+        configuration.protocolClasses = [CDOAuth1MockURLProtocol.self]
         return try CDOAuth1SessionManager(
             baseURL: #require(URL(string: "https://api.example.com/")),
             consumerKey: "key",
@@ -714,48 +715,4 @@ private final class RecordingEventMonitor: CDOAuth1EventMonitor, @unchecked Send
     func requestWillRetry(_ request: URLRequest, attempt: Int, delay: TimeInterval) {
         willRetryAttempts.append((attempt, delay))
     }
-}
-
-private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
-    static var statusCode = 200
-    /// When non-empty, each request pops the next status code from the front of this
-    /// queue instead of using `statusCode` — lets a single test simulate a transient
-    /// failure followed by a success across multiple retry attempts. Reset (along with
-    /// `requestCount`) inside `authorize()`/`authorizeExpired()`, which nearly every
-    /// `request()`-exercising test already calls first — any new test on that path
-    /// should route through one of those helpers too, to avoid leftover state.
-    static var statusCodeQueue: [Int] = []
-    static var headers: [String: String]?
-    static var responseBody = ""
-    static var error: URLError?
-    static var lastRequest: URLRequest?
-    static var requestCount = 0
-
-    override class func canInit(with request: URLRequest) -> Bool {
-        true
-    }
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        request
-    }
-
-    override func startLoading() {
-        Self.lastRequest = request
-        Self.requestCount += 1
-        if let error = Self.error {
-            client?.urlProtocol(self, didFailWithError: error)
-            return
-        }
-        let statusCode = Self.statusCodeQueue.isEmpty ? Self.statusCode : Self.statusCodeQueue.removeFirst()
-        let response = HTTPURLResponse(
-            url: request.url!,
-            statusCode: statusCode,
-            httpVersion: nil,
-            headerFields: Self.headers
-        )!
-        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-        client?.urlProtocol(self, didLoad: Data(Self.responseBody.utf8))
-        client?.urlProtocolDidFinishLoading(self)
-    }
-
-    override func stopLoading() {}
 }

@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - `CDOAuth1RetryConfiguration` and `CDOAuth1SessionManager.retryConfiguration` — opt-in automatic retry with exponential backoff for `request(path:method:parameters:)`, restricted to idempotent HTTP methods (`GET`/`HEAD`/`OPTIONS`). Retries on a configurable set of HTTP status codes (default `429`, `500`, `502`, `503`, `504`), honoring a `Retry-After` response header when present.
 - `CDOAuth1RequestAdapter` and `CDOAuth1SessionManager.requestAdapters` — adapters applied, in order, to each signed outgoing `request(path:method:parameters:)` call (e.g. to inject a tracing header), without subclassing `CDOAuth1SessionManager`
 - `CDOAuth1EventMonitor` and `CDOAuth1SessionManager.eventMonitors` — pluggable lifecycle observers (`requestWillStart`, `requestDidSucceed`, `requestDidFail`, `requestWillRetry`) for logging or metrics on `request(path:method:parameters:)` calls, each with a no-op default so a conformer only implements the events it needs
+- `CDOAuth1KitTesting` SPM product — publishes `CDOAuth1MockURLProtocol`, a `URLProtocol` stub for mocking `CDOAuth1Kit` network calls, so downstream consumers can test against it without reimplementing a `URLProtocol` stub themselves
 
 ---
 

@@ -55,6 +55,15 @@
 		CD0A00000000000000000100 /* CDOAuth1EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */; };
 		CD0A00000000000000000101 /* CDOAuth1EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */; };
 		CD0A00000000000000000102 /* CDOAuth1EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */; };
+		CD0A00000000000000000104 /* CDOAuth1SignerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */; };
+		CD0A00000000000000000105 /* CDOAuth1SignerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */; };
+		CD0A00000000000000000106 /* CDOAuth1SignerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */; };
+		CD0A00000000000000000108 /* CDOAuth1SessionConfigurationBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */; };
+		CD0A00000000000000000109 /* CDOAuth1SessionConfigurationBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */; };
+		CD0A00000000000000000110 /* CDOAuth1SessionConfigurationBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */; };
+		CD0A00000000000000000112 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
+		CD0A00000000000000000113 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
+		CD0A00000000000000000114 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +80,7 @@
 		CD0A00000000000000000034 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000035 /* Dictionary+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
 		CD0A00000000000000000036 /* String+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
+		CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
 		CD0A00000000000000000037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD0A00000000000000000038 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SigningMethod.swift; sourceTree = "<group>"; };
@@ -78,6 +88,8 @@
 		CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1RetryConfiguration.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000095 /* CDOAuth1RequestAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1RequestAdapter.swift; sourceTree = "<group>"; };
 		CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1EventMonitor.swift; sourceTree = "<group>"; };
+		CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SignerBox.swift; sourceTree = "<group>"; };
+		CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SessionConfigurationBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +138,8 @@
 				CD0A00000000000000000091 /* CDOAuth1RetryConfiguration.swift */,
 				CD0A00000000000000000095 /* CDOAuth1RequestAdapter.swift */,
 				CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */,
+				CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */,
+				CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */,
 				CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */,
 				CD0A00000000000000000034 /* KeychainStore.swift */,
 				CD0A00000000000000000004 /* Extensions */,
@@ -140,6 +154,7 @@
 			children = (
 				CD0A00000000000000000035 /* Dictionary+CDOAuth1Kit.swift */,
 				CD0A00000000000000000036 /* String+CDOAuth1Kit.swift */,
+				CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -339,11 +354,14 @@
 				CD0A00000000000000000092 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000097 /* CDOAuth1RequestAdapter.swift in Sources */,
 				CD0A00000000000000000100 /* CDOAuth1EventMonitor.swift in Sources */,
+				CD0A00000000000000000104 /* CDOAuth1SignerBox.swift in Sources */,
+				CD0A00000000000000000108 /* CDOAuth1SessionConfigurationBox.swift in Sources */,
 				CD0A00000000000000000063 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000066 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000045 /* KeychainStore.swift in Sources */,
 				CD0A00000000000000000046 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000047 /* String+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000112 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,11 +379,14 @@
 				CD0A00000000000000000093 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000098 /* CDOAuth1RequestAdapter.swift in Sources */,
 				CD0A00000000000000000101 /* CDOAuth1EventMonitor.swift in Sources */,
+				CD0A00000000000000000105 /* CDOAuth1SignerBox.swift in Sources */,
+				CD0A00000000000000000109 /* CDOAuth1SessionConfigurationBox.swift in Sources */,
 				CD0A00000000000000000064 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000067 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000055 /* KeychainStore.swift in Sources */,
 				CD0A00000000000000000056 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000057 /* String+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000113 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,11 +404,14 @@
 				CD0A00000000000000000094 /* CDOAuth1RetryConfiguration.swift in Sources */,
 				CD0A00000000000000000099 /* CDOAuth1RequestAdapter.swift in Sources */,
 				CD0A00000000000000000102 /* CDOAuth1EventMonitor.swift in Sources */,
+				CD0A00000000000000000106 /* CDOAuth1SignerBox.swift in Sources */,
+				CD0A00000000000000000110 /* CDOAuth1SessionConfigurationBox.swift in Sources */,
 				CD0A00000000000000000077 /* CDOAuth1SigningMethod.swift in Sources */,
 				CD0A00000000000000000078 /* CDOAuth1SessionManagerPublisher.swift in Sources */,
 				CD0A00000000000000000079 /* KeychainStore.swift in Sources */,
 				CD0A00000000000000000080 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000081 /* String+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000114 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

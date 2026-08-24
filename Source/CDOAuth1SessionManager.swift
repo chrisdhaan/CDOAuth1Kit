@@ -27,40 +27,59 @@
 
 import Foundation
 
-public final class CDOAuth1SessionManager {
+public final class CDOAuth1SessionManager: Sendable {
 
     public let baseURL: URL
     public let session: URLSession
-    public private(set) var requestSigner: CDOAuth1RequestSigner
+    private let signerBox: CDOAuth1SignerBox
+    private let configurationBox = CDOAuth1SessionConfigurationBox()
 
-    /// The path used to auto-refresh an expired access token before an authenticated
-    /// `request(path:method:parameters:)` call goes out. Set this together with
-    /// ``refreshAccessTokenMethod`` to opt in; leave both `nil` to require callers to
-    /// refresh manually.
-    public var refreshAccessTokenPath: String?
+    /// A snapshot of the current signer state, read from behind an internal lock so
+    /// `CDOAuth1SessionManager` can safely conform to `Sendable`.
+    public var requestSigner: CDOAuth1RequestSigner {
+        signerBox.read { $0 }
+    }
 
-    /// The HTTP method used alongside ``refreshAccessTokenPath`` to auto-refresh an
-    /// expired access token before an authenticated `request(path:method:parameters:)` call.
-    public var refreshAccessTokenMethod: String?
+    /// The path used to auto-refresh an expired access token before `request(path:method:parameters:)`.
+    /// Set with ``refreshAccessTokenMethod`` to opt in; leave both `nil` for manual refresh.
+    public var refreshAccessTokenPath: String? {
+        get { configurationBox.read { $0.refreshAccessTokenPath } }
+        set { configurationBox.mutate { $0.refreshAccessTokenPath = newValue } }
+    }
 
-    /// Opt-in automatic retry with exponential backoff for
-    /// `request(path:method:parameters:)`. Only applies to idempotent HTTP methods
-    /// (`GET`, `HEAD`, `OPTIONS`); leave `nil` (the default) to never retry. Only
-    /// `.httpError` responses matching ``CDOAuth1RetryConfiguration/retryableStatusCodes``
-    /// are retried — network-transport failures (e.g. timeouts, `.networkError`) are not.
-    public var retryConfiguration: CDOAuth1RetryConfiguration?
+    /// The HTTP method used alongside ``refreshAccessTokenPath``.
+    public var refreshAccessTokenMethod: String? {
+        get { configurationBox.read { $0.refreshAccessTokenMethod } }
+        set { configurationBox.mutate { $0.refreshAccessTokenMethod = newValue } }
+    }
+
+    /// Opt-in automatic retry with exponential backoff for `request(path:method:parameters:)`,
+    /// applied only to idempotent methods (`GET`, `HEAD`, `OPTIONS`); `nil` (default) never retries.
+    /// Only `.httpError` matching ``CDOAuth1RetryConfiguration/retryableStatusCodes`` is retried.
+    public var retryConfiguration: CDOAuth1RetryConfiguration? {
+        get { configurationBox.read { $0.retryConfiguration } }
+        set { configurationBox.mutate { $0.retryConfiguration = newValue } }
+    }
 
     /// Adapters applied, in order, to each signed outgoing request. Empty by default.
-    public var requestAdapters: [any CDOAuth1RequestAdapter] = []
+    public var requestAdapters: [any CDOAuth1RequestAdapter] {
+        get { configurationBox.read { $0.requestAdapters } }
+        set { configurationBox.mutate { $0.requestAdapters = newValue } }
+    }
 
     /// Observers notified of each request's lifecycle. Empty by default.
-    public var eventMonitors: [any CDOAuth1EventMonitor] = []
+    public var eventMonitors: [any CDOAuth1EventMonitor] {
+        get { configurationBox.read { $0.eventMonitors } }
+        set { configurationBox.mutate { $0.eventMonitors = newValue } }
+    }
 
     private static let idempotentMethods: Set<String> = ["GET", "HEAD", "OPTIONS"]
 
     public var isAuthorized: Bool {
-        guard let token = requestSigner.accessToken else { return false }
-        return !token.isExpired
+        signerBox.read { signer in
+            guard let token = signer.accessToken else { return false }
+            return !token.isExpired
+        }
     }
 
     public init(baseURL: URL,
@@ -70,18 +89,18 @@ public final class CDOAuth1SessionManager {
                 session: URLSession = .shared) {
         self.baseURL = baseURL
         self.session = session
-        self.requestSigner = CDOAuth1RequestSigner(
+        self.signerBox = CDOAuth1SignerBox(signer: CDOAuth1RequestSigner(
             service: baseURL.host ?? baseURL.absoluteString,
             consumerKey: consumerKey,
             consumerSecret: consumerSecret,
             signingMethod: signingMethod
-        )
+        ))
     }
 
     // MARK: - Authorization Status
 
     public func deauthorize() throws {
-        try requestSigner.removeAccessToken()
+        try signerBox.mutate { try $0.removeAccessToken() }
     }
 
     // MARK: - OAuth Handshake
@@ -90,18 +109,19 @@ public final class CDOAuth1SessionManager {
                                   method: String,
                                   callbackURL: URL,
                                   scope: String? = nil) async throws -> CDOAuth1Credential {
-        requestSigner.requestToken = nil
-
         var params: [String: String] = ["oauth_callback": callbackURL.absoluteString]
-        if let scope, requestSigner.accessToken == nil {
-            params["scope"] = scope
-        }
 
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
         var request = URLRequest(url: url)
         request.httpMethod = method
 
-        let signedRequest = try requestSigner.signed(request, parameters: params)
+        let signedRequest = try signerBox.mutate { signer -> URLRequest in
+            signer.requestToken = nil
+            if let scope, signer.accessToken == nil {
+                params["scope"] = scope
+            }
+            return try signer.signed(request, parameters: params)
+        }
         let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
@@ -109,7 +129,7 @@ public final class CDOAuth1SessionManager {
             throw CDOAuth1Error.decodingFailed
         }
 
-        requestSigner.requestToken = credential
+        signerBox.mutate { $0.requestToken = credential }
         return credential
     }
 
@@ -121,8 +141,6 @@ public final class CDOAuth1SessionManager {
             throw CDOAuth1Error.invalidRequestToken
         }
 
-        requestSigner.requestToken = requestToken
-
         let params: [String: String] = [
             "oauth_token": token,
             "oauth_verifier": verifier
@@ -132,7 +150,10 @@ public final class CDOAuth1SessionManager {
         var request = URLRequest(url: url)
         request.httpMethod = method
 
-        let signedRequest = try requestSigner.signed(request, parameters: params)
+        let signedRequest = try signerBox.mutate { signer -> URLRequest in
+            signer.requestToken = requestToken
+            return try signer.signed(request, parameters: params)
+        }
         let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
@@ -140,8 +161,10 @@ public final class CDOAuth1SessionManager {
             throw CDOAuth1Error.decodingFailed
         }
 
-        try requestSigner.saveAccessToken(credential)
-        requestSigner.requestToken = nil
+        try signerBox.mutate {
+            try $0.saveAccessToken(credential)
+            $0.requestToken = nil
+        }
         return credential
     }
 
@@ -162,7 +185,7 @@ public final class CDOAuth1SessionManager {
         var request = URLRequest(url: url)
         request.httpMethod = method
 
-        let signedRequest = try requestSigner.signed(request, parameters: params)
+        let signedRequest = try signerBox.read { try $0.signed(request, parameters: params) }
         let (data, _) = try await performSigned(signedRequest)
         let queryString = String(data: data, encoding: .utf8) ?? ""
 
@@ -170,8 +193,10 @@ public final class CDOAuth1SessionManager {
             throw CDOAuth1Error.decodingFailed
         }
 
-        try requestSigner.saveAccessToken(credential)
-        requestSigner.requestToken = nil
+        try signerBox.mutate {
+            try $0.saveAccessToken(credential)
+            $0.requestToken = nil
+        }
         return credential
     }
 
@@ -264,37 +289,9 @@ public final class CDOAuth1SessionManager {
         } catch let urlError as URLError {
             throw CDOAuth1Error.networkError(urlError)
         }
-        let validatedData = try validated(data, response)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw CDOAuth1Error.networkError(URLError(.badServerResponse))
         }
-        return (validatedData, httpResponse)
+        return try (httpResponse.cdoauth1ValidatedData(data), httpResponse)
     }
-
-    private func validated(_ data: Data, _ response: URLResponse) throws -> Data {
-        guard let httpResponse = response as? HTTPURLResponse else { return data }
-        guard (200 ... 299).contains(httpResponse.statusCode) else {
-            var headers: [String: String] = [:]
-            for (key, value) in httpResponse.allHeaderFields {
-                if let key = key as? String, let value = value as? String {
-                    headers[canonicalizedHeaderName(key)] = value
-                }
-            }
-            throw CDOAuth1Error.httpError(statusCode: httpResponse.statusCode, headers: headers)
-        }
-        return data
-    }
-
-    /// `HTTPURLResponse.allHeaderFields` preserves whatever case the server sent (HTTP/2
-    /// lowercases by spec); normalizing to `Title-Case` gives callers a predictable key
-    /// to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
-    private func canonicalizedHeaderName(_ name: String) -> String {
-        name.split(separator: "-", omittingEmptySubsequences: false)
-            .map { $0.isEmpty ? "" : $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
-            .joined(separator: "-")
-    }
-}
-
-private extension String {
-    var nilIfEmpty: String? { isEmpty ? nil : self }
 }

@@ -33,6 +33,12 @@ import Testing
 @Suite(.serialized)
 struct CDOAuth1SessionManagerTests {
 
+    @Test func sessionManagerConformsToSendable() throws {
+        func requireSendable(_ value: some Sendable) {}
+        let manager = try makeManager()
+        requireSendable(manager)
+    }
+
     @Test func initWithBaseURL() throws {
         let baseURL = try #require(URL(string: "https://api.example.com/"))
         let manager = CDOAuth1SessionManager(
@@ -81,6 +87,43 @@ struct CDOAuth1SessionManagerTests {
         )
 
         #expect(credential.token == "abc")
+    }
+
+    @Test func fetchRequestTokenHandlesConcurrentCallsWithoutCrashing() async throws {
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "oauth_token=abc&oauth_token_secret=def"
+        CDOAuth1MockURLProtocol.error = nil
+
+        let manager = try makeManager()
+        let callbackURL = try #require(URL(string: "myapp://callback"))
+
+        async let first = manager.fetchRequestToken(path: "request_token", method: "POST", callbackURL: callbackURL)
+        async let second = manager.fetchRequestToken(path: "request_token", method: "POST", callbackURL: callbackURL)
+
+        let (firstCredential, secondCredential) = try await (first, second)
+
+        #expect(firstCredential.token == "abc")
+        #expect(secondCredential.token == "abc")
+    }
+
+    @Test func mutatingConfigurationDuringInFlightRequestDoesNotCrash() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+
+        async let first = manager.request(path: "resource", method: "GET")
+        async let second = manager.request(path: "resource", method: "GET")
+        manager.requestAdapters = [HeaderInjectingAdapter(name: "X-Test", value: "adapted")]
+        manager.eventMonitors = [RecordingEventMonitor()]
+
+        _ = try await (first, second)
     }
 
     @Test(arguments: [401, 403, 500, 503])

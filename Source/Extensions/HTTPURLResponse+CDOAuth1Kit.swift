@@ -1,5 +1,5 @@
 //
-//  String+CDOAuth1Kit.swift
+//  HTTPURLResponse+CDOAuth1Kit.swift
 //  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
@@ -27,27 +27,20 @@
 
 import Foundation
 
-extension String {
+extension HTTPURLResponse {
 
-    /// RFC 5849 §3.6 percent encoding — encodes everything except unreserved characters.
-    func oauthPercentEncoded() -> String {
-        var allowed = CharacterSet.alphanumerics
-        allowed.insert(charactersIn: "-._~")
-        return addingPercentEncoding(withAllowedCharacters: allowed) ?? self
+    /// Throws `.httpError(statusCode:headers:)` for a non-2xx response (header names
+    /// canonicalized to `Title-Case` for predictable lookup), otherwise returns `data` as-is.
+    func cdoauth1ValidatedData(_ data: Data) throws -> Data {
+        guard (200 ... 299).contains(statusCode) else {
+            var headers: [String: String] = [:]
+            for (key, value) in allHeaderFields {
+                if let key = key as? String, let value = value as? String {
+                    headers[key.canonicalizedHTTPHeaderName()] = value
+                }
+            }
+            throw CDOAuth1Error.httpError(statusCode: statusCode, headers: headers)
+        }
+        return data
     }
-
-    func oauthPercentDecoded() -> String {
-        removingPercentEncoding ?? self
-    }
-
-    /// `HTTPURLResponse.allHeaderFields` preserves whatever case the server sent (HTTP/2
-    /// lowercases by spec); normalizing to `Title-Case` gives callers a predictable key
-    /// to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
-    func canonicalizedHTTPHeaderName() -> String {
-        split(separator: "-", omittingEmptySubsequences: false)
-            .map { $0.isEmpty ? "" : $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
-            .joined(separator: "-")
-    }
-
-    var nilIfEmpty: String? { isEmpty ? nil : self }
 }

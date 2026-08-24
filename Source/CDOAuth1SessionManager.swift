@@ -50,6 +50,12 @@ public final class CDOAuth1SessionManager {
     /// are retried — network-transport failures (e.g. timeouts, `.networkError`) are not.
     public var retryConfiguration: CDOAuth1RetryConfiguration?
 
+    /// Adapters applied, in order, to each signed outgoing request. Empty by default.
+    public var requestAdapters: [any CDOAuth1RequestAdapter] = []
+
+    /// Observers notified of each request's lifecycle. Empty by default.
+    public var eventMonitors: [any CDOAuth1EventMonitor] = []
+
     private static let idempotentMethods: Set<String> = ["GET", "HEAD", "OPTIONS"]
 
     public var isAuthorized: Bool {
@@ -204,17 +210,22 @@ public final class CDOAuth1SessionManager {
         var attempt = 0
 
         while true {
-            let signedRequest = try signedRequest(path: path, method: method, parameters: parameters)
+            let signedRequest = try requestAdapters.adapting(signedRequest(path: path, method: method, parameters: parameters))
+            eventMonitors.notifyWillStart(signedRequest)
             do {
-                return try await performSigned(signedRequest)
+                let result = try await performSigned(signedRequest)
+                eventMonitors.notifyDidSucceed(signedRequest, response: result.1)
+                return result
             } catch let error as CDOAuth1Error {
                 guard let retryConfig,
                       case let .httpError(statusCode, headers) = error,
                       retryConfig.retryableStatusCodes.contains(statusCode),
                       attempt < retryConfig.maxRetries else {
+                    eventMonitors.notifyDidFail(signedRequest, error: error)
                     throw error
                 }
                 let delay = retryConfig.retryDelay(forAttempt: attempt, responseHeaders: headers)
+                eventMonitors.notifyWillRetry(signedRequest, attempt: attempt, delay: delay)
                 try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
                 attempt += 1
             }
@@ -228,7 +239,7 @@ public final class CDOAuth1SessionManager {
         case "GET", "HEAD", "DELETE":
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             if !parameters.isEmpty {
-                components.queryItems = (components.queryItems ?? []) + sortedQueryItems(from: parameters)
+                components.queryItems = (components.queryItems ?? []) + parameters.sortedQueryItems()
             }
             request = URLRequest(url: components.url!)
             request.httpMethod = method
@@ -236,21 +247,11 @@ public final class CDOAuth1SessionManager {
             request = URLRequest(url: url)
             request.httpMethod = method
             if !parameters.isEmpty {
-                request.httpBody = Data(formEncodedBody(from: parameters).utf8)
+                request.httpBody = Data(parameters.queryStringRepresentation().utf8)
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             }
         }
         return try requestSigner.signed(request, parameters: parameters)
-    }
-
-    private func sortedQueryItems(from parameters: [String: String]) -> [URLQueryItem] {
-        parameters.sorted { $0.key < $1.key }.map { URLQueryItem(name: $0.key, value: $0.value) }
-    }
-
-    private func formEncodedBody(from parameters: [String: String]) -> String {
-        parameters.sorted { $0.key < $1.key }
-            .map { "\($0.key.oauthPercentEncoded())=\($0.value.oauthPercentEncoded())" }
-            .joined(separator: "&")
     }
 
     // MARK: - Response Validation
@@ -284,10 +285,9 @@ public final class CDOAuth1SessionManager {
         return data
     }
 
-    /// HTTP header names are case-insensitive over the wire (and HTTP/2 lowercases
-    /// them by spec), but `HTTPURLResponse.allHeaderFields` preserves whatever case
-    /// the server sent. Normalizing to `Title-Case` here gives callers a predictable
-    /// key to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
+    /// `HTTPURLResponse.allHeaderFields` preserves whatever case the server sent (HTTP/2
+    /// lowercases by spec); normalizing to `Title-Case` gives callers a predictable key
+    /// to look up (e.g. `headers["Retry-After"]`) regardless of server casing.
     private func canonicalizedHeaderName(_ name: String) -> String {
         name.split(separator: "-", omittingEmptySubsequences: false)
             .map { $0.isEmpty ? "" : $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }

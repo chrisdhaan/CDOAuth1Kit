@@ -1,5 +1,5 @@
 //
-//  Dictionary+CDOAuth1Kit.swift
+//  CDOAuth1RequestAdapter.swift
 //  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
@@ -27,27 +27,21 @@
 
 import Foundation
 
-extension [String: String] {
+/// Adapts an outgoing, already-signed request before it's sent — e.g. to inject a
+/// tracing header or override the timeout.
+///
+/// Adapters run **after** OAuth signing, so they can only affect things outside the
+/// signature (headers, cache policy, timeout); mutating the URL or body here would not
+/// be reflected in `Authorization`'s `oauth_signature` and would fail server-side
+/// verification. Register via ``CDOAuth1SessionManager/requestAdapters``.
+public protocol CDOAuth1RequestAdapter: Sendable {
+    /// Returns an adapted copy of `request`.
+    func adapt(_ request: URLRequest) -> URLRequest
+}
 
-    /// This dictionary's entries as `URLQueryItem`s, sorted by key for deterministic
-    /// signing/ordering.
-    func sortedQueryItems() -> [URLQueryItem] {
-        sorted { $0.key < $1.key }.map { URLQueryItem(name: $0.key, value: $0.value) }
-    }
-
-    init(queryString: String) {
-        self = queryString
-            .components(separatedBy: "&")
-            .reduce(into: [:]) { dict, pair in
-                let parts = pair.components(separatedBy: "=")
-                guard parts.count == 2 else { return }
-                dict[parts[0].oauthPercentDecoded()] = parts[1].oauthPercentDecoded()
-            }
-    }
-
-    func queryStringRepresentation() -> String {
-        map { "\($0.key.oauthPercentEncoded())=\($0.value.oauthPercentEncoded())" }
-            .sorted()
-            .joined(separator: "&")
+extension [any CDOAuth1RequestAdapter] {
+    /// Applies each adapter in order, feeding each result into the next.
+    func adapting(_ request: URLRequest) -> URLRequest {
+        reduce(request) { $1.adapt($0) }
     }
 }

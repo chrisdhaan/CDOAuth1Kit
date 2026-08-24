@@ -44,6 +44,10 @@ let package = Package(
             name: "CDOAuth1KitDynamic",
             type: .dynamic,
             targets: ["CDOAuth1Kit"]
+        ),
+        .library(
+            name: "CDOAuth1KitTesting",
+            targets: ["CDOAuth1KitTesting"]
         )
     ],
     dependencies: [
@@ -53,7 +57,7 @@ let package = Package(
         .target(
             name: "CDOAuth1Kit",
             path: "Source",
-            exclude: ["Info.plist"],
+            exclude: ["Info.plist", "Testing"],
             resources: [.process("PrivacyInfo.xcprivacy")],
             swiftSettings: [
                 .enableUpcomingFeature("ExistentialAny")
@@ -66,9 +70,13 @@ let package = Package(
                 .linkedFramework("Combine")
             ]
         ),
+        .target(
+            name: "CDOAuth1KitTesting",
+            path: "Source/Testing"
+        ),
         .testTarget(
             name: "CDOAuth1KitTests",
-            dependencies: ["CDOAuth1Kit"],
+            dependencies: ["CDOAuth1Kit", "CDOAuth1KitTesting"],
             path: "Tests/CDOAuth1KitTests"
         )
     ],

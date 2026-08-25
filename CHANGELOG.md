@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [2.3.0](#230)
 - [2.2.0](#220)
 - [2.1.0](#210)
 - [2.0.0](#200)
@@ -13,6 +14,12 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## [2.3.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.3.0)
+
+Released on 2026-08-25.
 
 ### Added
 

@@ -25,5 +25,5 @@
 //  SOFTWARE.
 //
 
-public let CDOAuth1KitVersionNumber = 2.2
-public let CDOAuth1KitVersionString = "2.2.0"
+public let CDOAuth1KitVersionNumber = 2.3
+public let CDOAuth1KitVersionString = "2.3.0"

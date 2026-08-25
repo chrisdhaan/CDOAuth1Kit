@@ -64,6 +64,15 @@
 		CD0A00000000000000000112 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000113 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
 		CD0A00000000000000000114 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */; };
+		CD0A00000000000000000116 /* CDOAuth1CacheConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000115 /* CDOAuth1CacheConfiguration.swift */; };
+		CD0A00000000000000000117 /* CDOAuth1CacheConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000115 /* CDOAuth1CacheConfiguration.swift */; };
+		CD0A00000000000000000118 /* CDOAuth1CacheConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000115 /* CDOAuth1CacheConfiguration.swift */; };
+		CD0A00000000000000000120 /* CDOAuth1ResponseCacheBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000119 /* CDOAuth1ResponseCacheBox.swift */; };
+		CD0A00000000000000000121 /* CDOAuth1ResponseCacheBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000119 /* CDOAuth1ResponseCacheBox.swift */; };
+		CD0A00000000000000000122 /* CDOAuth1ResponseCacheBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000119 /* CDOAuth1ResponseCacheBox.swift */; };
+		CD0A00000000000000000124 /* CDOAuth1SessionManager+Handshake.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000123 /* CDOAuth1SessionManager+Handshake.swift */; };
+		CD0A00000000000000000125 /* CDOAuth1SessionManager+Handshake.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000123 /* CDOAuth1SessionManager+Handshake.swift */; };
+		CD0A00000000000000000126 /* CDOAuth1SessionManager+Handshake.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A00000000000000000123 /* CDOAuth1SessionManager+Handshake.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +90,9 @@
 		CD0A00000000000000000035 /* Dictionary+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
 		CD0A00000000000000000036 /* String+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
 		CD0A00000000000000000111 /* HTTPURLResponse+CDOAuth1Kit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+CDOAuth1Kit.swift"; sourceTree = "<group>"; };
+		CD0A00000000000000000115 /* CDOAuth1CacheConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1CacheConfiguration.swift; sourceTree = "<group>"; };
+		CD0A00000000000000000119 /* CDOAuth1ResponseCacheBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1ResponseCacheBox.swift; sourceTree = "<group>"; };
+		CD0A00000000000000000123 /* CDOAuth1SessionManager+Handshake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDOAuth1SessionManager+Handshake.swift"; sourceTree = "<group>"; };
 		CD0A00000000000000000037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD0A00000000000000000038 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDOAuth1SigningMethod.swift; sourceTree = "<group>"; };
@@ -140,6 +152,9 @@
 				CD0A00000000000000000096 /* CDOAuth1EventMonitor.swift */,
 				CD0A00000000000000000103 /* CDOAuth1SignerBox.swift */,
 				CD0A00000000000000000107 /* CDOAuth1SessionConfigurationBox.swift */,
+				CD0A00000000000000000115 /* CDOAuth1CacheConfiguration.swift */,
+				CD0A00000000000000000119 /* CDOAuth1ResponseCacheBox.swift */,
+				CD0A00000000000000000123 /* CDOAuth1SessionManager+Handshake.swift */,
 				CD0A00000000000000000062 /* CDOAuth1SigningMethod.swift */,
 				CD0A00000000000000000034 /* KeychainStore.swift */,
 				CD0A00000000000000000004 /* Extensions */,
@@ -362,6 +377,9 @@
 				CD0A00000000000000000046 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000047 /* String+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000112 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000116 /* CDOAuth1CacheConfiguration.swift in Sources */,
+				CD0A00000000000000000120 /* CDOAuth1ResponseCacheBox.swift in Sources */,
+				CD0A00000000000000000124 /* CDOAuth1SessionManager+Handshake.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +405,9 @@
 				CD0A00000000000000000056 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000057 /* String+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000113 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000117 /* CDOAuth1CacheConfiguration.swift in Sources */,
+				CD0A00000000000000000121 /* CDOAuth1ResponseCacheBox.swift in Sources */,
+				CD0A00000000000000000125 /* CDOAuth1SessionManager+Handshake.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +433,9 @@
 				CD0A00000000000000000080 /* Dictionary+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000081 /* String+CDOAuth1Kit.swift in Sources */,
 				CD0A00000000000000000114 /* HTTPURLResponse+CDOAuth1Kit.swift in Sources */,
+				CD0A00000000000000000118 /* CDOAuth1CacheConfiguration.swift in Sources */,
+				CD0A00000000000000000122 /* CDOAuth1ResponseCacheBox.swift in Sources */,
+				CD0A00000000000000000126 /* CDOAuth1SessionManager+Handshake.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

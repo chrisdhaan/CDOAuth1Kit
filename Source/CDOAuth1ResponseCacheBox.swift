@@ -1,5 +1,5 @@
 //
-//  CDOAuth1SessionConfigurationBox.swift
+//  CDOAuth1ResponseCacheBox.swift
 //  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
@@ -27,34 +27,44 @@
 
 import Foundation
 
-/// `CDOAuth1SessionManager`'s opt-in configuration knobs. Grouped into one struct so
-/// `CDOAuth1SessionConfigurationBox` can guard them all with a single lock.
-struct CDOAuth1SessionConfiguration {
-    var refreshAccessTokenPath: String?
-    var refreshAccessTokenMethod: String?
-    var retryConfiguration: CDOAuth1RetryConfiguration?
-    var cacheConfiguration: CDOAuth1CacheConfiguration?
-    var requestAdapters: [any CDOAuth1RequestAdapter] = []
-    var eventMonitors: [any CDOAuth1EventMonitor] = []
-}
-
-/// Serializes access to `CDOAuth1SessionConfiguration` so setting a knob from one task
-/// while `CDOAuth1SessionManager.request(path:method:parameters:)` reads it on another
-/// can't race — the same lock-based approach as `CDOAuth1SignerBox`, kept as a separate
-/// type since the two guard unrelated state.
-final class CDOAuth1SessionConfigurationBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var configuration = CDOAuth1SessionConfiguration()
-
-    func mutate<T>(_ body: (inout CDOAuth1SessionConfiguration) throws -> T) rethrows -> T {
-        lock.lock()
-        defer { lock.unlock() }
-        return try body(&configuration)
+/// Serializes access to `CDOAuth1SessionManager`'s optional GET response cache, the same
+/// lock-based approach as `CDOAuth1SignerBox` and `CDOAuth1SessionConfigurationBox`, kept
+/// as a separate type since it guards unrelated state with its own eviction rules.
+final class CDOAuth1ResponseCacheBox: @unchecked Sendable {
+    private struct Entry {
+        let data: Data
+        let response: HTTPURLResponse
+        let insertedAt: Date
+        let expiresAt: Date
     }
 
-    func read<T>(_ body: (CDOAuth1SessionConfiguration) throws -> T) rethrows -> T {
+    private let lock = NSLock()
+    private var entries: [String: Entry] = [:]
+
+    func value(forKey key: String) -> (Data, HTTPURLResponse)? {
         lock.lock()
         defer { lock.unlock() }
-        return try body(configuration)
+        guard let entry = entries[key] else { return nil }
+        guard entry.expiresAt > Date() else {
+            entries.removeValue(forKey: key)
+            return nil
+        }
+        return (entry.data, entry.response)
+    }
+
+    func store(_ result: (Data, HTTPURLResponse), forKey key: String, ttl: TimeInterval, maxEntries: Int) {
+        lock.lock()
+        defer { lock.unlock() }
+        let now = Date()
+        entries[key] = Entry(data: result.0, response: result.1, insertedAt: now, expiresAt: now.addingTimeInterval(ttl))
+        while entries.count > maxEntries, let oldestKey = entries.min(by: { $0.value.insertedAt < $1.value.insertedAt })?.key {
+            entries.removeValue(forKey: oldestKey)
+        }
+    }
+
+    func removeAll() {
+        lock.lock()
+        defer { lock.unlock() }
+        entries.removeAll()
     }
 }

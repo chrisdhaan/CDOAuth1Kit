@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.3.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.3.0)
 
-Released on 2026-08-25.
+Released on 2026-08-27.
 
 ### Added
 

@@ -570,6 +570,112 @@ struct CDOAuth1SessionManagerTests {
         #expect(elapsed < 2.0)
     }
 
+    // MARK: - Response Cache
+
+    @Test func requestCachesGETResponseAndSkipsSecondNetworkCall() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.cacheConfiguration = CDOAuth1CacheConfiguration(ttl: 60, maxEntries: 50)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
+
+        let first = try await manager.request(path: "resource", method: "GET")
+        let second = try await manager.request(path: "resource", method: "GET")
+
+        #expect(CDOAuth1MockURLProtocol.requestCount == 1)
+        #expect(String(data: first.0, encoding: .utf8) == String(data: second.0, encoding: .utf8))
+        #expect(second.1.statusCode == 200)
+    }
+
+    @Test func requestCacheExpiresAfterTTL() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.cacheConfiguration = CDOAuth1CacheConfiguration(ttl: 0.05, maxEntries: 50)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
+
+        _ = try await manager.request(path: "resource", method: "GET")
+        try await Task.sleep(nanoseconds: 100_000_000)
+        _ = try await manager.request(path: "resource", method: "GET")
+
+        #expect(CDOAuth1MockURLProtocol.requestCount == 2)
+    }
+
+    @Test func requestDoesNotCacheNonGETMethod() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.cacheConfiguration = CDOAuth1CacheConfiguration(ttl: 60, maxEntries: 50)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
+
+        _ = try await manager.request(path: "resource", method: "POST")
+        _ = try await manager.request(path: "resource", method: "POST")
+
+        #expect(CDOAuth1MockURLProtocol.requestCount == 2)
+    }
+
+    @Test func clearResponseCacheForcesRefetch() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.cacheConfiguration = CDOAuth1CacheConfiguration(ttl: 60, maxEntries: 50)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
+
+        _ = try await manager.request(path: "resource", method: "GET")
+        manager.clearResponseCache()
+        _ = try await manager.request(path: "resource", method: "GET")
+
+        #expect(CDOAuth1MockURLProtocol.requestCount == 2)
+    }
+
+    @Test func requestCacheEvictsOldestEntryBeyondMaxEntries() async throws {
+        let manager = try makeManager()
+        defer { try? manager.deauthorize() }
+        try await authorize(manager)
+        manager.cacheConfiguration = CDOAuth1CacheConfiguration(ttl: 60, maxEntries: 1)
+
+        CDOAuth1MockURLProtocol.statusCode = 200
+        CDOAuth1MockURLProtocol.statusCodeQueue = []
+        CDOAuth1MockURLProtocol.headers = nil
+        CDOAuth1MockURLProtocol.responseBody = "ok"
+        CDOAuth1MockURLProtocol.error = nil
+        CDOAuth1MockURLProtocol.requestCount = 0
+
+        _ = try await manager.request(path: "a", method: "GET")
+        _ = try await manager.request(path: "b", method: "GET")
+        #expect(CDOAuth1MockURLProtocol.requestCount == 2)
+
+        _ = try await manager.request(path: "a", method: "GET")
+        #expect(CDOAuth1MockURLProtocol.requestCount == 3)
+
+        _ = try await manager.request(path: "b", method: "GET")
+        #expect(CDOAuth1MockURLProtocol.requestCount == 4)
+    }
+
     // MARK: - Event Monitor & Request Adapter
 
     @Test func requestAdapterMutatesOutgoingRequest() async throws {

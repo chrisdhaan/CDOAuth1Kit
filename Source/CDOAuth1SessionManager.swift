@@ -31,8 +31,9 @@ public final class CDOAuth1SessionManager: Sendable {
 
     public let baseURL: URL
     public let session: URLSession
-    private let signerBox: CDOAuth1SignerBox
+    let signerBox: CDOAuth1SignerBox
     private let configurationBox = CDOAuth1SessionConfigurationBox()
+    private let responseCacheBox = CDOAuth1ResponseCacheBox()
 
     /// A snapshot of the current signer state, read from behind an internal lock so
     /// `CDOAuth1SessionManager` can safely conform to `Sendable`.
@@ -59,6 +60,14 @@ public final class CDOAuth1SessionManager: Sendable {
     public var retryConfiguration: CDOAuth1RetryConfiguration? {
         get { configurationBox.read { $0.retryConfiguration } }
         set { configurationBox.mutate { $0.retryConfiguration = newValue } }
+    }
+
+    /// Opt-in in-memory response caching for `request(path:method:parameters:)`, applied
+    /// only to `GET` requests; `nil` (default) never caches. Call ``clearResponseCache()``
+    /// to invalidate cached entries before their TTL expires.
+    public var cacheConfiguration: CDOAuth1CacheConfiguration? {
+        get { configurationBox.read { $0.cacheConfiguration } }
+        set { configurationBox.mutate { $0.cacheConfiguration = newValue } }
     }
 
     /// Adapters applied, in order, to each signed outgoing request. Empty by default.
@@ -103,106 +112,20 @@ public final class CDOAuth1SessionManager: Sendable {
         try signerBox.mutate { try $0.removeAccessToken() }
     }
 
-    // MARK: - OAuth Handshake
-
-    public func fetchRequestToken(path: String,
-                                  method: String,
-                                  callbackURL: URL,
-                                  scope: String? = nil) async throws -> CDOAuth1Credential {
-        var params: [String: String] = ["oauth_callback": callbackURL.absoluteString]
-
-        let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-
-        let signedRequest = try signerBox.mutate { signer -> URLRequest in
-            signer.requestToken = nil
-            if let scope, signer.accessToken == nil {
-                params["scope"] = scope
-            }
-            return try signer.signed(request, parameters: params)
-        }
-        let (data, _) = try await performSigned(signedRequest)
-        let queryString = String(data: data, encoding: .utf8) ?? ""
-
-        guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.decodingFailed
-        }
-
-        signerBox.mutate { $0.requestToken = credential }
-        return credential
-    }
-
-    public func fetchAccessToken(path: String,
-                                 method: String,
-                                 requestToken: CDOAuth1Credential) async throws -> CDOAuth1Credential {
-        guard let token = requestToken.token.nilIfEmpty,
-              let verifier = requestToken.verifier?.nilIfEmpty else {
-            throw CDOAuth1Error.invalidRequestToken
-        }
-
-        let params: [String: String] = [
-            "oauth_token": token,
-            "oauth_verifier": verifier
-        ]
-
-        let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-
-        let signedRequest = try signerBox.mutate { signer -> URLRequest in
-            signer.requestToken = requestToken
-            return try signer.signed(request, parameters: params)
-        }
-        let (data, _) = try await performSigned(signedRequest)
-        let queryString = String(data: data, encoding: .utf8) ?? ""
-
-        guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.decodingFailed
-        }
-
-        try signerBox.mutate {
-            try $0.saveAccessToken(credential)
-            $0.requestToken = nil
-        }
-        return credential
-    }
-
-    public func refreshAccessToken(path: String,
-                                   parameters: [String: String]? = nil,
-                                   method: String,
-                                   accessToken: CDOAuth1Credential) async throws -> CDOAuth1Credential {
-        guard let token = accessToken.token.nilIfEmpty else {
-            throw CDOAuth1Error.invalidAccessToken
-        }
-
-        var params: [String: String] = ["oauth_token": token]
-        if let extra = parameters {
-            params.merge(extra) { $1 }
-        }
-
-        let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-
-        let signedRequest = try signerBox.read { try $0.signed(request, parameters: params) }
-        let (data, _) = try await performSigned(signedRequest)
-        let queryString = String(data: data, encoding: .utf8) ?? ""
-
-        guard let credential = CDOAuth1Credential(queryString: queryString) else {
-            throw CDOAuth1Error.decodingFailed
-        }
-
-        try signerBox.mutate {
-            try $0.saveAccessToken(credential)
-            $0.requestToken = nil
-        }
-        return credential
+    /// Discards every response cached by ``cacheConfiguration``, forcing the next matching
+    /// `GET` request to hit the network regardless of TTL.
+    public func clearResponseCache() {
+        responseCacheBox.removeAll()
     }
 
     // MARK: - Authenticated Requests
 
     /// Makes a signed request to the given path using the current access token.
+    ///
+    /// When ``cacheConfiguration`` is set and `method` is `GET`, a request matching a live
+    /// (unexpired) cached entry for the same path and parameters returns that entry without
+    /// touching the network; a successful response is cached afterward. Call
+    /// ``clearResponseCache()`` to invalidate cached entries early.
     ///
     /// - Parameters:
     ///   - path: A path relative to `baseURL`.
@@ -231,15 +154,32 @@ public final class CDOAuth1SessionManager: Sendable {
             _ = try await refreshAccessToken(path: refreshPath, method: refreshMethod, accessToken: token)
         }
 
+        let isCacheable = method.uppercased() == "GET" && cacheConfiguration != nil
+        let cacheKey = isCacheable ? unsignedRequest(path: path, method: method, parameters: parameters).url?.absoluteString : nil
+
+        if let cacheKey, let cached = responseCacheBox.value(forKey: cacheKey) {
+            return cached
+        }
+
         let retryConfig = Self.idempotentMethods.contains(method.uppercased()) ? retryConfiguration : nil
         var attempt = 0
 
         while true {
-            let signedRequest = try requestAdapters.adapting(signedRequest(path: path, method: method, parameters: parameters))
+            let signedRequest = try requestAdapters.adapting(
+                requestSigner.signed(unsignedRequest(path: path, method: method, parameters: parameters), parameters: parameters)
+            )
             eventMonitors.notifyWillStart(signedRequest)
             do {
                 let result = try await performSigned(signedRequest)
                 eventMonitors.notifyDidSucceed(signedRequest, response: result.1)
+                if let cacheKey, let cacheConfiguration {
+                    responseCacheBox.store(
+                        result,
+                        forKey: cacheKey,
+                        ttl: cacheConfiguration.ttl,
+                        maxEntries: cacheConfiguration.maxEntries
+                    )
+                }
                 return result
             } catch let error as CDOAuth1Error {
                 guard let retryConfig,
@@ -257,7 +197,10 @@ public final class CDOAuth1SessionManager: Sendable {
         }
     }
 
-    private func signedRequest(path: String, method: String, parameters: [String: String]) throws -> URLRequest {
+    /// Builds the request for `path`/`method`/`parameters`, before OAuth signing. Used both
+    /// to derive the response-cache key (which must stay stable across calls) and as the
+    /// input to signing itself.
+    private func unsignedRequest(path: String, method: String, parameters: [String: String]) -> URLRequest {
         let url = URL(string: path, relativeTo: baseURL)!.absoluteURL
         var request: URLRequest
         switch method.uppercased() {
@@ -276,12 +219,12 @@ public final class CDOAuth1SessionManager: Sendable {
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             }
         }
-        return try requestSigner.signed(request, parameters: parameters)
+        return request
     }
 
     // MARK: - Response Validation
 
-    private func performSigned(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
+    func performSigned(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let data: Data
         let response: URLResponse
         do {

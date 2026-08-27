@@ -1,5 +1,5 @@
 //
-//  CDOAuth1Kit.swift
+//  CDOAuth1CacheConfiguration.swift
 //  CDOAuth1Kit
 //
 //  Created by Christopher de Haan on 8/28/16.
@@ -25,5 +25,29 @@
 //  SOFTWARE.
 //
 
-public let CDOAuth1KitVersionNumber = 2.3
-public let CDOAuth1KitVersionString = "2.3.0"
+import Foundation
+
+/// Configures optional in-memory response caching for GET requests made via
+/// ``CDOAuth1SessionManager/request(path:method:parameters:)``.
+///
+/// Caching only ever applies to `GET` requests, keyed on the request's resolved URL
+/// (path plus query parameters) — set ``CDOAuth1SessionManager/cacheConfiguration`` to
+/// opt in; leave it `nil` (the default) to never cache.
+public struct CDOAuth1CacheConfiguration: Sendable {
+
+    /// How long a cached response remains valid, in seconds.
+    public var ttl: TimeInterval
+
+    /// The maximum number of cached responses retained at once. When a new entry would
+    /// exceed this limit, the oldest entry (by insertion time) is evicted first.
+    public var maxEntries: Int
+
+    /// Creates a cache configuration.
+    /// - Parameters:
+    ///   - ttl: How long a cached response remains valid, in seconds.
+    ///   - maxEntries: The maximum number of cached responses retained at once.
+    public init(ttl: TimeInterval = 60, maxEntries: Int = 50) {
+        self.ttl = ttl
+        self.maxEntries = maxEntries
+    }
+}

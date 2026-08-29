@@ -161,6 +161,16 @@ public final class CDOAuth1SessionManager: Sendable {
             return cached
         }
 
+        return try await performWithRetry(path: path, method: method, parameters: parameters, cacheKey: cacheKey)
+    }
+
+    /// The retry loop proper, factored out of `request(path:method:parameters:)` so each stays
+    /// under the shared function_body_length threshold. `cacheKey` is threaded through unchanged
+    /// from the caller — it only ever affects a successful response, never the retry decisions here.
+    private func performWithRetry(path: String,
+                                  method: String,
+                                  parameters: [String: String],
+                                  cacheKey: String?) async throws -> (Data, HTTPURLResponse) {
         let retryConfig = Self.idempotentMethods.contains(method.uppercased()) ? retryConfiguration : nil
         var attempt = 0
 

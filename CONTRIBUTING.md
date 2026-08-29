@@ -1,79 +1,112 @@
-# Contributing to CDOAuth1Kit
+# Contributing Guidelines
 
-Thank you for your interest in contributing to CDOAuth1Kit! This document provides guidelines and instructions for contributing to the project.
+This document contains information and guidelines about contributing to this project.
+Please read it before you start participating.
+
+**Topics**
+
+* [Asking Questions](#asking-questions)
+* [Reporting Security Issues](#reporting-security-issues)
+* [Reporting Issues](#reporting-other-issues)
+* [Submitting Pull Requests](#submitting-pull-requests)
+* [Developer's Certificate of Origin](#developers-certificate-of-origin-11)
+* [Code of Conduct](#code-of-conduct)
+
+## Asking Questions
+
+**We don't use GitHub as a support forum.**
+For any usage questions that are not specific to the project itself, please ask on [Stack Overflow](https://stackoverflow.com) instead. By doing so, you'll be more likely to quickly solve your problem, and you'll allow anyone else with the same question to find the answer. This also allows maintainers to focus on improving the project for others.
+
+## Reporting Security Issues
+
+The developers of CDOAuth1Kit takes security seriously.
+If you discover a security issue, please bring it to our attention right away!
+
+Please **DO NOT** file a public issue,
+instead send your report privately to <contact@christopherdehaan.me>.
+This will help ensure that any vulnerabilities that _are_ found
+can be [disclosed responsibly](http://en.wikipedia.org/wiki/Responsible_disclosure)
+to any affected parties.
+
+## Reporting Other Issues
+
+A great way to contribute to the project is to send a detailed issue when you encounter an problem. We always appreciate a well-written, thorough bug report.
+
+Check that the project issues database doesn't already include that problem or suggestion before submitting an issue. If you find a match, feel free to vote for the issue by adding a reaction. Doing this helps prioritize the most common problems and requests.
+
+When reporting issues, please fill out our issue template. The information the template asks for will help us review and fix your issue faster.
+
+## Submitting Pull Requests
+
+You can contribute by fixing bugs or adding new features. For larger code changes, we recommend first discussing your ideas on our [GitHub Discussions](https://github.com/chrisdhaan/CDOAuth1Kit/discussions).
+
+## Developer's Certificate of Origin 1.1
+
+By making a contribution to this project, I certify that:
+
+- (a) The contribution was created in whole or in part by me and I
+      have the right to submit it under the open source license
+      indicated in the file; or
+
+- (b) The contribution is based upon previous work that, to the best
+      of my knowledge, is covered under an appropriate open source
+      license and I have the right under that license to submit that
+      work with modifications, whether created in whole or in part
+      by me, under the same open source license (unless I am
+      permitted to submit under a different license), as indicated
+      in the file; or
+
+- (c) The contribution was provided directly to me by some other
+      person who certified (a), (b) or (c) and I have not modified
+      it.
+
+- (d) I understand and agree that this project and the contribution
+      are public and that a record of the contribution (including all
+      personal information I submit with it, including my sign-off) is
+      maintained indefinitely and may be redistributed consistent with
+      this project or the open source license(s) involved.
 
 ## Code of Conduct
 
-Be respectful and constructive in all interactions with other contributors and maintainers.
+The Code of Conduct governs how we behave in public or in private
+whenever the project will be judged by our actions.
+We expect it to be honored by everyone who contributes to this project.
 
-## Reporting Issues
+We strive to:
 
-Before creating an issue, please:
+* **Be open**: We invite anybody to participate in any aspect of our projects.
+  Our community is open, and any responsibility can be carried
+  by any contributor who demonstrates the required capacity and competence.
+* **Be empathetic**: We work together to resolve conflict,
+  assume good intentions,
+  and do our best to act in an empathic fashion.
+  By understanding that humanity drops a few packets in online interactions,
+  and adjusting accordingly,
+  we can create a comfortable environment for everyone to share their ideas.
+* **Be collaborative**: We prefer to work transparently
+  and to involve interested parties early on in the process.
+  Wherever possible, we work closely with others in the open source community
+  to coordinate our efforts.
+* **Be decisive**: We expect participants in the project to resolve disagreements constructively.
+  When they cannot, we escalate the matter to structures
+  with designated leaders to arbitrate and provide clarity and direction.
+* **Be responsible**: We hold ourselves accountable for our actions.
+  When we make mistakes, we take responsibility for them.
+  When we need help, we reach out to others.
+  When it comes time to move on from a project,
+  we take the proper steps to ensure that others can pick up where we left off.
 
-1. Check existing issues to avoid duplicates
-2. Use the GitHub issue template
-3. Provide a minimal reproducible example
-4. Include details about your environment (Xcode version, iOS/macOS version, Swift version)
+This code is not exhaustive or complete.
+It serves to distill our common understanding of a
+collaborative, shared environment and goals.
+We expect it to be followed in spirit as much as in the letter.
 
-For usage questions, please ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/cdoauth1kit) using the `cdoauth1kit` tag.
+---
 
-## Submitting Changes
+*The CDOAuth1Kit Code of Conduct is licensed under the [Creative Commons Attribution-Share Alike 3.0 License](https://creativecommons.org/licenses/by-sa/3.0/us/).*
 
-1. **Fork the repository** and create a branch for your changes
-2. **Follow the code style** — the project uses SwiftLint and SwiftFormat
-3. **Write tests** for new functionality or bug fixes
-4. **Run the full test suite** locally before submitting
-5. **Create a pull request** with a clear description of your changes
+*Some of the ideas and wording for the statements above were based on work by [Mozilla](https://wiki.mozilla.org/Code_of_Conduct/Draft), [Ubuntu](http://www.ubuntu.com/about/about-ubuntu/conduct), and [Twitter](https://github.com/twitter/code-of-conduct). We thank them for their work and contributions to the open source community.*
 
-### Code Style
+---
 
-CDOAuth1Kit follows strict code style requirements:
-
-- **SwiftLint** — Run `swiftlint` to check for style violations
-- **SwiftFormat** — Run `swiftformat .` to auto-format code
-- **Line length** — Warnings at 149 characters, errors at 200
-- **Indentation** — 4 spaces
-
-Run these commands before committing:
-
-```bash
-swiftformat .
-swiftlint
-swift build
-swift test
-```
-
-### Testing
-
-- All new public APIs must have corresponding tests
-- All bug fixes must include a test demonstrating the fix
-- Tests must use the Swift Testing framework (@Suite, @Test, #expect)
-- Run `swift test` to verify all tests pass
-
-### Documentation
-
-- All public symbols must have `///` doc comments
-- Doc comments must describe the purpose, parameters, and return value
-- Use inline examples where helpful
-- The CI job fails if any public symbol is undocumented
-
-## Pull Request Process
-
-1. Update `CHANGELOG.md` if your changes are user-visible
-2. Ensure all CI jobs pass (SwiftLint, SwiftFormat, tests, DocC build)
-3. Request review from maintainers
-4. Address feedback and re-request review
-
-## Questions?
-
-For technical questions or discussion about the library:
-
-- **Stack Overflow**: Use the `cdoauth1kit` tag
-- **GitHub Discussions**: Open a discussion thread (if enabled)
-- **Issues**: Use issues only for bugs and feature requests
-
-## License
-
-By contributing to CDOAuth1Kit, you agree that your contributions will be licensed under the same MIT license as the project.
-
-Thank you for contributing!
+*Some of the ideas and wording for the statements above were based on work by the [Docker](https://github.com/docker/docker/blob/master/CONTRIBUTING.md) and [Linux](http://elinux.org/Developer_Certificate_Of_Origin) communities. We commend them for their efforts to facilitate collaboration in their projects.*

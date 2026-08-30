@@ -15,6 +15,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Aligned the LICENSE file, CONTRIBUTING.md, and CI conventions with this project's established standards, and added an Example-app build to CI.
+- Tightened the `file_length`, `function_body_length`, and `type_body_length` SwiftLint limits to a consistent baseline (`line_length` was already aligned). Fixed the one resulting violation by extracting `CDOAuth1SessionManager.request(path:method:parameters:)`'s retry loop into a private helper.
+
 ---
 
 ## [2.3.0](https://github.com/chrisdhaan/CDOAuth1Kit/releases/tag/2.3.0)
